@@ -1,0 +1,2 @@
+# Dados exportados podem conter dados pessoais e não devem ser versionados.
+dados/*.json

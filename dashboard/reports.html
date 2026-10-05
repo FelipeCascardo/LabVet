@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Pesquisa local de parâmetros em laudos laboratoriais do LabVet." />
+  <title>LabVet · Pesquisa de laudos</title>
+  <style>
+    :root{--ink:#142234;--muted:#66778d;--line:#dce5ed;--bg:#f2f6f8;--card:#fff;--teal:#117e7b;--navy:#123552;--soft:#e5f4f1}*{box-sizing:border-box}body{margin:0;font:15px/1.5 Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}header{background:var(--navy);color:#fff;padding:26px max(24px,calc((100vw - 1180px)/2));display:flex;align-items:center;justify-content:space-between;gap:16px}h1{font-size:1.55rem;margin:0}.sub{margin:4px 0 0;color:#bbd5df}.back,.badge{display:inline-block;background:#1b596c;color:#fff;text-decoration:none;padding:7px 11px;border-radius:999px;font-size:.82rem}.back:hover{background:#247286}main{max-width:1180px;margin:auto;padding:24px}.filters,.summary,.results{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 25px #1235520b}.filters{padding:16px;display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:12px;align-items:end}label{font-size:.82rem;font-weight:700;color:var(--muted);display:grid;gap:5px}input,select,button{font:inherit;border-radius:8px;padding:10px;border:1px solid #b9c8d4;background:#fff}button{background:var(--teal);color:#fff;border:0;font-weight:700;cursor:pointer}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px;padding:16px}.metric{padding:8px 12px;border-left:4px solid var(--teal);background:#f7fbfb;border-radius:5px}.metric strong{display:block;font-size:1.45rem}.metric span{font-size:.84rem;color:var(--muted)}.results{margin-top:20px;overflow:hidden}.head{padding:18px;display:flex;justify-content:space-between;align-items:center;gap:16px}.head h2{font-size:1.1rem;margin:0}.hint,.count{color:var(--muted);font-size:.88rem}.cards{border-top:1px solid var(--line)}article{padding:16px 18px;border-bottom:1px solid #edf1f4}article:hover{background:#f8fbfc}.meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:9px}.record{font-weight:800}.pill{padding:3px 8px;border-radius:999px;background:var(--soft);color:#176662;font-size:.76rem;font-weight:700}.file{font-size:.78rem;color:var(--muted)}.excerpt{margin:0;white-space:pre-wrap;word-break:break-word;background:#f6f9fb;border-left:3px solid #a8d7d1;padding:10px 12px;color:#30455a;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.84rem}.empty{padding:42px;text-align:center;color:var(--muted)}.note{margin-top:20px;padding:15px 18px;border-radius:14px;background:#eaf4f7;border:1px solid #c9e0e5;color:#365367}@media(max-width:760px){header{align-items:flex-start;flex-direction:column}.filters{grid-template-columns:1fr 1fr}.filters label:first-child,.filters button{grid-column:span 2}.summary{grid-template-columns:1fr}}@media(max-width:420px){.filters,.summary{grid-template-columns:1fr}.filters label:first-child,.filters button{grid-column:auto}main{padding:14px}}
+  </style>
+</head>
+<body>
+  <header><div><h1>LabVet · Pesquisa de laudos</h1><p class="sub">Localize resultados pelo parâmetro informado no exame.</p></div><a class="back" href="index.html">Atendimentos</a></header>
+  <main>
+    <section class="filters" aria-label="Pesquisa de laudos">
+      <label>Parâmetro ou texto do laudo<input id="search" placeholder="Ex.: neutrófilos, creatinina, proteína" autocomplete="off" /></label>
+      <label>Parâmetro frequente<select id="parameter"><option value="">Todos</option><option>Neutrófilos</option><option>Plaquetas</option><option>Leucócitos</option><option>Hemoglobina</option><option>Ureia</option><option>Creatinina</option><option>ALT</option><option>Glicose</option><option>Proteína</option><option>Densidade</option><option>Ehrlichia</option><option>Anaplasma</option></select></label>
+      <label>Tipo de laudo<select id="type"><option value="">Todos</option></select></label>
+      <button id="clear" type="button">Limpar filtros</button>
+    </section>
+    <section class="summary" aria-label="Resumo da pesquisa"><div class="metric"><strong id="mReports">—</strong><span>Laudos encontrados</span></div><div class="metric"><strong id="mAnimals">—</strong><span>Pacientes distintos</span></div><div class="metric"><strong id="mTypes">—</strong><span>Tipos de laudo</span></div></section>
+    <section class="results"><div class="head"><div><h2>Ocorrências nos laudos</h2><div class="hint">O trecho destacado é extraído do laudo original. A interpretação clínica continua sendo responsabilidade do médico-veterinário.</div></div><span class="count" id="count"></span></div><div id="cards" class="cards"></div><div class="empty" id="empty" hidden>Nenhum laudo corresponde aos filtros escolhidos.</div></section>
+    <section class="note">A pesquisa é feita nos 36 laudos atualmente disponíveis no computador. Use a caixa de texto para qualquer termo que apareça no exame, inclusive observações.</section>
+  </main>
+  <script src="data.js"></script><script src="reports-data.js"></script><script>
+    const reports=window.LABVET_REPORTS||[], attendances=window.LABVET_RECORDS||[];
+    const animals=new Map(attendances.map(x=>[String(x.record),x.animal||'Paciente não identificado'])); const $=id=>document.getElementById(id);
+    const norm=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+    const safe=value=>String(value||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    [...new Set(reports.map(x=>x.report_type))].sort().forEach(type=>$('type').insertAdjacentHTML('beforeend',`<option>${safe(type)}</option>`));
+    function excerpt(text,term){const lines=String(text||'').split(/\r?\n/).filter(Boolean);if(!term)return lines.slice(0,5).join('\n');const index=lines.findIndex(line=>norm(line).includes(norm(term)));return index<0?lines.slice(0,5).join('\n'):lines.slice(Math.max(0,index-1),index+2).join('\n')}
+    function draw(){const typed=$('search').value.trim(), chosen=$('parameter').value, term=typed||chosen, type=$('type').value;const found=reports.filter(r=>(!type||r.report_type===type)&&(!term||norm(r.text).includes(norm(term))));$('mReports').textContent=found.length;$('mAnimals').textContent=new Set(found.map(r=>animals.get(String(r.record))||r.record)).size;$('mTypes').textContent=new Set(found.map(r=>r.report_type)).size;$('count').textContent=`${found.length} laudo${found.length===1?'':'s'}`;$('cards').innerHTML=found.map(r=>`<article><div class="meta"><span class="record">Registro ${safe(r.record)}</span><span>${safe(animals.get(String(r.record))||'Paciente não identificado')}</span><span class="pill">${safe(r.report_type)}</span><span class="file">${safe(r.file_name)}</span></div><pre class="excerpt">${safe(excerpt(r.text,term))}</pre></article>`).join('');$('empty').hidden=found.length>0}
+    ['search','parameter','type'].forEach(id=>$(id).addEventListener('input',draw));$('clear').onclick=()=>{$('search').value='';$('parameter').value='';$('type').value='';draw()};draw();
+  </script>
+</body>
+</html>

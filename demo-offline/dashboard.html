@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Dashboard offline de laudos do LabVet." />
+    <title>LabVet | Dashboard de Laudos</title>
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body>
+    <header class="topo dashboard-topo"><div class="topo-conteudo">
+      <div class="cabecalho-marca">
+        <img class="logo-labvet" src="LabVet.jpg" alt="LabVet — Laboratório de Patologia Clínica Veterinária" />
+        <div>
+          <h1 id="titulo-dashboard">Dashboard de Laudos</h1>
+          <p id="subtitulo-dashboard" class="subtitulo">Distribuição mensal de laudos e tipos de exame</p>
+        </div>
+      </div>
+      <a class="botao-dashboard" href="index.html"><span class="icone-acao"><img src="Pesquisa 256.png" alt="" /></span><span>Pesquisa</span></a>
+    </div></header>
+
+    <div class="pagina-conteudo"><main class="dashboard-main">
+      <section class="navegacao-mes" aria-label="Navegação mensal">
+        <button id="mes-anterior" type="button" aria-label="Mês anterior">‹</button>
+        <div><span>Período analisado</span><h2 id="mes-atual">Carregando…</h2></div>
+        <button id="mes-proximo" type="button" aria-label="Próximo mês">›</button>
+      </section>
+
+      <nav class="painel-seletores-dashboard" aria-label="Seleção de dashboard">
+        <button type="button" data-dashboard="laudos" aria-pressed="true">Laudos por tipo</button>
+        <button type="button" data-dashboard="especie" aria-pressed="false">Laudos por espécie</button>
+        <button type="button" data-dashboard="doencas" aria-pressed="false">Alterações por espécie</button>
+        <button type="button" data-dashboard="historico" aria-pressed="false">Histórico animal</button>
+      </nav>
+
+      <section class="dashboard-indicadores" aria-label="Indicadores do mês">
+        <article><strong id="total-laudos-mes">—</strong><span id="rotulo-total">Laudos no mês</span></article>
+        <article><strong id="dias-com-laudos">—</strong><span id="rotulo-dias">Dias com laudos</span></article>
+        <article><strong id="tipos-laudo">—</strong><span id="rotulo-dimensao">Tipos de laudo</span></article>
+      </section>
+
+      <section class="dashboard-grade">
+        <article class="painel dashboard-painel distribuicao-painel">
+          <div class="painel-cabecalho"><div><h2 id="titulo-distribuicao">Distribuição por tipo</h2><p>Total, participação e percentual no mês selecionado.</p></div><label id="filtro-especie-dashboard" class="filtro-especie-dashboard" hidden>Espécie<select id="especie-dashboard"></select></label></div>
+          <div class="distribuicao-conteudo"><div id="grafico-anel" class="grafico-anel" aria-label="Gráfico de distribuição por tipo"></div><div id="legenda-tipos" class="legenda-tipos"></div></div>
+        </article>
+        <article class="painel dashboard-painel barras-painel">
+          <div class="painel-cabecalho"><div><h2 id="titulo-barras">Laudos por dia</h2><p id="subtitulo-barras">Barras empilhadas: cada cor representa um tipo de laudo.</p></div></div>
+          <div id="legenda-barras" class="legenda-barras"></div><div id="grafico-barras" class="grafico-barras" aria-label="Gráfico de laudos por dia"></div>
+        </article>
+      </section>
+
+      <section id="historico-animal" class="painel historico-animal" hidden>
+        <div class="painel-cabecalho historico-cabecalho">
+          <div><h2>Histórico de exames do animal</h2><p>Resultados agrupados por parâmetro e organizados pela data do exame.</p></div>
+          <label>Nº ou nome do animal<input id="animal-historico" list="animais-historico" placeholder="Ex.: 1250 ou Princesa" autocomplete="off" /></label>
+          <datalist id="animais-historico"></datalist>
+        </div>
+        <div id="resumo-animal-historico" class="resumo-animal-historico"></div>
+        <div id="conteudo-historico-animal" class="conteudo-historico-animal"><p class="estado-vazio">Selecione o número de registro de um animal para consultar seus exames.</p></div>
+      </section>
+    </main></div>
+    <footer class="rodape-aplicacao"><span>V0.1.0 - 04/10/2026</span></footer>
+    <div id="tooltip-grafico" class="tooltip-grafico" role="status" hidden></div>
+    <script src="dashboard.js"></script>
+  </body>
+</html>

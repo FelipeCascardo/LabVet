@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="920" viewBox="0 0 1600 920" role="img" aria-labelledby="title description">
+  <title id="title">Diagrama de dados do LabVet</title>
+  <desc id="description">Diagrama entidade relacionamento do banco LabVet.</desc>
+  <style>
+    .bg { fill:#f7fafc; } .box { fill:#fff; stroke:#2563eb; stroke-width:2; rx:12; }
+    .head { fill:#1d4ed8; } .title { fill:#fff; font:700 20px Arial,sans-serif; }
+    .field { fill:#172554; font:15px Arial,sans-serif; } .pk { font-weight:700; }
+    .line { stroke:#64748b; stroke-width:2; fill:none; } .card { fill:#475569; font:700 16px Arial,sans-serif; }
+    .note { fill:#475569; font:15px Arial,sans-serif; } .caption { fill:#0f172a; font:700 28px Arial,sans-serif; }
+  </style>
+  <rect class="bg" width="1600" height="920"/>
+  <text class="caption" x="70" y="58">LabVet — modelo relacional</text>
+  <text class="note" x="70" y="86">Atendimentos, pacientes, proprietários, setores e exames normalizados</text>
+
+  <g transform="translate(70 155)"><rect class="box" width="260" height="190"/><rect class="head" width="260" height="42" rx="12"/><text class="title" x="18" y="28">owners</text><text class="field pk" x="18" y="72">PK owner_id</text><text class="field" x="18" y="101">source_key · full_name</text><text class="field" x="18" y="130">created_at</text><text class="field" x="18" y="159">updated_at</text></g>
+  <g transform="translate(440 155)"><rect class="box" width="280" height="230"/><rect class="head" width="280" height="42" rx="12"/><text class="title" x="18" y="28">animals</text><text class="field pk" x="18" y="72">PK animal_id</text><text class="field" x="18" y="101">source_key · external_code</text><text class="field" x="18" y="130">name</text><text class="field" x="18" y="159">species · breed · sex</text><text class="field" x="18" y="188">created_at · updated_at</text></g>
+  <g transform="translate(835 145)"><rect class="box" width="310" height="230"/><rect class="head" width="310" height="42" rx="12"/><text class="title" x="18" y="28">animal_owners</text><text class="field pk" x="18" y="72">PK/FK animal_id</text><text class="field pk" x="18" y="101">PK/FK owner_id</text><text class="field" x="18" y="130">is_current</text><text class="field" x="18" y="159">started_on</text><text class="field" x="18" y="188">ended_on</text></g>
+  <g transform="translate(1270 155)"><rect class="box" width="250" height="170"/><rect class="head" width="250" height="42" rx="12"/><text class="title" x="18" y="28">sectors</text><text class="field pk" x="18" y="72">PK sector_id</text><text class="field" x="18" y="101">name</text><text class="field" x="18" y="130">normalized_name</text></g>
+
+  <g transform="translate(70 555)"><rect class="box" width="290" height="180"/><rect class="head" width="290" height="42" rx="12"/><text class="title" x="18" y="28">import_batches</text><text class="field pk" x="18" y="72">PK import_batch_id</text><text class="field" x="18" y="101">source_file_name</text><text class="field" x="18" y="130">source_period · imported_at</text><text class="field" x="18" y="159">notes</text></g>
+  <g transform="translate(480 480)"><rect class="box" width="360" height="300"/><rect class="head" width="360" height="42" rx="12"/><text class="title" x="18" y="28">attendances</text><text class="field pk" x="18" y="72">PK attendance_id</text><text class="field" x="18" y="101">source_record_number</text><text class="field" x="18" y="130">attended_on · age_text</text><text class="field" x="18" y="159">FK animal_id · sector_id</text><text class="field" x="18" y="188">FK import_batch_id</text><text class="field" x="18" y="217">clinical_history</text><text class="field" x="18" y="246">reported_exam_total · charged_amount</text></g>
+  <g transform="translate(990 500)"><rect class="box" width="300" height="190"/><rect class="head" width="300" height="42" rx="12"/><text class="title" x="18" y="28">attendance_exams</text><text class="field pk" x="18" y="72">PK/FK attendance_id</text><text class="field pk" x="18" y="101">PK/FK exam_id</text><text class="field" x="18" y="130">quantity</text></g>
+  <g transform="translate(1300 570)"><rect class="box" width="220" height="150"/><rect class="head" width="220" height="42" rx="12"/><text class="title" x="18" y="28">exams</text><text class="field pk" x="18" y="72">PK exam_id</text><text class="field" x="18" y="101">external_code</text><text class="field" x="18" y="130">name · is_active</text></g>
+
+  <path class="line" d="M330 250 H835"/><text class="card" x="345" y="240">1</text><text class="card" x="810" y="240">N</text>
+  <path class="line" d="M720 270 H835"/><text class="card" x="735" y="258">1</text><text class="card" x="810" y="258">N</text>
+  <path class="line" d="M580 385 V480"/><text class="card" x="592" y="435">1</text><text class="card" x="592" y="474">N</text>
+  <path class="line" d="M1395 325 V405 H780 V480"/><text class="card" x="1378" y="355">1</text><text class="card" x="800" y="468">N</text>
+  <path class="line" d="M360 645 H480"/><text class="card" x="378" y="633">1</text><text class="card" x="455" y="633">N</text>
+  <path class="line" d="M840 625 H990"/><text class="card" x="860" y="613">1</text><text class="card" x="965" y="613">N</text>
+  <path class="line" d="M1290 625 H1300"/><text class="card" x="1270" y="613">N</text><text class="card" x="1305" y="613">1</text>
+  <text class="note" x="70" y="855">Cardinalidades: um proprietário pode ter vários animais; um atendimento pode possuir vários exames; um exame pode constar em vários atendimentos.</text>
+</svg>

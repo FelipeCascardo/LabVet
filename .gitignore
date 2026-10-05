@@ -1,0 +1,20 @@
+# Credenciais locais
+.env
+
+# Arquivos-fonte e exportações com dados clínicos reais
+Importação/
+Excel/
+database/imports/generated/
+demo-offline/dados/*.json
+dashboard/data.js
+dashboard/reports-data.js
+docs/rejeitados-setembro-2026.csv
+
+# Artefato temporário de geração de imagem não utilizado pela aplicação
+demo-offline/LabVet-logo.png
+
+# Arquivos locais
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db

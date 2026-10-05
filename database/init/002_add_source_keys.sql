@@ -1,0 +1,2 @@
+ALTER TABLE labvet.owners ADD COLUMN IF NOT EXISTS source_key TEXT UNIQUE;
+ALTER TABLE labvet.animals ADD COLUMN IF NOT EXISTS source_key TEXT UNIQUE;

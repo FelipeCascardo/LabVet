@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Demonstração offline de pesquisa clínica do LabVet." />
+    <title>LabVet | Base Integrada de Atendimentos e Exames</title>
+    <link rel="stylesheet" href="estilos.css" />
+  </head>
+  <body>
+    <header class="topo"><div class="topo-conteudo">
+      <div class="cabecalho-marca">
+        <img class="logo-labvet" src="LabVet.jpg" alt="LabVet — Laboratório de Patologia Clínica Veterinária" />
+        <div>
+          <h1>Base Integrada de Atendimentos e Exames</h1>
+          <p class="subtitulo">Demonstração offline · somente consulta</p>
+        </div>
+      </div>
+      <a class="botao-dashboard" href="dashboard.html"><span class="icone-acao"><img src="Dashboard 256.png" alt="" /></span><span>Dashboard</span></a>
+    </div></header>
+
+    <div class="pagina-conteudo"><main>
+      <details class="filtros filtros-retrateis" aria-label="Filtros da pesquisa">
+        <summary><span>Filtros da pesquisa</span><span class="filtros-ajuda">Clique para mostrar ou ocultar</span></summary>
+        <div class="filtros-corpo">
+        <fieldset class="painel-filtro atendimento-filtro"><legend>Atendimento</legend>
+          <label>Nº registro do atendimento<input id="registro" inputmode="numeric" placeholder="Ex.: 4359" /></label><label>Nº registro do animal<input id="codigo-animal" placeholder="Ex.: 8027" /></label><div class="origem-filtro"><span>Origem</span><label><input name="origem" type="radio" value="HV" /> HV</label><label><input name="origem" type="radio" value="AMA" /> AMA</label></div><label>Data do atendimento — início<input id="data-inicio" type="date" /></label><label>Data do atendimento — fim<input id="data-fim" type="date" /></label><label>Nome do animal<input id="animal" placeholder="Ex.: Nina" /></label><label>Tutor<input id="tutor" placeholder="Ex.: Maria Silva" /></label><label>Espécie<select id="especie"><option value="">Todas</option></select></label><div class="faixa idade-faixa"><label>Idade — de<input id="idade-inicio" placeholder="Ex.: 3M" title="Informe meses com M e anos com A. Ex.: 3M ou 2A." /></label><label>Idade — até<input id="idade-fim" placeholder="Ex.: 2A" title="Informe meses com M e anos com A. Ex.: 3M ou 2A." /></label></div><label>Exames<input id="exames" placeholder="Ex.: 17 | 32" title="Separe os códigos por |; todos devem constar no atendimento." /></label><label>Laudos<select id="tipo-laudo"><option value="">Todos</option></select></label>
+        </fieldset>
+        <fieldset class="painel-filtro laudo-filtro"><legend>Laudos</legend>
+          <label>Parâmetro<div class="parametro-combo"><button id="parametro-botao" type="button" aria-haspopup="tree" aria-expanded="false">Selecione um parâmetro</button><div id="parametro-arvore" class="parametro-arvore" role="tree" hidden></div><input id="parametro" type="hidden" /></div></label><div class="faixa"><label>Valor — início<input id="valor-inicio" type="number" step="any" placeholder="Ex.: 10" /></label><label>Valor — fim<input id="valor-fim" type="number" step="any" placeholder="Ex.: 50" /></label></div><button id="adicionar-parametro" class="adicionar-parametro" type="button">Adicionar parâmetro</button><div id="parametros-selecionados" class="parametros-selecionados" aria-live="polite"></div><label class="comentarios">Comentários<input id="comentarios" placeholder="Ex.: Eosinofilia | Hiperproteinemia" /><span>Separe partes por <code>|</code>: todos os termos devem constar no comentário, sem diferenciar maiúsculas e minúsculas.</span></label>
+        </fieldset>
+        <div class="acoes-filtro"><button id="limpar" type="button">Limpar filtros</button></div>
+        </div>
+      </details>
+
+      <section class="indicadores" aria-label="Resumo">
+        <article><strong id="total-atendimentos">—</strong><span>Atendimentos</span></article>
+        <article><strong id="total-pacientes">—</strong><span>Pacientes</span></article>
+        <article><strong id="total-laudos">—</strong><span>Laudos vinculados</span></article>
+      </section>
+
+      <section class="conteudo">
+        <div class="painel resultados">
+          <div class="painel-cabecalho"><div><h2>Resultados</h2><p id="contagem">Carregando dados locais…</p></div></div>
+          <div id="lista-resultados" class="lista-resultados"></div>
+          <nav id="paginacao" class="paginacao" aria-label="Paginação dos atendimentos"></nav>
+          <p id="estado-vazio" class="estado-vazio" hidden>Nenhum dado corresponde à pesquisa.</p>
+        </div>
+        <aside id="detalhe" class="painel detalhe" aria-live="polite">
+          <p class="estado-vazio">Selecione um atendimento para cruzar o histórico com os resultados dos exames.</p>
+        </aside>
+      </section>
+    </main></div>
+    <footer class="rodape-aplicacao"><span>V0.1.0 - 04/10/2026</span></footer>
+    <script src="app.js"></script>
+  </body>
+</html>
