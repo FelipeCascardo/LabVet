@@ -4,7 +4,11 @@
 
 - Arquivo: `Importação/9 - Setembro - 2026.xlsx`
 - Período: setembro de 2026
-- Destino: base `labvet`, esquema `labvet`, na instância PostgreSQL de desenvolvimento do Itriax.
+- Destino original: base `labvet`, esquema `labvet`, na instância PostgreSQL de desenvolvimento do Itriax.
+
+> Em 07/10/2026, a base foi migrada para o contêiner dedicado
+> `labvet-postgres` (porta local `5434`) e removida da instância Itriax. Os
+> números abaixo registram o resultado histórico da carga inicial.
 
 ## Resultado da carga
 

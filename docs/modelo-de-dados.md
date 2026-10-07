@@ -4,6 +4,11 @@
 
 Armazenar os atendimentos laboratoriais veterinários com rastreabilidade para a planilha de origem. Cada linha válida da planilha corresponde a um atendimento, identificado por `Registro`.
 
+> **Status do modelo atual:** este documento descreve o esquema legado atualmente
+> carregado. A proposta para alinhar a nomenclatura dos campos ao padrão Itriax
+> está em [001_labvet_schema_itriax.sql](../database/proposed/001_labvet_schema_itriax.sql).
+> Ela é apenas uma proposta de revisão e ainda não foi aplicada.
+
 ## Diagrama
 
 ![Diagrama entidade-relacionamento](diagrama-modelo.svg)
@@ -57,7 +62,7 @@ Na pasta raiz do projeto, execute:
 docker compose up -d
 ```
 
-O banco fica disponível em `localhost:5432`, com nome e usuário definidos no arquivo `.env`. O esquema é `labvet`.
+O banco fica disponível em `localhost:5434`, com nome e usuário definidos no arquivo `.env`. O esquema é `labvet`.
 
 Para verificar a inicialização:
 
@@ -67,4 +72,13 @@ docker compose exec postgres psql -U labvet_app -d labvet -c "\\dt labvet.*"
 
 ## Escopo atual
 
-O esquema foi criado na instância PostgreSQL de desenvolvimento do Itriax, na base `labvet`. A carga inicial de setembro de 2026 foi concluída; o resumo está em [importacao-setembro-2026.md](importacao-setembro-2026.md).
+Em 07/10/2026, os dados do LabVet foram migrados da instância Itriax para o
+contêiner dedicado `labvet-postgres`, publicado na porta local `5434`. A base
+`labvet` foi removida do PostgreSQL do Itriax após a validação da migração.
+
+A instância dedicada contém 14 tabelas, 695 atendimentos, 1.008 laudos e
+15.568 resultados laboratoriais. Um backup pré-migração é mantido localmente
+em `database/backups/` e é ignorado pelo Git por conter dados clínicos reais.
+
+A carga inicial de setembro de 2026 está descrita em
+[importacao-setembro-2026.md](importacao-setembro-2026.md).

@@ -5,6 +5,7 @@
 Importação/
 Excel/
 database/imports/generated/
+database/backups/
 demo-offline/dados/*.json
 dashboard/data.js
 dashboard/reports-data.js
