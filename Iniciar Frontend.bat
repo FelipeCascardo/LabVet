@@ -1,10 +1,10 @@
 @echo off
 setlocal
 
-set "LABVET_FRONTEND_DIR=%~dp0dashboard"
+set "LABVET_FRONTEND_DIR=%~dp0frontend"
 
-if not exist "%LABVET_FRONTEND_DIR%\server.js" (
-  echo ERRO: nao foi encontrado o servidor do frontend em:
+if not exist "%LABVET_FRONTEND_DIR%\package.json" (
+  echo ERRO: nao foi encontrado o frontend em:
   echo %LABVET_FRONTEND_DIR%
   pause
   exit /b 1
@@ -18,8 +18,8 @@ if errorlevel 1 (
   exit /b 1
 )
 
-start "LabVet - Frontend" powershell.exe -NoExit -NoProfile -Command "Set-Location -LiteralPath '%LABVET_FRONTEND_DIR%'; node .\server.js"
-timeout /t 1 /nobreak >nul
-start "" "http://127.0.0.1:4173/"
+start "LabVet - Frontend" powershell.exe -NoExit -NoProfile -Command "Set-Location -LiteralPath '%LABVET_FRONTEND_DIR%'; npm run dev"
+timeout /t 2 /nobreak >nul
+start "" "http://127.0.0.1:5173/"
 
 endlocal
