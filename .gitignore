@@ -19,3 +19,14 @@ __pycache__/
 *.pyc
 .DS_Store
 Thumbs.db
+
+# Artefatos locais do backend Delphi e dependências restauráveis pelo Boss
+backend/modules/
+backend/__history/
+backend/__recovery/
+backend/*.dproj.local
+backend/*.dcu
+backend/**/*.dcu
+backend/*.exe
+backend/*.rsm
+backend/**/__recovery/

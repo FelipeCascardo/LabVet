@@ -1,0 +1,11 @@
+{
+  "name": "labvet-backend",
+  "description": "API do LabVet",
+  "version": "1.0.0",
+  "mainsrc": "./src",
+  "dependencies": {
+    "github.com/hashload/horse": "^3.3.5",
+    "github.com/hashload/horse-jwt": "^2.0.23",
+    "github.com/paolo-rossi/delphi-jose-jwt": "^v4.0.2"
+  }
+}
