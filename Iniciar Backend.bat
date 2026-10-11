@@ -10,6 +10,7 @@ if not exist "%LABVET_BACKEND_EXE%" (
   exit /b 1
 )
 
-start "LabVet - Backend" powershell.exe -NoExit -NoProfile -Command "$env:LABVET_ENV_FILE = '%~dp0.env'; & '%LABVET_BACKEND_EXE%'"
+set "LABVET_ENV_FILE=%~dp0.env"
+start "LabVet - Backend" cmd.exe /k ""%LABVET_BACKEND_EXE%""
 
 endlocal
