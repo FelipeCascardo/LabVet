@@ -8,6 +8,7 @@ uses
   FireDAC.Phys.PG,
   FireDAC.Phys.PGDef,
   FireDAC.Phys,
+  FireDAC.Stan.Async,
   FireDAC.Stan.Def,
   FireDAC.Stan.Intf;
 
@@ -54,15 +55,15 @@ end;
 
 class procedure TLabVetConnection.EnsureDriver;
 var
-  LClientLibraryPath: string;
+  LVendorHome: string;
 begin
   ConfigureClientLibraryPath;
 
   if not Assigned(LabVetConnectionDataModule) then
   begin
     LabVetConnectionDataModule := TLabVetConnectionDataModule.Create(nil);
-    LClientLibraryPath := TPath.Combine(ExtractFilePath(ParamStr(0)), 'Lib');
-    LabVetConnectionDataModule.fdpPostgre.VendorHome := LClientLibraryPath;
+    LVendorHome := ExcludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0)));
+    LabVetConnectionDataModule.fdpPostgre.VendorHome := LVendorHome;
     LabVetConnectionDataModule.fdpPostgre.VendorLib := 'libpq.dll';
   end;
 end;
