@@ -3,17 +3,37 @@
 interface
 
 uses
+  System.SysUtils,
   System.Classes,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Error,
+  FireDAC.UI.Intf,
+  FireDAC.Phys.Intf,
+  FireDAC.Stan.Def,
+  FireDAC.Stan.Pool,
+  FireDAC.Stan.Async,
+  FireDAC.Phys,
+  FireDAC.Phys.FB,
+  FireDAC.Phys.FBDef,
+  FireDAC.ConsoleUI.Wait,
+  FireDAC.Phys.IBBase,
+  Data.DB,
   FireDAC.Comp.Client,
+  FireDAC.VCLUI.Wait,
+  FireDAC.Stan.Param,
+  FireDAC.DatS,
+  FireDAC.DApt.Intf,
+  FireDAC.DApt,
+  FireDAC.Comp.DataSet,
   FireDAC.Phys.PG,
   FireDAC.Phys.PGDef,
-  FireDAC.Phys,
-  FireDAC.Stan.Async,
-  FireDAC.Stan.Def,
-  FireDAC.Stan.Intf;
+  System.IOUtils,
+  Winapi.Windows;
 
 type
   TLabVetConnectionDataModule = class(TDataModule)
+    fdcLabVet: TFDConnection;
     fdpPostgre: TFDPhysPgDriverLink;
   end;
 
@@ -31,10 +51,7 @@ var
 implementation
 
 uses
-  System.IOUtils,
-  System.SysUtils,
-  Winapi.Windows,
-   LabVet.Providers.Config;
+  LabVet.Providers.Config;
 
 {$R *.dfm}
 
@@ -72,6 +89,7 @@ class function TLabVetConnection.NewConnection: TFDConnection;
 begin
   EnsureDriver;
   Result := TFDConnection.Create(nil);
+  Result.Params.Assign(LabVetConnectionDataModule.fdcLabVet.Params);
   TLabVetConfig.ApplyDatabaseParams(Result);
   Result.LoginPrompt := False;
   Result.Open;
