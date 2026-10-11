@@ -22,6 +22,7 @@ Thumbs.db
 
 # Artefatos locais do backend Delphi e dependências restauráveis pelo Boss
 backend/modules/
+backend/Lib/
 backend/__history/
 backend/__recovery/
 backend/*.dproj.local
