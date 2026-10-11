@@ -1,4 +1,4 @@
-import { HeartPulse, LockKeyhole, Mail } from 'lucide-react'
+import { LockKeyhole, Mail } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../app/auth/useAuth'
@@ -30,7 +30,9 @@ export function LoginPage() {
 
   return <main className="login-page">
     <section className="login-panel">
-      <div className="brand"><span className="brand-mark"><HeartPulse size={24} /></span><span>Lab<span>Vet</span></span></div>
+      <div className="brand login-brand">
+        <img src="/images/labvet-logo.jpg" alt="LabVet — Laboratório de Patologia Clínica Veterinária" />
+      </div>
       <div className="login-copy"><p className="eyebrow">Acesso seguro</p><h1>Bem-vindo de volta.</h1><p>Entre para acompanhar a rotina do seu laboratório veterinário.</p></div>
       <form onSubmit={handleSubmit} className="login-form">
         <label><span>E-mail</span><div className="input-wrap"><Mail size={18} /><input type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} required /></div></label>

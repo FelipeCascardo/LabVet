@@ -25,8 +25,11 @@ export function AppShell() {
   </div>
 }
 
-function Brand() { return <div className="brand sidebar-brand"><span className="brand-mark"><HeartIcon /></span><span>Lab<span>Vet</span></span></div> }
-function HeartIcon() { return <span aria-hidden="true">✦</span> }
+function Brand() {
+  return <div className="brand sidebar-brand">
+    <img src="/images/labvet-logo.jpg" alt="LabVet — Laboratório de Patologia Clínica Veterinária" />
+  </div>
+}
 
 function MenuLink({ item, onNavigate }: { item: NavigationItem; onNavigate: () => void }) {
   const Icon = item.icon
