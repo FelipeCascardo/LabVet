@@ -18,7 +18,7 @@ if errorlevel 1 (
   exit /b 1
 )
 
-start "LabVet - Frontend" powershell.exe -NoExit -NoProfile -Command "Set-Location -LiteralPath '%LABVET_FRONTEND_DIR%'; npm.cmd run dev -- --host 127.0.0.1"
+start "LabVet - Frontend" powershell.exe -NoExit -NoProfile -Command "Set-Location -LiteralPath '%LABVET_FRONTEND_DIR%'; npm.cmd run dev -- --host 127.0.0.1 --strictPort"
 timeout /t 2 /nobreak >nul
 start "" "http://127.0.0.1:5173/"
 
