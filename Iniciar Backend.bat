@@ -1,7 +1,10 @@
 @echo off
 setlocal
 
-set "LABVET_BACKEND_EXE=%~dp0backend\LabVet.exe"
+set "LABVET_ROOT=%~dp0"
+set "LABVET_BACKEND_DIR=%LABVET_ROOT%backend"
+set "LABVET_BACKEND_EXE=%LABVET_BACKEND_DIR%\LabVet.exe"
+set "LABVET_ENV_FILE=%LABVET_ROOT%.env"
 
 if not exist "%LABVET_BACKEND_EXE%" (
   echo ERRO: o executavel do backend nao foi encontrado.
@@ -10,7 +13,13 @@ if not exist "%LABVET_BACKEND_EXE%" (
   exit /b 1
 )
 
-set "LABVET_ENV_FILE=%~dp0.env"
-start "LabVet - Backend" cmd.exe /k ""%LABVET_BACKEND_EXE%""
+pushd "%LABVET_BACKEND_DIR%"
+echo Iniciando a API do LabVet em http://127.0.0.1:9010 ...
+LabVet.exe
+set "LABVET_EXIT_CODE=%ERRORLEVEL%"
+popd
 
-endlocal
+echo.
+echo O backend foi encerrado com codigo %LABVET_EXIT_CODE%.
+pause
+exit /b %LABVET_EXIT_CODE%
