@@ -13,7 +13,7 @@ type
 implementation
 
 uses
-  FireDAC.Phys, FireDAC.Phys.PG, FireDAC.Phys.PGDef,
+  FireDAC.Phys, FireDAC.Phys.PG, FireDAC.Phys.PGDef, FireDAC.Stan.Def,
   LabVet.Providers.Config;
 
 class function TLabVetConnection.NewConnection: TFDConnection;
