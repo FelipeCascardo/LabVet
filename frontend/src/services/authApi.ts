@@ -14,8 +14,15 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     throw new Error('Não foi possível conectar à API do LabVet. Inicie o backend e tente novamente.')
   }
   if (!response.ok) {
-    const payload = await response.json().catch(() => null)
-    throw new Error(payload?.error?.message ?? payload?.message ?? 'Não foi possível concluir a operação.')
+    const content = await response.text()
+    let message = content.trim()
+    try {
+      const payload = JSON.parse(content)
+      message = payload?.error?.message ?? payload?.message ?? message
+    } catch {
+      // A API pode retornar uma mensagem de exceção em texto simples.
+    }
+    throw new Error(message || `Erro HTTP ${response.status}.`)
   }
   return response.status === 204 ? (undefined as T) : response.json() as Promise<T>
 }

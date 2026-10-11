@@ -1,11 +1,15 @@
-unit LabVet.Providers.Connection;
+﻿unit LabVet.Providers.Connection;
 
 interface
 
 uses
   System.Classes,
   FireDAC.Comp.Client,
-  FireDAC.Phys.PG;
+  FireDAC.Phys.PG,
+  FireDAC.Phys.PGDef,
+  FireDAC.Phys,
+  FireDAC.Stan.Def,
+  FireDAC.Stan.Intf;
 
 type
   TLabVetConnectionDataModule = class(TDataModule)
@@ -29,10 +33,7 @@ uses
   System.IOUtils,
   System.SysUtils,
   Winapi.Windows,
-  FireDAC.Phys,
-  FireDAC.Phys.PGDef,
-  FireDAC.Stan.Def,
-  LabVet.Providers.Config;
+   LabVet.Providers.Config;
 
 {$R *.dfm}
 
@@ -76,7 +77,13 @@ begin
   Result.ExecSQL('set search_path to labvet, public');
 end;
 
-finalization
+Initialization
+
+Finalization
   LabVetConnectionDataModule.Free;
 
 end.
+
+
+
+

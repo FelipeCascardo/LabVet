@@ -21,7 +21,8 @@ export function LoginPage() {
       const destination = (location.state as { from?: { pathname?: string } })?.from?.pathname ?? '/'
       navigate(destination, { replace: true })
     } catch (requestError) {
-      setError(requestError instanceof Error ? requestError.message : 'Não foi possível entrar.')
+      const details = requestError instanceof Error ? requestError.message : 'Erro desconhecido.'
+      setError(`Não foi possível concluir a operação. ${details}`)
     } finally {
       setLoading(false)
     }
