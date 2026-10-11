@@ -229,4 +229,6 @@ Um corte só começa após os critérios do anterior serem validados. A exceçã
 
 ## Próximo corte recomendado
 
-Começar pelos **Cortes 0 e 1**: consolidar as escolhas técnicas, criar a API mínima, conectar em modo somente leitura à base LabVet e expor GET /health. Depois, estruturar autenticação e o shell visual antes de qualquer cadastro clínico.
+Os **Cortes 0 a 3** estão concluídos na fundação local: API Delphi/Horse, conexão PostgreSQL, autenticação por sessão, auditoria base, login integrado e shell responsivo com o menu acordado. O acesso atual não possui o conceito de Espaço; perfis e permissões serão adicionados em etapa própria.
+
+O próximo corte é o **4 — Dashboard e notificações**. Ele deve criar os contratos de resumo no backend e substituir os indicadores provisórios da Home por dados reais, antes de iniciar os CRUDs clínicos e cadastrais.
