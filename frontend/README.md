@@ -4,7 +4,7 @@ Aplicação React + TypeScript que substitui a POC offline como interface defini
 
 ## Executar localmente
 
-1. Inicie a API Delphi na porta `9010`.
+1. Compile a API Delphi e execute `Iniciar Backend.bat`; ela deve ficar aberta na porta `9010`.
 2. Na raiz do repositório, execute `Iniciar Frontend.bat`.
 3. Acesse `http://127.0.0.1:5173`.
 
