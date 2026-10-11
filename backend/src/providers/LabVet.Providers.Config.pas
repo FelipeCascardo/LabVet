@@ -26,7 +26,7 @@ begin
   begin
     LEnvFile := GetEnvironmentVariable('LABVET_ENV_FILE');
     if LEnvFile.IsEmpty then
-      LEnvFile := ExpandFileName(TPath.Combine(ExtractFilePath(ParamStr(0)), '..\..\.env'));
+      LEnvFile := ExpandFileName(TPath.Combine(ExtractFilePath(ParamStr(0)), '..\.env'));
     if TFile.Exists(LEnvFile) then
     begin
       LValues := TStringList.Create;
