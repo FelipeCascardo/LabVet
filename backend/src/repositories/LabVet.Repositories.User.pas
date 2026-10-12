@@ -49,7 +49,7 @@ var
 begin
   LQuery := NewQuery;
   try
-    LQuery.SQL.Text := 'select not exists (select 1 from app_users) as is_empty';
+    LQuery.SQL.Text := 'select not exists (select 1 from usuario) as is_empty';
     LQuery.Open;
     Result := LQuery.FieldByName('is_empty').AsBoolean;
   finally
@@ -64,7 +64,11 @@ begin
   Result := TObjectList<TAppUser>.Create(True);
   LQuery := NewQuery;
   try
-    LQuery.SQL.Text := 'select user_id, full_name, email, security_version, created_at, updated_at, is_active from app_users order by full_name';
+    LQuery.SQL.Text :=
+      'select u.idusuario as user_id, p.nmpessoa as full_name, u.dsemail as email, ' +
+      'u.nrversaoseguranca as security_version, u.dhinclusao as created_at, ' +
+      'u.dhalteracao as updated_at, u.stativo as is_active ' +
+      'from usuario u join pessoa p on p.idpessoa = u.idpessoa order by p.nmpessoa';
     LQuery.Open;
     while not LQuery.Eof do
     begin
@@ -83,7 +87,11 @@ begin
   Result := nil;
   LQuery := NewQuery;
   try
-    LQuery.SQL.Text := 'select user_id, full_name, email, password_hash, security_version, created_at, updated_at, is_active from app_users where user_id = :id';
+    LQuery.SQL.Text :=
+      'select u.idusuario as user_id, p.nmpessoa as full_name, u.dsemail as email, ' +
+      'u.dssenhahash as password_hash, u.nrversaoseguranca as security_version, ' +
+      'u.dhinclusao as created_at, u.dhalteracao as updated_at, u.stativo as is_active ' +
+      'from usuario u join pessoa p on p.idpessoa = u.idpessoa where u.idusuario = :id';
     LQuery.ParamByName('id').AsLargeInt := AId;
     LQuery.Open;
     if not LQuery.IsEmpty then
@@ -100,7 +108,11 @@ begin
   Result := nil;
   LQuery := NewQuery;
   try
-    LQuery.SQL.Text := 'select user_id, full_name, email, password_hash, security_version, created_at, updated_at, is_active from app_users where lower(email) = lower(:email)';
+    LQuery.SQL.Text :=
+      'select u.idusuario as user_id, p.nmpessoa as full_name, u.dsemail as email, ' +
+      'u.dssenhahash as password_hash, u.nrversaoseguranca as security_version, ' +
+      'u.dhinclusao as created_at, u.dhalteracao as updated_at, u.stativo as is_active ' +
+      'from usuario u join pessoa p on p.idpessoa = u.idpessoa where lower(u.dsemail) = lower(:email)';
     LQuery.ParamByName('email').AsString := AEmail;
     LQuery.Open;
     if not LQuery.IsEmpty then
@@ -116,7 +128,14 @@ var
 begin
   LQuery := NewQuery;
   try
-    LQuery.SQL.Text := 'insert into app_users (full_name, email, password_hash) values (:name, lower(:email), :hash) returning user_id, security_version, created_at, updated_at, is_active';
+    LQuery.SQL.Text :=
+      'with novapessoa as ( ' +
+      '  insert into pessoa (nmpessoa, tppessoa) values (:name, 1) returning idpessoa ' +
+      ') ' +
+      'insert into usuario (idpessoa, dsemail, dssenhahash) ' +
+      'select idpessoa, lower(:email), :hash from novapessoa ' +
+      'returning idusuario as user_id, nrversaoseguranca as security_version, ' +
+      'dhinclusao as created_at, dhalteracao as updated_at, stativo as is_active';
     LQuery.ParamByName('name').AsString := AUser.FullName;
     LQuery.ParamByName('email').AsString := AUser.Email;
     LQuery.ParamByName('hash').AsString := AUser.PasswordHash;
@@ -137,7 +156,17 @@ var
 begin
   LQuery := NewQuery;
   try
-    LQuery.SQL.Text := 'update app_users set full_name = :name, email = lower(:email), password_hash = :hash, security_version = security_version + case when password_hash is distinct from :hash then 1 else 0 end where user_id = :id and is_active = true returning security_version, created_at, updated_at, is_active';
+    LQuery.SQL.Text :=
+      'with pessoaatualizada as ( ' +
+      '  update pessoa p set nmpessoa = :name from usuario u ' +
+      '  where u.idpessoa = p.idpessoa and u.idusuario = :id and u.stativo = true ' +
+      '  returning p.idpessoa ' +
+      ') ' +
+      'update usuario u set dsemail = lower(:email), dssenhahash = :hash, ' +
+      'nrversaoseguranca = nrversaoseguranca + case when dssenhahash is distinct from :hash then 1 else 0 end ' +
+      'from pessoaatualizada p where u.idpessoa = p.idpessoa ' +
+      'returning u.nrversaoseguranca as security_version, u.dhinclusao as created_at, ' +
+      'u.dhalteracao as updated_at, u.stativo as is_active';
     LQuery.ParamByName('name').AsString := AUser.FullName;
     LQuery.ParamByName('email').AsString := AUser.Email;
     LQuery.ParamByName('hash').AsString := AUser.PasswordHash;
@@ -160,7 +189,7 @@ var
 begin
   LQuery := NewQuery;
   try
-    LQuery.SQL.Text := 'update app_users set is_active = :active where user_id = :id and is_active is distinct from :active';
+    LQuery.SQL.Text := 'update usuario set stativo = :active where idusuario = :id and stativo is distinct from :active';
     LQuery.ParamByName('id').AsLargeInt := AId;
     LQuery.ParamByName('active').AsBoolean := AActive;
     LQuery.ExecSQL;

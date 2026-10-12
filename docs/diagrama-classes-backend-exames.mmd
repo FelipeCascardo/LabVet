@@ -1,0 +1,27 @@
+classDiagram
+  class TExameCategoria
+  class TExame
+  class TTipoAnimal
+  class TModeloLaudo
+  class TAnalito
+  class TExameAnalito
+  class TModeloExameAnalito
+  class TModeloExameDetalhe
+  class TModeloExameService
+  class TModeloExameRepository
+  class TModelosExamesController
+
+  TExameCategoria "1" --> "0..*" TExame
+  TExame "1" --> "0..*" TModeloLaudo
+  TTipoAnimal "0..1" --> "0..*" TTipoAnimal : pai
+  TTipoAnimal "1" --> "0..*" TModeloLaudo
+  TExame "1" --> "0..*" TExameAnalito
+  TAnalito "1" --> "0..*" TExameAnalito
+  TModeloLaudo "1" --> "0..*" TModeloExameAnalito
+  TExameAnalito "1" --> "0..*" TModeloExameAnalito
+  TModeloExameDetalhe *-- TModeloLaudo
+  TModeloExameDetalhe *-- TExame
+  TModeloExameDetalhe *-- TTipoAnimal
+  TModeloExameDetalhe *-- TModeloExameAnalito
+  TModelosExamesController --> TModeloExameService
+  TModeloExameService --> TModeloExameRepository

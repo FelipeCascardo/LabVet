@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1500" viewBox="0 0 2400 1500" role="img" aria-labelledby="title description">
+  <title id="title">Modelo ER LabVet com chaves primárias e estrangeiras</title>
+  <desc id="description">Diagrama entidade relacionamento do LabVet. Cada tabela mostra sua chave primária e seus campos de chave estrangeira.</desc>
+  <style>
+    .bg{fill:#101827}.grid{stroke:#243246;stroke-width:1}.edge{fill:none;stroke:#8aa0bc;stroke-width:2}.edge2{fill:none;stroke:#70b8a6;stroke-width:2}.box{fill:#172338;stroke:#47689a;stroke-width:2}.head{fill:#213451}.title{fill:#f5f8ff;font:700 20px Arial,sans-serif}.key{fill:#f5c76a;font:600 16px Arial,sans-serif}.fk{fill:#91d2ff;font:600 16px Arial,sans-serif}.field{fill:#c8d3e2;font:15px Arial,sans-serif}.meta{fill:#aebed2;font:14px Arial,sans-serif}.caption{fill:#f5f8ff;font:700 32px Arial,sans-serif}.sub{fill:#aebed2;font:17px Arial,sans-serif}.legend{fill:#d9e4f4;font:16px Arial,sans-serif}.card{fill:#101827;stroke:#91d2ff;stroke-width:1}.cardtext{fill:#f5f8ff;font:700 13px Arial,sans-serif}
+  </style>
+  <rect class="bg" width="2400" height="1500"/>
+  <g opacity=".45"><path class="grid" d="M0 80H2400M0 280H2400M0 480H2400M0 680H2400M0 880H2400M0 1080H2400M0 1280H2400"/><path class="grid" d="M100 0V1500M300 0V1500M500 0V1500M700 0V1500M900 0V1500M1100 0V1500M1300 0V1500M1500 0V1500M1700 0V1500M1900 0V1500M2100 0V1500M2300 0V1500"/></g>
+  <text class="caption" x="60" y="55">LabVet — modelo ER para importação histórica</text>
+  <text class="sub" x="60" y="84">Campos de relacionamento explícitos: PK = chave primária · FK = chave estrangeira · PK/FK = chave composta e referência</text>
+  <!-- connectors behind the tables -->
+  <path class="edge" d="M290 315V365H340V410"/><path class="edge" d="M600 315V365H500V410"/>
+  <path class="edge" d="M600 315V570H870"/><path class="edge" d="M890 315V570H1035"/><path class="edge" d="M1210 315V600H1035"/>
+  <path class="edge" d="M735 570H680V850"/><path class="edge" d="M600 570V850"/>
+  <path class="edge2" d="M1290 570V740"/><path class="edge2" d="M1470 570V740"/>
+  <path class="edge2" d="M1470 930V1030H1600"/><path class="edge2" d="M1790 930V1030H1900"/><path class="edge2" d="M1470 930V1200H1600"/>
+  <path class="edge" d="M1930 315V410"/><path class="edge" d="M1930 315V410H2180"/>
+  <!-- owners -->
+  <g transform="translate(70 140)"><rect class="box" width="250" height="175" rx="10"/><rect class="head" width="250" height="42" rx="10"/><text class="title" x="16" y="27">OWNERS</text><text class="key" x="16" y="72">PK  owner_id</text><text class="field" x="16" y="99">source_key · full_name</text><text class="meta" x="16" y="126">created_at · updated_at</text></g>
+  <!-- animals -->
+  <g transform="translate(470 140)"><rect class="box" width="270" height="175" rx="10"/><rect class="head" width="270" height="42" rx="10"/><text class="title" x="16" y="27">ANIMALS</text><text class="key" x="16" y="72">PK  animal_id</text><text class="field" x="16" y="99">source_key · external_code</text><text class="field" x="16" y="126">name · species · breed · sex</text><text class="meta" x="16" y="153">created_at · updated_at</text></g>
+  <!-- sectors -->
+  <g transform="translate(810 140)"><rect class="box" width="200" height="175" rx="10"/><rect class="head" width="200" height="42" rx="10"/><text class="title" x="16" y="27">SECTORS</text><text class="key" x="16" y="72">PK  sector_id</text><text class="field" x="16" y="99">name</text><text class="field" x="16" y="126">normalized_name</text><text class="meta" x="16" y="153">created_at</text></g>
+  <!-- import batches -->
+  <g transform="translate(1080 140)"><rect class="box" width="260" height="175" rx="10"/><rect class="head" width="260" height="42" rx="10"/><text class="title" x="16" y="27">IMPORT_BATCHES</text><text class="key" x="16" y="72">PK  import_batch_id</text><text class="field" x="16" y="99">source_file_name · source_period</text><text class="meta" x="16" y="126">imported_at · notes</text></g>
+  <!-- app users -->
+  <g transform="translate(1800 140)"><rect class="box" width="260" height="175" rx="10"/><rect class="head" width="260" height="42" rx="10"/><text class="title" x="16" y="27">APP_USERS</text><text class="key" x="16" y="72">PK  user_id</text><text class="field" x="16" y="99">full_name · cpf · email</text><text class="field" x="16" y="126">password_hash · is_active</text><text class="meta" x="16" y="153">security_version · datas</text></g>
+  <!-- animal owners -->
+  <g transform="translate(250 410)"><rect class="box" width="280" height="155" rx="10"/><rect class="head" width="280" height="42" rx="10"/><text class="title" x="16" y="27">ANIMAL_OWNERS</text><text class="fk" x="16" y="72">PK/FK  animal_id → animals</text><text class="fk" x="16" y="99">PK/FK  owner_id → owners</text><text class="field" x="16" y="126">is_current · started_on · ended_on</text></g>
+  <!-- exams -->
+  <g transform="translate(570 410)"><rect class="box" width="205" height="155" rx="10"/><rect class="head" width="205" height="42" rx="10"/><text class="title" x="16" y="27">EXAMS</text><text class="key" x="16" y="72">PK  exam_id</text><text class="field" x="16" y="99">external_code · name</text><text class="meta" x="16" y="126">is_active · created_at</text></g>
+  <!-- attendances -->
+  <g transform="translate(870 410)"><rect class="box" width="330" height="235" rx="10"/><rect class="head" width="330" height="42" rx="10"/><text class="title" x="16" y="27">ATTENDANCES</text><text class="key" x="16" y="72">PK  attendance_id</text><text class="fk" x="16" y="99">FK  animal_id → animals</text><text class="fk" x="16" y="126">FK  sector_id → sectors</text><text class="fk" x="16" y="153">FK  import_batch_id → import_batches</text><text class="field" x="16" y="180">origin · record · date · age</text><text class="meta" x="16" y="207">history · totals · created_at</text></g>
+  <!-- report types -->
+  <g transform="translate(1300 410)"><rect class="box" width="260" height="155" rx="10"/><rect class="head" width="260" height="42" rx="10"/><text class="title" x="16" y="27">LAB_REPORT_TYPES</text><text class="key" x="16" y="72">PK  lab_report_type_id</text><text class="field" x="16" y="99">code · name</text><text class="meta" x="16" y="126">description</text></g>
+  <!-- sessions -->
+  <g transform="translate(1800 410)"><rect class="box" width="260" height="175" rx="10"/><rect class="head" width="260" height="42" rx="10"/><text class="title" x="16" y="27">USER_SESSIONS</text><text class="key" x="16" y="72">PK  session_id</text><text class="fk" x="16" y="99">FK  user_id → app_users</text><text class="field" x="16" y="126">refresh_token_hash · expires_at</text><text class="meta" x="16" y="153">revoked_at · security_version</text></g>
+  <!-- audit -->
+  <g transform="translate(2110 410)"><rect class="box" width="240" height="175" rx="10"/><rect class="head" width="240" height="42" rx="10"/><text class="title" x="16" y="27">AUDIT_EVENTS</text><text class="key" x="16" y="72">PK  audit_event_id</text><text class="fk" x="16" y="99">FK  actor_user_id → app_users</text><text class="field" x="16" y="126">event · resource · request</text><text class="meta" x="16" y="153">details · occurred_at</text></g>
+  <!-- attendance exams -->
+  <g transform="translate(490 850)"><rect class="box" width="290" height="155" rx="10"/><rect class="head" width="290" height="42" rx="10"/><text class="title" x="16" y="27">ATTENDANCE_EXAMS</text><text class="fk" x="16" y="72">PK/FK  attendance_id → attendances</text><text class="fk" x="16" y="99">PK/FK  exam_id → exams</text><text class="field" x="16" y="126">quantity</text></g>
+  <!-- laboratory reports -->
+  <g transform="translate(1035 740)"><rect class="box" width="435" height="255" rx="10"/><rect class="head" width="435" height="42" rx="10"/><text class="title" x="16" y="27">LABORATORY_REPORTS</text><text class="key" x="16" y="72">PK  laboratory_report_id</text><text class="fk" x="16" y="99">FK  attendance_id → attendances</text><text class="fk" x="16" y="126">FK  lab_report_type_id → lab_report_types</text><text class="field" x="16" y="153">source file/path/hash · origin · record · year</text><text class="field" x="16" y="180">patient, tutor, veterinarian and sample metadata</text><text class="meta" x="16" y="207">extraction_status · raw_text · created_at</text></g>
+  <!-- analytes -->
+  <g transform="translate(1660 740)"><rect class="box" width="250" height="175" rx="10"/><rect class="head" width="250" height="42" rx="10"/><text class="title" x="16" y="27">LAB_ANALYTES</text><text class="key" x="16" y="72">PK  lab_analyte_id</text><text class="field" x="16" y="99">code · name</text><text class="field" x="16" y="126">default_unit · value_kind</text><text class="meta" x="16" y="153">created_at</text></g>
+  <!-- report exams -->
+  <g transform="translate(480 1150)"><rect class="box" width="310" height="155" rx="10"/><rect class="head" width="310" height="42" rx="10"/><text class="title" x="16" y="27">LAB_REPORT_EXAMS</text><text class="fk" x="16" y="72">PK/FK  laboratory_report_id → reports</text><text class="fk" x="16" y="99">PK/FK  exam_id → exams</text><text class="field" x="16" y="126">is_primary</text></g>
+  <!-- notes -->
+  <g transform="translate(1020 1150)"><rect class="box" width="330" height="155" rx="10"/><rect class="head" width="330" height="42" rx="10"/><text class="title" x="16" y="27">LABORATORY_REPORT_NOTES</text><text class="key" x="16" y="72">PK  laboratory_report_note_id</text><text class="fk" x="16" y="99">FK  laboratory_report_id → reports</text><text class="field" x="16" y="126">type · order · note_text</text></g>
+  <!-- results -->
+  <g transform="translate(1600 1030)"><rect class="box" width="390" height="235" rx="10"/><rect class="head" width="390" height="42" rx="10"/><text class="title" x="16" y="27">LABORATORY_RESULTS</text><text class="key" x="16" y="72">PK  laboratory_result_id</text><text class="fk" x="16" y="99">FK  laboratory_report_id → reports</text><text class="fk" x="16" y="126">FK  lab_analyte_id → lab_analytes</text><text class="field" x="16" y="153">section · order · numeric/text result</text><text class="field" x="16" y="180">unit · reference range/text · method</text></g>
+  <!-- legend -->
+  <rect x="70" y="1370" width="2260" height="75" rx="10" fill="#172338" stroke="#47689a"/>
+  <text class="legend" x="95" y="1415"><tspan class="key">PK</tspan><tspan> identifica unicamente o registro. </tspan><tspan class="fk">FK</tspan><tspan> aponta para a tabela pai. Linhas azuis: dados clínicos/importação; linhas verdes: laudos e resultados; linhas cinzas: acesso e auditoria.</tspan></text>
+</svg>

@@ -20,7 +20,7 @@ var
 begin
   LQuery := NewQuery;
   try
-    LQuery.SQL.Text := 'insert into audit_events (actor_user_id, event_type, resource_type, resource_id, request_id, details) values (nullif(:actor, 0), :event, :resource, nullif(:resource_id, ''''), nullif(:request_id, ''''), cast(:details as jsonb))';
+    LQuery.SQL.Text := 'insert into auditoriaeventos (idusuario, tpevento, tprecurso, cdrecurso, cdrequisicao, dsdetalhes) values (nullif(:actor, 0), :event, :resource, nullif(:resource_id, ''''), nullif(:request_id, ''''), cast(:details as jsonb))';
     LQuery.ParamByName('actor').AsLargeInt := AActorId;
     LQuery.ParamByName('event').AsString := AEventType;
     LQuery.ParamByName('resource').AsString := AResourceType;

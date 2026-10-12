@@ -24,6 +24,7 @@ export const navigationItems: NavigationItem[] = [
   { label: 'Tutores', path: '/cadastros/tutores', description: 'Responsáveis pelos animais atendidos.', icon: Users },
   { label: 'Espécies', path: '/cadastros/especies', description: 'Catálogo de espécies atendidas.', icon: Tags },
   { label: 'Animais', path: '/cadastros/animais', description: 'Cadastro clínico dos animais.', icon: PawPrint },
+  { label: 'Modelo de Exames', path: '/cadastros/modelos-exames', description: 'Configuração dos modelos, analitos e referências dos exames.', icon: ClipboardList },
   { label: 'Tipos de exames', path: '/laboratorio/tipos-exames', description: 'Configuração do catálogo de exames.', icon: ClipboardList },
   { label: 'Atendimentos', path: '/laboratorio/atendimentos', description: 'Acompanhamento dos atendimentos laboratoriais.', icon: HeartPulse },
   { label: 'Laudos', path: '/laboratorio/laudos', description: 'Emissão e consulta dos laudos.', icon: FileText },
@@ -38,14 +39,14 @@ export const navigationGroups: NavigationGroup[] = [
   {
     label: 'Cadastros',
     icon: ClipboardList,
-    items: navigationItems.slice(2, 6),
+    items: navigationItems.slice(2, 7),
   },
   {
     label: 'Laboratório',
     icon: HeartPulse,
-    items: navigationItems.slice(6, 10),
+    items: navigationItems.slice(7, 11),
   },
 ]
 
 export const primaryNavigation = navigationItems.slice(0, 2)
-export const utilityNavigation = navigationItems.slice(10)
+export const utilityNavigation = navigationItems.slice(11)

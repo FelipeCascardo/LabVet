@@ -49,7 +49,11 @@ var
 begin
   LQuery := NewQuery;
   try
-    LQuery.SQL.Text := 'insert into user_sessions (user_id, refresh_token_hash, expires_at, security_version) values (:user, :hash, :expires, :version) returning *';
+    LQuery.SQL.Text :=
+      'insert into sessao (idusuario, dsrefreshhash, dhexpiracao, nrversaoseguranca) ' +
+      'values (:user, :hash, :expires, :version) ' +
+      'returning idsessao as session_id, idusuario as user_id, dsrefreshhash as refresh_token_hash, ' +
+      'dhexpiracao as expires_at, dhrevogacao as revoked_at, nrversaoseguranca as security_version';
     LQuery.ParamByName('user').AsLargeInt := AUserId;
     LQuery.ParamByName('hash').AsString := ARefreshHash;
     LQuery.ParamByName('expires').AsDateTime := AExpiresAt;
@@ -68,7 +72,10 @@ begin
   Result := nil;
   LQuery := NewQuery;
   try
-    LQuery.SQL.Text := 'select * from user_sessions where session_id = :id';
+    LQuery.SQL.Text :=
+      'select idsessao as session_id, idusuario as user_id, dsrefreshhash as refresh_token_hash, ' +
+      'dhexpiracao as expires_at, dhrevogacao as revoked_at, nrversaoseguranca as security_version ' +
+      'from sessao where idsessao = :id';
     LQuery.ParamByName('id').AsLargeInt := AId;
     LQuery.Open;
     if not LQuery.IsEmpty then Result := FromQuery(LQuery);
@@ -84,7 +91,10 @@ begin
   Result := nil;
   LQuery := NewQuery;
   try
-    LQuery.SQL.Text := 'select * from user_sessions where refresh_token_hash = :hash and revoked_at is null';
+    LQuery.SQL.Text :=
+      'select idsessao as session_id, idusuario as user_id, dsrefreshhash as refresh_token_hash, ' +
+      'dhexpiracao as expires_at, dhrevogacao as revoked_at, nrversaoseguranca as security_version ' +
+      'from sessao where dsrefreshhash = :hash and dhrevogacao is null';
     LQuery.ParamByName('hash').AsString := AHash;
     LQuery.Open;
     if not LQuery.IsEmpty then Result := FromQuery(LQuery);
@@ -99,7 +109,7 @@ var
 begin
   LQuery := NewQuery;
   try
-    LQuery.SQL.Text := 'update user_sessions set refresh_token_hash = :hash, expires_at = :expires where session_id = :id and revoked_at is null';
+    LQuery.SQL.Text := 'update sessao set dsrefreshhash = :hash, dhexpiracao = :expires where idsessao = :id and dhrevogacao is null';
     LQuery.ParamByName('hash').AsString := AHash;
     LQuery.ParamByName('expires').AsDateTime := AExpiresAt;
     LQuery.ParamByName('id').AsLargeInt := AId;
@@ -115,7 +125,7 @@ var LQuery: TFDQuery;
 begin
   LQuery := NewQuery;
   try
-    LQuery.SQL.Text := 'update user_sessions set revoked_at = current_timestamp where session_id = :id and revoked_at is null';
+    LQuery.SQL.Text := 'update sessao set dhrevogacao = current_timestamp where idsessao = :id and dhrevogacao is null';
     LQuery.ParamByName('id').AsLargeInt := AId;
     LQuery.ExecSQL;
   finally
@@ -128,7 +138,7 @@ var LQuery: TFDQuery;
 begin
   LQuery := NewQuery;
   try
-    LQuery.SQL.Text := 'update user_sessions set revoked_at = current_timestamp where user_id = :user and revoked_at is null';
+    LQuery.SQL.Text := 'update sessao set dhrevogacao = current_timestamp where idusuario = :user and dhrevogacao is null';
     LQuery.ParamByName('user').AsLargeInt := AUserId;
     LQuery.ExecSQL;
   finally

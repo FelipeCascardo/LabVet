@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2200" height="1250" viewBox="0 0 2200 1250" role="img" aria-labelledby="title description">
+  <title id="title">Modelo entidade relacionamento do Labvet V1</title>
+  <desc id="description">Diagrama ER com as tabelas de exames, pessoas, autenticação e seus relacionamentos atuais.</desc>
+  <style>
+    .bg{fill:#101827}.grid{stroke:#27364a;stroke-width:1}.edge{fill:none;stroke:#96a8bf;stroke-width:2}.edgeExam{fill:none;stroke:#73c7ac;stroke-width:2.5}.edgePeople{fill:none;stroke:#8ab7ff;stroke-width:2.5}.edgeAuth{fill:none;stroke:#e3b873;stroke-width:2.5}.box{fill:#17253a;stroke:#4a719e;stroke-width:2}.boxExam{fill:#15342f;stroke:#54a892;stroke-width:2}.boxPeople{fill:#182e4d;stroke:#5f9ee8;stroke-width:2}.boxAuth{fill:#3b2d18;stroke:#c99a4c;stroke-width:2}.head{fill:#273c58}.headExam{fill:#205445}.headPeople{fill:#264a78}.headAuth{fill:#624719}.title{fill:#f6f8fb;font:700 22px Arial,sans-serif}.key{fill:#ffd36e;font:600 16px Arial,sans-serif}.fk{fill:#9fdaff;font:600 16px Arial,sans-serif}.field{fill:#d0d9e6;font:15px Arial,sans-serif}.muted{fill:#aebccd;font:14px Arial,sans-serif}.caption{fill:#f7f9fd;font:700 34px Arial,sans-serif}.sub{fill:#b8c5d7;font:17px Arial,sans-serif}.label{fill:#dce7f5;font:600 14px Arial,sans-serif}.legend{fill:#d8e1ed;font:16px Arial,sans-serif}
+  </style>
+  <rect class="bg" width="2200" height="1250"/>
+  <g opacity=".42"><path class="grid" d="M0 100H2200M0 300H2200M0 500H2200M0 700H2200M0 900H2200M0 1100H2200"/><path class="grid" d="M100 0V1250M300 0V1250M500 0V1250M700 0V1250M900 0V1250M1100 0V1250M1300 0V1250M1500 0V1250M1700 0V1250M1900 0V1250M2100 0V1250"/></g>
+  <text class="caption" x="60" y="55">Labvet V1 — modelo ER atual</text>
+  <text class="sub" x="60" y="84">Base de catálogo de exames, cadastros de pessoas e autenticação</text>
+  <!-- relações -->
+  <path class="edgeExam" d="M410 330H510V475"/>
+  <path class="edgeExam" d="M735 530H800V430H735"/>
+  <path class="edgePeople" d="M1115 320V475"/>
+  <path class="edgePeople" d="M1290 600H1410V555"/>
+  <path class="edgePeople" d="M1290 600H1475V885"/>
+  <path class="edgePeople" d="M1680 555H1780V600"/>
+  <path class="edgeAuth" d="M1640 1010H1740V970"/>
+  <path class="edgeAuth" d="M1640 1010H1740V1135"/>
+  <!-- labels -->
+  <text class="label" x="426" y="316">classifica</text><text class="label" x="748" y="417">pai</text>
+  <text class="label" x="1128" y="405">atividade</text><text class="label" x="1330" y="585">contatos</text><text class="label" x="1360" y="770">especialização</text><text class="label" x="1700" y="540">tipo</text>
+  <text class="label" x="1660" y="995">sessões</text><text class="label" x="1660" y="1115">recuperações</text>
+  <!-- examecategorias -->
+  <g transform="translate(110 170)"><rect class="boxExam" width="300" height="165" rx="11"/><rect class="headExam" width="300" height="43" rx="11"/><text class="title" x="18" y="28">EXAMECATEGORIAS</text><text class="key" x="18" y="74">PK  idexamecategoria</text><text class="field" x="18" y="102">nmcategoria · stativo</text><text class="muted" x="18" y="130">usuários e datas de auditoria</text></g>
+  <!-- exames -->
+  <g transform="translate(510 425)"><rect class="boxExam" width="370" height="260" rx="11"/><rect class="headExam" width="370" height="43" rx="11"/><text class="title" x="18" y="28">EXAMES</text><text class="key" x="18" y="74">PK  idexame</text><text class="fk" x="18" y="101">FK  idexamecategoria</text><text class="fk" x="18" y="128">FK  idexamepai → exames</text><text class="field" x="18" y="155">cdexame · nmexame</text><text class="field" x="18" y="182">qttotalexames · vlexame</text><text class="field" x="18" y="209">stprimario · stativo</text><text class="muted" x="18" y="236">usuários e datas de auditoria</text></g>
+  <!-- pessoaatividade -->
+  <g transform="translate(965 170)"><rect class="boxPeople" width="300" height="150" rx="11"/><rect class="headPeople" width="300" height="43" rx="11"/><text class="title" x="18" y="28">PESSOAATIVIDADE</text><text class="key" x="18" y="74">PK  idpessoaatividade</text><text class="field" x="18" y="103">dspessoaatividade</text></g>
+  <!-- pessoa -->
+  <g transform="translate(965 475)"><rect class="boxPeople" width="355" height="285" rx="11"/><rect class="headPeople" width="355" height="43" rx="11"/><text class="title" x="18" y="28">PESSOA</text><text class="key" x="18" y="74">PK  idpessoa</text><text class="fk" x="18" y="101">FK  idpessoaatividade</text><text class="field" x="18" y="128">nmpessoa · tppessoa · nrpessoa</text><text class="field" x="18" y="155">logradouro · número · complemento</text><text class="field" x="18" y="182">bairro · cidade · UF · CEP</text><text class="field" x="18" y="209">stativo</text><text class="muted" x="18" y="236">datas de auditoria</text></g>
+  <!-- pessoacontato -->
+  <g transform="translate(1410 475)"><rect class="boxPeople" width="320" height="230" rx="11"/><rect class="headPeople" width="320" height="43" rx="11"/><text class="title" x="18" y="28">PESSOACONTATO</text><text class="key" x="18" y="74">PK  idpessoacontato</text><text class="fk" x="18" y="101">FK  idpessoa</text><text class="fk" x="18" y="128">FK  idtipocontato</text><text class="field" x="18" y="155">dscontato · dsrotulo · stativo</text><text class="muted" x="18" y="182">datas de auditoria</text></g>
+  <!-- tipocontato -->
+  <g transform="translate(1780 525)"><rect class="boxPeople" width="280" height="150" rx="11"/><rect class="headPeople" width="280" height="43" rx="11"/><text class="title" x="18" y="28">TIPOCONTATO</text><text class="key" x="18" y="74">PK  idtipocontato</text><text class="field" x="18" y="103">dstipocontato · dsurlbase</text></g>
+  <!-- usuario -->
+  <g transform="translate(1360 885)"><rect class="boxAuth" width="340" height="230" rx="11"/><rect class="headAuth" width="340" height="43" rx="11"/><text class="title" x="18" y="28">USUARIO</text><text class="key" x="18" y="74">PK  idusuario</text><text class="fk" x="18" y="101">FK única  idpessoa</text><text class="field" x="18" y="128">dsemail · dssenhahash</text><text class="field" x="18" y="155">nrversaoseguranca · stativo</text><text class="muted" x="18" y="182">datas de auditoria</text></g>
+  <!-- sessao -->
+  <g transform="translate(1770 870)"><rect class="boxAuth" width="300" height="185" rx="11"/><rect class="headAuth" width="300" height="43" rx="11"/><text class="title" x="18" y="28">SESSAO</text><text class="key" x="18" y="74">PK  idsessao</text><text class="fk" x="18" y="101">FK  idusuario</text><text class="field" x="18" y="128">refresh hash · expiração</text><text class="muted" x="18" y="155">revogação · versão de segurança</text></g>
+  <!-- recuperacao -->
+  <g transform="translate(1770 1080)"><rect class="boxAuth" width="350" height="145" rx="11"/><rect class="headAuth" width="350" height="43" rx="11"/><text class="title" x="18" y="28">RECUPERACAOSENHA</text><text class="key" x="18" y="74">PK  idrecuperacaosenha</text><text class="fk" x="18" y="101">FK  idusuario</text><text class="field" x="18" y="128">token hash · expiração · utilização</text></g>
+  <!-- legenda -->
+  <rect x="65" y="1070" width="960" height="115" rx="12" fill="#17253a" stroke="#4a719e"/>
+  <text class="legend" x="90" y="1110"><tspan class="key">PK</tspan><tspan> chave primária. </tspan><tspan class="fk">FK</tspan><tspan> chave estrangeira.</tspan></text>
+  <text class="legend" x="90" y="1145">Verde: catálogo de exames · Azul: pessoas e contatos · Dourado: autenticação.</text>
+  <text class="muted" x="90" y="1172">Os campos de auditoria em exames ainda aguardam FKs para usuario.</text>
+</svg>
