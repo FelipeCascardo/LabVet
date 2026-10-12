@@ -1,6 +1,6 @@
 # Frontend LabVet
 
-Aplicação React + TypeScript que substitui a POC offline como interface definitiva do LabVet.
+Aplicação React + TypeScript que compõe a interface do LabVet.
 
 ## Executar localmente
 
@@ -22,7 +22,7 @@ O servidor Vite encaminha chamadas iniciadas por `/api` para a API local. Assim,
 
 - Login conectado à API;
 - a sessão é mantida apenas enquanto a página está aberta: ao recarregar ou abrir novamente o LabVet, o login é solicitado;
-- identidade visual da POC aplicada no login e no menu lateral;
+- identidade visual do LabVet aplicada no login e no menu lateral;
 - sidebar com os módulos de dashboard, cadastros, laboratório e utilitários;
 - páginas-base prontas para receber listagens e formulários;
 - dashboard ainda sem indicadores reais: o próximo corte conectará os contratos de dados da API.

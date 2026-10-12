@@ -1,8 +1,8 @@
 classDiagram
   class TExameCategoria
   class TExame
-  class TTipoAnimal
-  class TModeloLaudo
+  class TAnimalGrupo
+  class TModeloExame
   class TAnalito
   class TExameAnalito
   class TModeloExameAnalito
@@ -12,16 +12,16 @@ classDiagram
   class TModelosExamesController
 
   TExameCategoria "1" --> "0..*" TExame
-  TExame "1" --> "0..*" TModeloLaudo
-  TTipoAnimal "0..1" --> "0..*" TTipoAnimal : pai
-  TTipoAnimal "1" --> "0..*" TModeloLaudo
+  TExame "0..1" --> "0..*" TModeloExame
+  TAnimalGrupo "0..1" --> "0..*" TAnimalGrupo : pai
+  TAnimalGrupo "1" --> "0..*" TModeloExame
   TExame "1" --> "0..*" TExameAnalito
   TAnalito "1" --> "0..*" TExameAnalito
-  TModeloLaudo "1" --> "0..*" TModeloExameAnalito
+  TModeloExame "1" --> "0..*" TModeloExameAnalito
   TExameAnalito "1" --> "0..*" TModeloExameAnalito
-  TModeloExameDetalhe *-- TModeloLaudo
+  TModeloExameDetalhe *-- TModeloExame
   TModeloExameDetalhe *-- TExame
-  TModeloExameDetalhe *-- TTipoAnimal
+  TModeloExameDetalhe *-- TAnimalGrupo
   TModeloExameDetalhe *-- TModeloExameAnalito
   TModelosExamesController --> TModeloExameService
   TModeloExameService --> TModeloExameRepository

@@ -12,7 +12,7 @@ O nome correto da entidade é `tiposanimais`.
 | --- | --- | --- |
 | `TExameCategoria` | Agrupa os exames do catálogo. | Possui vários `TExame`. |
 | `TExame` | Exame comercial ou pacote. | Pertence a uma categoria; pode referenciar um exame-pai; possui analitos e modelos. |
-| `TTipoAnimal` | Agrupamento operacional do laboratório. | Possui hierarquia opcional e classifica modelos de laudo. |
+| `TAnimalGrupo` | Agrupamento operacional do laboratório. | Possui hierarquia opcional e classifica modelos de laudo. |
 | `TModeloLaudo` | Modelo aplicável a um exame e, opcionalmente, a um tipo de animal/faixa etária. | Possui vários parâmetros configurados. |
 | `TAnalito` | Parâmetro laboratorial reutilizável. | Participa de vários exames. |
 | `TExameAnalito` | Vínculo base entre exame e analito. | É a ponte N:N e é configurado em modelos. |
@@ -27,7 +27,7 @@ TModeloExameDetalhe
 ├── ModeloLaudo: TModeloLaudo
 ├── Exame: TExame
 │   └── Categoria: TExameCategoria
-├── TipoAnimal: TTipoAnimal (opcional)
+├── AnimalGrupo: TAnimalGrupo (opcional)
 └── Analitos: TObjectList<TModeloExameAnalitoDetalhe>
     ├── Configuracao: TModeloExameAnalito
     ├── VinculoExame: TExameAnalito
@@ -44,7 +44,7 @@ Cada classe ficará em uma unit própria em `backend/src/models` e terá `ToJSON
 | --- | --- | --- |
 | `LabVet.Models.ExameCategoria` | `TExameCategoria` | `IdExameCategoria`, `NmCategoria`, `StAtivo`. |
 | `LabVet.Models.Exame` | `TExame` | `IdExame`, `IdExameCategoria`, `CdExame`, `NmExame`, `QtTotalExames`, `VlExame`, `StPrimario`, `IdExamePai`, `StAtivo`, `Categoria`. |
-| `LabVet.Models.TipoAnimal` | `TTipoAnimal` | `IdTipoAnimal`, `IdTipoAnimalPai`, `NmTipoAnimal`, `DsDescricao`, `StAtivo`, `Filhos`. |
+| `LabVet.Models.AnimalGrupo` | `TAnimalGrupo` | `IdAnimalGrupo`, `IdAnimalGrupoPai`, `NmAnimalGrupo`, `DsDescricao`, `StAtivo`, `Filhos`. |
 | `LabVet.Models.ModeloLaudo` | `TModeloLaudo` | `IdModeloLaudo`, `IdExame`, `IdTipoAnimal`, `CdModeloLaudo`, `NmModeloLaudo`, `DsFaixaIdade`, `NmArquivoOrigem`, `StAtivo`. |
 | `LabVet.Models.Analito` | `TAnalito` | `IdAnalito`, `CdAnalito`, `NmAnalito`, `DsTecnica`, `DsUnidadeMedida`, `TpValor`, `StAtivo`. |
 | `LabVet.Models.ExameAnalito` | `TExameAnalito` | `IdExameAnalito`, `IdExame`, `IdAnalito`, `StAtivo`. |
@@ -69,7 +69,7 @@ PostgreSQL / esquema labvet
 
 - `TExameCategoriaRepository`: listar, buscar por ID, inserir, atualizar e inativar categorias.
 - `TExameRepository`: operações do catálogo, consulta por código e busca com categoria.
-- `TTipoAnimalRepository`: consulta plana, consulta em árvore e manutenção da hierarquia.
+- `TAnimalGrupoRepository`: consulta plana, consulta em árvore e manutenção da hierarquia.
 - `TAnalitoRepository`: consulta por código/nome, manutenção e inativação de analitos.
 - `TExameAnalitoRepository`: localiza ou cria o vínculo único `IdExame + IdAnalito`.
 - `TModeloLaudoRepository`: lista modelos, busca o cabeçalho e grava o modelo.
@@ -78,7 +78,7 @@ PostgreSQL / esquema labvet
 
 ### Services
 
-- `TExameCategoriaService`, `TExameService`, `TTipoAnimalService` e `TAnalitoService`: validações de campos obrigatórios, unicidade e inativação.
+- `TExameCategoriaService`, `TExameService`, `TAnimalGrupoService` e `TAnalitoService`: validações de campos obrigatórios, unicidade e inativação.
 - `TModeloExameService`: orquestra criação e edição de `TModeloExameDetalhe` em uma transação.
 
 Ao salvar um modelo, `TModeloExameService` deverá:
@@ -131,7 +131,7 @@ Concluído em 12/10/2026:
 
 Atividades previstas para a próxima sessão:
 
-1. Implementar os repositories de `ExameCategoria`, `Exame`, `TipoAnimal`, `Analito`, `ExameAnalito`, `ModeloLaudo` e `ModeloExameAnalito`, sempre com SQL parametrizado.
+1. Implementar os repositories de `ExameCategoria`, `Exame`, `AnimalGrupo`, `Analito`, `ExameAnalito`, `ModeloLaudo` e `ModeloExameAnalito`, sempre com SQL parametrizado.
 2. Implementar `TModeloExameRepository` para retornar o agregado `TModeloExameDetalhe` com os analitos ordenados.
 3. Implementar os services do catálogo e `TModeloExameService`, incluindo validações, transação, inativação e auditoria.
 4. Criar os controllers e rotas descritos nesta especificação, convertendo JSON em models e erros de domínio em respostas HTTP.
@@ -155,15 +155,15 @@ classDiagram
     +string NmExame
     +Boolean StPrimario
   }
-  class TTipoAnimal {
-    +Int64 IdTipoAnimal
-    +Int64 IdTipoAnimalPai
-    +string NmTipoAnimal
+  class TAnimalGrupo {
+    +Int64 IdAnimalGrupo
+    +Int64 IdAnimalGrupoPai
+    +string NmAnimalGrupo
   }
   class TModeloLaudo {
     +Int64 IdModeloLaudo
     +Int64 IdExame
-    +Int64 IdTipoAnimal
+    +Int64 IdAnimalGrupo
     +string CdModeloLaudo
     +string DsFaixaIdade
   }
@@ -189,7 +189,7 @@ classDiagram
   class TModeloExameDetalhe {
     +TModeloLaudo ModeloLaudo
     +TExame Exame
-    +TTipoAnimal TipoAnimal
+    +TAnimalGrupo AnimalGrupo
     +TObjectList Analitos
   }
   class TModeloExameService {
@@ -210,15 +210,15 @@ classDiagram
   }
   TExameCategoria "1" --> "0..*" TExame
   TExame "1" --> "0..*" TModeloLaudo
-  TTipoAnimal "0..1" --> "0..*" TTipoAnimal : pai
-  TTipoAnimal "1" --> "0..*" TModeloLaudo
+  TAnimalGrupo "0..1" --> "0..*" TAnimalGrupo : pai
+  TAnimalGrupo "1" --> "0..*" TModeloLaudo
   TExame "1" --> "0..*" TExameAnalito
   TAnalito "1" --> "0..*" TExameAnalito
   TModeloLaudo "1" --> "0..*" TModeloExameAnalito
   TExameAnalito "1" --> "0..*" TModeloExameAnalito
   TModeloExameDetalhe *-- TModeloLaudo
   TModeloExameDetalhe *-- TExame
-  TModeloExameDetalhe *-- TTipoAnimal
+  TModeloExameDetalhe *-- TAnimalGrupo
   TModeloExameDetalhe *-- TModeloExameAnalito
   TModelosExamesController --> TModeloExameService
   TModeloExameService --> TModeloExameRepository

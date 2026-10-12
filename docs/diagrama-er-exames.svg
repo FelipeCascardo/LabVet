@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2200" height="1280" viewBox="0 0 2200 1280" role="img" aria-labelledby="title description">
+  <title id="title">LabVet V1 — modelo ER do grupo de exames</title>
+  <desc id="description">Diagrama de relacionamento entre categorias, exames, analitos, tipos de animais e modelos de exames.</desc>
+  <style>
+    .bg{fill:#101827}.grid{stroke:#26354a;stroke-width:1}.edge{fill:none;stroke:#8ba4be;stroke-width:2.5}.self{fill:none;stroke:#e3b873;stroke-width:2.5}.box{fill:#17263a;stroke:#53927f;stroke-width:2}.head{fill:#205544}.title{fill:#f7fbff;font:700 22px Arial,sans-serif}.key{fill:#ffd36e;font:600 16px Arial,sans-serif}.fk{fill:#9fdaff;font:600 16px Arial,sans-serif}.field{fill:#d6dfeb;font:15px Arial,sans-serif}.meta{fill:#aebed0;font:14px Arial,sans-serif}.caption{fill:#f7fbff;font:700 34px Arial,sans-serif}.sub{fill:#b8c7d9;font:17px Arial,sans-serif}.label{fill:#dce9f8;font:600 14px Arial,sans-serif}.card{fill:#0f1826;stroke:#9fdaff;stroke-width:1}.cardtext{fill:#f7fbff;font:700 13px Arial,sans-serif}
+  </style>
+  <rect class="bg" width="2200" height="1280"/>
+  <g opacity=".42"><path class="grid" d="M0 100H2200M0 300H2200M0 500H2200M0 700H2200M0 900H2200M0 1100H2200"/><path class="grid" d="M100 0V1280M300 0V1280M500 0V1280M700 0V1280M900 0V1280M1100 0V1280M1300 0V1280M1500 0V1280M1700 0V1280M1900 0V1280M2100 0V1280"/></g>
+  <text class="caption" x="60" y="58">LabVet V1 — grupo de Exames</text>
+  <text class="sub" x="60" y="88">PK = chave primária · FK = chave estrangeira · os campos de auditoria por usuário foram omitidos para destacar o domínio laboratorial</text>
+
+  <!-- Relações, desenhadas antes das tabelas. -->
+  <path class="edge" d="M450 325H565"/>
+  <path class="self" d="M805 255H875V185H805"/>
+  <path class="edge" d="M795 420V570H530"/>
+  <path class="edge" d="M410 805H530"/>
+  <path class="edge" d="M905 820H1050"/>
+  <path class="self" d="M1525 320H1600V190H1525"/>
+  <path class="edge" d="M1290 340H1425"/>
+  <path class="edge" d="M1755 430V770H1515"/>
+  <path class="edge" d="M860 700V990H1030"/>
+  <path class="edge" d="M1515 870H1640"/>
+
+  <text class="label" x="475" y="312">classifica</text>
+  <text class="label" x="823" y="172">exame-pai</text>
+  <text class="label" x="640" y="552">possui</text>
+  <text class="label" x="442" y="790">mede</text>
+  <text class="label" x="945" y="805">vincula</text>
+  <text class="label" x="1545" y="175">tipo-pai</text>
+  <text class="label" x="1320" y="327">aplica-se a</text>
+  <text class="label" x="1590" y="560">usa</text>
+  <text class="label" x="900" y="975">gera</text>
+  <text class="label" x="1540" y="855">configura</text>
+
+  <!-- EXAMECATEGORIAS -->
+  <g transform="translate(130 200)"><rect class="box" width="320" height="160" rx="12"/><rect class="head" width="320" height="44" rx="12"/><text class="title" x="18" y="29">EXAMECATEGORIAS</text><text class="key" x="18" y="76">PK  idexamecategoria</text><text class="field" x="18" y="104">nmcategoria</text><text class="meta" x="18" y="134">stativo · auditoria</text></g>
+
+  <!-- EXAMES -->
+  <g transform="translate(565 165)"><rect class="box" width="350" height="285" rx="12"/><rect class="head" width="350" height="44" rx="12"/><text class="title" x="18" y="29">EXAMES</text><text class="key" x="18" y="76">PK  idexame</text><text class="fk" x="18" y="105">FK  idexamecategoria</text><text class="fk" x="18" y="134">FK  idexamepai → exames</text><text class="field" x="18" y="166">cdexame · nmexame</text><text class="field" x="18" y="195">qttotalexames · vlexame</text><text class="field" x="18" y="224">stprimario · stativo</text><text class="meta" x="18" y="257">auditoria</text></g>
+
+  <!-- ANIMALGRUPOS -->
+  <g transform="translate(1425 165)"><rect class="box" width="330" height="220" rx="12"/><rect class="head" width="330" height="44" rx="12"/><text class="title" x="18" y="29">ANIMALGRUPOS</text><text class="key" x="18" y="76">PK  idanimalgrupo</text><text class="fk" x="18" y="105">FK  idanimalgrupopai → animalgrupos</text><text class="field" x="18" y="137">nmtipoanimal · dsdescricao</text><text class="meta" x="18" y="169">stativo · auditoria</text></g>
+
+  <!-- ANALITOS -->
+  <g transform="translate(130 665)"><rect class="box" width="280" height="220" rx="12"/><rect class="head" width="280" height="44" rx="12"/><text class="title" x="18" y="29">ANALITOS</text><text class="key" x="18" y="76">PK  idanalito</text><text class="field" x="18" y="105">cdanalito · nmanalito</text><text class="field" x="18" y="134">dstecnica · dsunidademedida</text><text class="field" x="18" y="163">tpvalor · stativo</text><text class="meta" x="18" y="194">auditoria</text></g>
+
+  <!-- EXAMEANALITOS -->
+  <g transform="translate(530 590)"><rect class="box" width="375" height="220" rx="12"/><rect class="head" width="375" height="44" rx="12"/><text class="title" x="18" y="29">EXAMEANALITOS</text><text class="key" x="18" y="76">PK  idexameanalito</text><text class="fk" x="18" y="105">FK  idexame → exames</text><text class="fk" x="18" y="134">FK  idanalito → analitos</text><text class="field" x="18" y="166">stativo</text><text class="meta" x="18" y="194">único: idexame + idanalito</text></g>
+
+  <!-- MODELOEXAMES -->
+  <g transform="translate(1050 610)"><rect class="box" width="465" height="305" rx="12"/><rect class="head" width="465" height="44" rx="12"/><text class="title" x="18" y="29">MODELOEXAMES</text><text class="key" x="18" y="76">PK  idmodeloexame</text><text class="fk" x="18" y="105">FK  idexame → exames (opcional)</text><text class="fk" x="18" y="134">FK  idanimalgrupo → animalgrupos</text><text class="field" x="18" y="166">cdmodelolaudo · nmmodelolaudo</text><text class="field" x="18" y="195">dsfaixaidade · nmarquivoorigem</text><text class="field" x="18" y="224">stativo</text><text class="meta" x="18" y="257">auditoria</text></g>
+
+  <!-- MODELOEXAMEANALITOS -->
+  <g transform="translate(1640 785)"><rect class="box" width="430" height="355" rx="12"/><rect class="head" width="430" height="44" rx="12"/><text class="title" x="18" y="29">MODELOEXAMEANALITOS</text><text class="key" x="18" y="76">PK  idmodeloexameanalito</text><text class="fk" x="18" y="105">FK  idmodeloexame → modeloexames</text><text class="fk" x="18" y="134">FK  idexameanalito → exameanalitos</text><text class="field" x="18" y="166">dssecao · nrexibicao · dsrotulo</text><text class="field" x="18" y="195">dstecnica · dsunidademedida</text><text class="field" x="18" y="224">dsreferencia</text><text class="field" x="18" y="253">vrrefminimo · vrrefmaximo</text><text class="field" x="18" y="282">stativo</text><text class="meta" x="18" y="315">único: idmodeloexame + nrexibicao</text></g>
+
+  <!-- Cardinalidades -->
+  <g><rect class="card" x="458" y="316" width="20" height="20" rx="4"/><text class="cardtext" x="464" y="331">1</text><rect class="card" x="538" y="316" width="20" height="20" rx="4"/><text class="cardtext" x="544" y="331">N</text><rect class="card" x="487" y="790" width="20" height="20" rx="4"/><text class="cardtext" x="493" y="805">N</text><rect class="card" x="512" y="790" width="20" height="20" rx="4"/><text class="cardtext" x="518" y="805">N</text></g>
+  <text class="sub" x="60" y="1225">Fluxo principal: Categoria → Exame ↔ Analito → configuração por Modelo de Laudo. Tipos de animais classificam os modelos e podem ter hierarquia.</text>
+</svg>

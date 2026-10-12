@@ -9,7 +9,9 @@ Backend Delphi/Horse organizado nas mesmas camadas do Itriax: controllers, servi
 - trilha de auditoria de ações administrativas e de autenticação;
 - sem Espaço, perfis ou permissões nesta etapa.
 
-A migração correspondente é [008-authentication-and-audit.sql](../database/migrations/008-authentication-and-audit.sql). Perfis e permissões entrarão em uma migração posterior, sem alteração do contrato de sessão.
+As estruturas oficiais do produto são versionadas em `database/estrutura` e
+devem ser aplicadas exclusivamente na base Labvet V1. Perfis e permissões
+entrarão em uma evolução posterior, sem alteração do contrato de sessão.
 
 ## Inicialização
 

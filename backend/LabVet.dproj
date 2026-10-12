@@ -24,21 +24,6 @@
         <CfgParent>Base</CfgParent>
         <Base>true</Base>
     </PropertyGroup>
-    <PropertyGroup Condition="('$(Platform)'=='iOSDevice32' and '$(Base)'=='true') or '$(Base_iOSDevice32)'!=''">
-        <Base_iOSDevice32>true</Base_iOSDevice32>
-        <CfgParent>Base</CfgParent>
-        <Base>true</Base>
-    </PropertyGroup>
-    <PropertyGroup Condition="('$(Platform)'=='iOSDevice64' and '$(Base)'=='true') or '$(Base_iOSDevice64)'!=''">
-        <Base_iOSDevice64>true</Base_iOSDevice64>
-        <CfgParent>Base</CfgParent>
-        <Base>true</Base>
-    </PropertyGroup>
-    <PropertyGroup Condition="('$(Platform)'=='iOSSimulator' and '$(Base)'=='true') or '$(Base_iOSSimulator)'!=''">
-        <Base_iOSSimulator>true</Base_iOSSimulator>
-        <CfgParent>Base</CfgParent>
-        <Base>true</Base>
-    </PropertyGroup>
     <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
         <Base_Win32>true</Base_Win32>
         <CfgParent>Base</CfgParent>
@@ -60,7 +45,7 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
-        <DCC_UnitSearchPath>C:\Projetos\LabVet\backend\src\controllers;C:\Projetos\LabVet\backend\src\middlewares;C:\Projetos\LabVet\backend\src\models;C:\Projetos\LabVet\backend\src\providers;C:\Projetos\LabVet\backend\src\repositories;C:\Projetos\LabVet\backend\src\services;C:\Projetos\LabVet\backend\modules\github_com_hashload_horse\src;C:\Projetos\LabVet\backend\modules\github_com_hashload_horse-jwt\src;C:\Projetos\LabVet\backend\modules\github_com_paolo-rossi_delphi-jose-jwt\Source\Common;C:\Projetos\LabVet\backend\modules\github_com_paolo-rossi_delphi-jose-jwt\Source\JOSE;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Base;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Checksum;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Crypto;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Crypto\Blake2BParams;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Crypto\Blake2SParams;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Hash128;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Hash32;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Hash64;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Interfaces;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Interfaces\IBlake2BParams;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Interfaces\IBlake2SParams;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\KDF;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Nullable;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\NullDigest;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Utils</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>C:\Projetos\LabVet\backend\src\controllers;C:\Projetos\LabVet\backend\src\middlewares;C:\Projetos\LabVet\backend\src\models;C:\Projetos\LabVet\backend\src\providers;C:\Projetos\LabVet\backend\src\repositories;C:\Projetos\LabVet\backend\src\services;C:\Projetos\LabVet\backend\modules\github_com_hashload_horse\src;C:\Projetos\LabVet\backend\modules\github_com_hashload_horse-jwt\src;C:\Projetos\LabVet\backend\modules\github_com_paolo-rossi_delphi-jose-jwt\Source\Common;C:\Projetos\LabVet\backend\modules\github_com_paolo-rossi_delphi-jose-jwt\Source\JOSE;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Base;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Checksum;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Crypto;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Crypto\Blake2BParams;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Crypto\Blake2SParams;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Hash128;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Hash32;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Hash64;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Interfaces;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Interfaces\IBlake2BParams;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Interfaces\IBlake2SParams;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\KDF;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Nullable;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\NullDigest;C:\Projetos\LabVet\backend\modules\github_com_andre-djsystem_hashlib4pascal\HashLib\src\Utils;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_E>false</DCC_E>
         <DCC_F>false</DCC_F>
         <DCC_K>false</DCC_K>
@@ -106,34 +91,6 @@
     <PropertyGroup Condition="'$(Base_Android64)'!=''">
         <Android_LauncherIcon192>$(BDS)\bin\Artwork\Android\FM_LauncherIcon_192x192.png</Android_LauncherIcon192>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(Base_iOSDevice32)'!=''">
-        <iPhone_AppIcon120>$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_120x120.png</iPhone_AppIcon120>
-        <iPhone_Spotlight80>$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_80x80.png</iPhone_Spotlight80>
-        <iPhone_Notification40>$(BDS)\bin\Artwork\iOS\iPhone\FM_NotificationIcon_40x40.png</iPhone_Notification40>
-        <iPhone_Notification60>$(BDS)\bin\Artwork\iOS\iPhone\FM_NotificationIcon_60x60.png</iPhone_Notification60>
-        <iPad_SpotLight80>$(BDS)\bin\Artwork\iOS\iPad\FM_SpotlightSearchIcon_80x80.png</iPad_SpotLight80>
-        <iPad_Notification40>$(BDS)\bin\Artwork\iOS\iPad\FM_NotificationIcon_40x40.png</iPad_Notification40>
-        <iPad_AppIcon152>$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_152x152.png</iPad_AppIcon152>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Base_iOSDevice64)'!=''">
-        <iPhone_AppIcon120>$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_120x120.png</iPhone_AppIcon120>
-        <iPhone_Spotlight80>$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_80x80.png</iPhone_Spotlight80>
-        <iPhone_Notification40>$(BDS)\bin\Artwork\iOS\iPhone\FM_NotificationIcon_40x40.png</iPhone_Notification40>
-        <iPhone_Notification60>$(BDS)\bin\Artwork\iOS\iPhone\FM_NotificationIcon_60x60.png</iPhone_Notification60>
-        <iPad_SpotLight80>$(BDS)\bin\Artwork\iOS\iPad\FM_SpotlightSearchIcon_80x80.png</iPad_SpotLight80>
-        <iPad_Notification40>$(BDS)\bin\Artwork\iOS\iPad\FM_NotificationIcon_40x40.png</iPad_Notification40>
-        <iPad_AppIcon152>$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_152x152.png</iPad_AppIcon152>
-        <iOS_AppStore1024>$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_1024x1024.png</iOS_AppStore1024>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Base_iOSSimulator)'!=''">
-        <iPhone_AppIcon120>$(BDS)\bin\Artwork\iOS\iPhone\FM_ApplicationIcon_120x120.png</iPhone_AppIcon120>
-        <iPhone_Spotlight80>$(BDS)\bin\Artwork\iOS\iPhone\FM_SpotlightSearchIcon_80x80.png</iPhone_Spotlight80>
-        <iPhone_Notification40>$(BDS)\bin\Artwork\iOS\iPhone\FM_NotificationIcon_40x40.png</iPhone_Notification40>
-        <iPhone_Notification60>$(BDS)\bin\Artwork\iOS\iPhone\FM_NotificationIcon_60x60.png</iPhone_Notification60>
-        <iPad_SpotLight80>$(BDS)\bin\Artwork\iOS\iPad\FM_SpotlightSearchIcon_80x80.png</iPad_SpotLight80>
-        <iPad_Notification40>$(BDS)\bin\Artwork\iOS\iPad\FM_NotificationIcon_40x40.png</iPad_Notification40>
-        <iPad_AppIcon152>$(BDS)\bin\Artwork\iOS\iPad\FM_ApplicationIcon_152x152.png</iPad_AppIcon152>
-    </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
@@ -166,13 +123,35 @@
         <DCCReference Include="src\providers\LabVet.Providers.Config.pas"/>
         <DCCReference Include="src\providers\LabVet.Providers.Connection.pas"/>
         <DCCReference Include="src\repositories\LabVet.Repositories.Base.pas"/>
+        <DCCReference Include="src\repositories\LabVet.Repositories.ExameCategoria.pas"/>
+        <DCCReference Include="src\repositories\LabVet.Repositories.Exame.pas"/>
+        <DCCReference Include="src\repositories\LabVet.Repositories.AnimalGrupo.pas"/>
+        <DCCReference Include="src\repositories\LabVet.Repositories.Analito.pas"/>
+        <DCCReference Include="src\repositories\LabVet.Repositories.ExameAnalito.pas"/>
+        <DCCReference Include="src\repositories\LabVet.Repositories.ModeloExameAnalito.pas"/>
+        <DCCReference Include="src\repositories\LabVet.Repositories.ModeloExame.pas"/>
         <DCCReference Include="src\repositories\LabVet.Repositories.User.pas"/>
         <DCCReference Include="src\repositories\LabVet.Repositories.Session.pas"/>
         <DCCReference Include="src\repositories\LabVet.Repositories.Audit.pas"/>
+        <DCCReference Include="src\models\LabVet.Models.Base.pas"/>
+        <DCCReference Include="src\models\LabVet.Models.ExameCategoria.pas"/>
+        <DCCReference Include="src\models\LabVet.Models.Exame.pas"/>
+        <DCCReference Include="src\models\LabVet.Models.AnimalGrupo.pas"/>
+        <DCCReference Include="src\models\LabVet.Models.Analito.pas"/>
+        <DCCReference Include="src\models\LabVet.Models.ExameAnalito.pas"/>
+        <DCCReference Include="src\models\LabVet.Models.ModeloExameAnalito.pas"/>
+        <DCCReference Include="src\models\LabVet.Models.ModeloExame.pas"/>
         <DCCReference Include="src\models\LabVet.Models.User.pas"/>
         <DCCReference Include="src\models\LabVet.Models.Auth.pas"/>
         <DCCReference Include="src\services\LabVet.Services.Password.pas"/>
         <DCCReference Include="src\services\LabVet.Services.Audit.pas"/>
+        <DCCReference Include="src\services\LabVet.Services.Analito.pas"/>
+        <DCCReference Include="src\services\LabVet.Services.AnimalGrupo.pas"/>
+        <DCCReference Include="src\services\LabVet.Services.ExameCategoria.pas"/>
+        <DCCReference Include="src\services\LabVet.Services.Exame.pas"/>
+        <DCCReference Include="src\services\LabVet.Services.ExameAnalito.pas"/>
+        <DCCReference Include="src\services\LabVet.Services.ModeloExame.pas"/>
+        <DCCReference Include="src\services\LabVet.Services.ModeloExameAnalito.pas"/>
         <DCCReference Include="src\services\LabVet.Services.User.pas"/>
         <DCCReference Include="src\services\LabVet.Services.Auth.pas"/>
         <DCCReference Include="src\middlewares\LabVet.Middlewares.Auth.pas"/>
@@ -202,11 +181,6 @@
             <Platforms>
                 <Platform value="Android">False</Platform>
                 <Platform value="Android64">False</Platform>
-                <Platform value="iOSDevice32">False</Platform>
-                <Platform value="iOSDevice64">False</Platform>
-                <Platform value="iOSSimulator">False</Platform>
-                <Platform value="Linux64">False</Platform>
-                <Platform value="OSX32">False</Platform>
                 <Platform value="Win32">True</Platform>
                 <Platform value="Win64">True</Platform>
             </Platforms>

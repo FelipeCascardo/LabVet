@@ -1,4 +1,4 @@
-unit LabVet.Services.Auth;
+﻿unit LabVet.Services.Auth;
 
 interface
 
@@ -21,7 +21,7 @@ type
 implementation
 
 uses
-  System.DateUtils, System.Hash, System.SysUtils,
+  System.DateUtils, System.Hash,
   JOSE.Core.Builder, JOSE.Core.JWT,
   LabVet.Models.User, LabVet.Providers.Config,
   LabVet.Repositories.Session, LabVet.Repositories.User,

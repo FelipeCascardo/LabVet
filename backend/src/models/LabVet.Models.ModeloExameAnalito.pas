@@ -9,7 +9,7 @@ type
   TModeloExameAnalito = class(TEntidadeAuditavel)
   public
     IdModeloExameAnalito: Int64;
-    IdModeloLaudo: Int64;
+    IdModeloExame: Int64;
     IdExameAnalito: Int64;
     DsSecao: string;
     NrExibicao: Integer;

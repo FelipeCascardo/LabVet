@@ -4,14 +4,26 @@ interface
 
 uses
   System.Generics.Collections,
+  LabVet.Models.Base,
   LabVet.Models.Analito,
   LabVet.Models.Exame,
   LabVet.Models.ExameAnalito,
   LabVet.Models.ModeloExameAnalito,
-  LabVet.Models.ModeloLaudo,
-  LabVet.Models.TipoAnimal;
+  LabVet.Models.AnimalGrupo;
 
 type
+  TModeloExame = class(TEntidadeAuditavel)
+  public
+    IdModeloExame: Int64;
+    IdExame: TInteiro64Opcional;
+    IdAnimalGrupo: TInteiro64Opcional;
+    CdModeloLaudo: string;
+    NmModeloLaudo: string;
+    DsFaixaIdade: string;
+    NmArquivoOrigem: string;
+    constructor Create;
+  end;
+
   TModeloExameAnalitoDetalhe = class
   private
     FAnalito: TAnalito;
@@ -32,21 +44,27 @@ type
   private
     FAnalitos: TObjectList<TModeloExameAnalitoDetalhe>;
     FExame: TExame;
-    FModeloLaudo: TModeloLaudo;
-    FTipoAnimal: TTipoAnimal;
+    FModeloExame: TModeloExame;
+    FAnimalGrupo: TAnimalGrupo;
     procedure SetExame(AValue: TExame);
-    procedure SetModeloLaudo(AValue: TModeloLaudo);
-    procedure SetTipoAnimal(AValue: TTipoAnimal);
+    procedure SetModeloExame(AValue: TModeloExame);
+    procedure SetAnimalGrupo(AValue: TAnimalGrupo);
   public
     constructor Create;
     destructor Destroy; override;
     property Analitos: TObjectList<TModeloExameAnalitoDetalhe> read FAnalitos;
     property Exame: TExame read FExame write SetExame;
-    property ModeloLaudo: TModeloLaudo read FModeloLaudo write SetModeloLaudo;
-    property TipoAnimal: TTipoAnimal read FTipoAnimal write SetTipoAnimal;
+    property ModeloExame: TModeloExame read FModeloExame write SetModeloExame;
+    property AnimalGrupo: TAnimalGrupo read FAnimalGrupo write SetAnimalGrupo;
   end;
 
 implementation
+
+constructor TModeloExame.Create;
+begin
+  inherited Create;
+  StAtivo := True;
+end;
 
 constructor TModeloExameAnalitoDetalhe.Create;
 begin
@@ -96,15 +114,15 @@ begin
   inherited Create;
   FAnalitos := TObjectList<TModeloExameAnalitoDetalhe>.Create(True);
   FExame := TExame.Create;
-  FModeloLaudo := TModeloLaudo.Create;
+  FModeloExame := TModeloExame.Create;
 end;
 
 destructor TModeloExameDetalhe.Destroy;
 begin
   FAnalitos.Free;
   FExame.Free;
-  FModeloLaudo.Free;
-  FTipoAnimal.Free;
+  FModeloExame.Free;
+  FAnimalGrupo.Free;
   inherited Destroy;
 end;
 
@@ -117,22 +135,22 @@ begin
   FExame := AValue;
 end;
 
-procedure TModeloExameDetalhe.SetModeloLaudo(AValue: TModeloLaudo);
+procedure TModeloExameDetalhe.SetModeloExame(AValue: TModeloExame);
 begin
-  if FModeloLaudo = AValue then
+  if FModeloExame = AValue then
     Exit;
 
-  FModeloLaudo.Free;
-  FModeloLaudo := AValue;
+  FModeloExame.Free;
+  FModeloExame := AValue;
 end;
 
-procedure TModeloExameDetalhe.SetTipoAnimal(AValue: TTipoAnimal);
+procedure TModeloExameDetalhe.SetAnimalGrupo(AValue: TAnimalGrupo);
 begin
-  if FTipoAnimal = AValue then
+  if FAnimalGrupo = AValue then
     Exit;
 
-  FTipoAnimal.Free;
-  FTipoAnimal := AValue;
+  FAnimalGrupo.Free;
+  FAnimalGrupo := AValue;
 end;
 
 end.

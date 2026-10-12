@@ -4,15 +4,16 @@
 # Arquivos-fonte e exportações com dados clínicos reais
 Importação/
 Excel/
-database/imports/generated/
-database/backups/
-demo-offline/dados/*.json
-dashboard/data.js
-dashboard/reports-data.js
+poc/database/imports/generated/
+poc/database/backups/
+poc/demo-offline/dados/*.json
+poc/docs/rejeitados-setembro-2026.csv
+poc/dashboard/data.js
+poc/dashboard/reports-data.js
 docs/rejeitados-setembro-2026.csv
 
 # Artefato temporário de geração de imagem não utilizado pela aplicação
-demo-offline/LabVet-logo.png
+poc/demo-offline/LabVet-logo.png
 
 # Arquivos locais
 __pycache__/

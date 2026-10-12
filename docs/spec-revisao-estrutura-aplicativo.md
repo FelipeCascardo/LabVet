@@ -2,14 +2,9 @@
 
 ## Decisão de contexto
 
-A base e as importações realizadas até aqui são uma POC de aprendizagem. Elas
-não definem restrições para o aplicativo definitivo, não precisam ser
-compatíveis e não serão usadas como referência para preservar nomes, chaves ou
-relacionamentos.
-
-O objetivo agora é estruturar o LabVet como aplicativo. A importação dos nove
-anos será uma etapa posterior, feita contra o modelo aprovado e por uma rotina
-auditável de carga.
+O LabVet adota o modelo oficial versionado em `database/estrutura`. A
+importação histórica será uma etapa posterior, feita contra o modelo aprovado
+e por uma rotina auditável de carga.
 
 ## Convenção obrigatória de nomenclatura
 
@@ -93,8 +88,7 @@ Outros. A carga inicial do catálogo será revisada antes de virar dado oficial.
 ## Implementação inicial
 
 O script [001_catalogoexames.sql](../database/estrutura/001_catalogoexames.sql)
-cria essas tabelas na base definitiva escolhida para a implantação. Ele não é
-usado pelo contêiner da POC e não altera a base `labvet` existente.
+cria essas tabelas na base oficial escolhida para a implantação.
 
 O mesmo script passou a incluir os cadastros compartilhados `usuario`,
 `pessoa`, `pessoaatividade`, `tipocontato` e `pessoacontato`, reproduzindo as
