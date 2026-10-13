@@ -2,9 +2,12 @@
 
 ## Objetivo
 
-Disponibilizar o backend do cadastro de exames e de seus modelos de laudo. O módulo deve permitir consultar, criar, alterar e inativar o catálogo, os tipos de animais, os modelos de laudo e os parâmetros exibidos em cada modelo.
+Disponibilizar o backend do cadastro de exames e de seus modelos. O módulo deve
+permitir consultar, criar, alterar, inativar e reativar o catálogo, os grupos
+de animais, os modelos de exame e os parâmetros exibidos em cada modelo.
 
-O nome correto da entidade é `tiposanimais`.
+O nome oficial da entidade é `animalgrupos` e o contrato público usa
+`AnimalGrupo`.
 
 ## Entidades do domínio
 
@@ -13,10 +16,10 @@ O nome correto da entidade é `tiposanimais`.
 | `TExameCategoria` | Agrupa os exames do catálogo. | Possui vários `TExame`. |
 | `TExame` | Exame comercial ou pacote. | Pertence a uma categoria; pode referenciar um exame-pai; possui analitos e modelos. |
 | `TAnimalGrupo` | Agrupamento operacional do laboratório. | Possui hierarquia opcional e classifica modelos de laudo. |
-| `TModeloLaudo` | Modelo aplicável a um exame e, opcionalmente, a um tipo de animal/faixa etária. | Possui vários parâmetros configurados. |
+| `TModeloExame` | Modelo aplicável a um exame e, opcionalmente, a um grupo de animal/faixa etária. | Possui vários parâmetros configurados. |
 | `TAnalito` | Parâmetro laboratorial reutilizável. | Participa de vários exames. |
 | `TExameAnalito` | Vínculo base entre exame e analito. | É a ponte N:N e é configurado em modelos. |
-| `TModeloExameAnalito` | Apresentação e referência do analito dentro de um modelo. | Pertence a um `TModeloLaudo` e referencia um `TExameAnalito`. |
+| `TModeloExameAnalito` | Apresentação e referência do analito dentro de um modelo. | Pertence a um `TModeloExame` e referencia um `TExameAnalito`. |
 
 ## Agregado retornado pela tela Modelo de Exames
 
@@ -45,13 +48,15 @@ Cada classe ficará em uma unit própria em `backend/src/models` e terá `ToJSON
 | `LabVet.Models.ExameCategoria` | `TExameCategoria` | `IdExameCategoria`, `NmCategoria`, `StAtivo`. |
 | `LabVet.Models.Exame` | `TExame` | `IdExame`, `IdExameCategoria`, `CdExame`, `NmExame`, `QtTotalExames`, `VlExame`, `StPrimario`, `IdExamePai`, `StAtivo`, `Categoria`. |
 | `LabVet.Models.AnimalGrupo` | `TAnimalGrupo` | `IdAnimalGrupo`, `IdAnimalGrupoPai`, `NmAnimalGrupo`, `DsDescricao`, `StAtivo`, `Filhos`. |
-| `LabVet.Models.ModeloLaudo` | `TModeloLaudo` | `IdModeloLaudo`, `IdExame`, `IdTipoAnimal`, `CdModeloLaudo`, `NmModeloLaudo`, `DsFaixaIdade`, `NmArquivoOrigem`, `StAtivo`. |
-| `LabVet.Models.Analito` | `TAnalito` | `IdAnalito`, `CdAnalito`, `NmAnalito`, `DsTecnica`, `DsUnidadeMedida`, `TpValor`, `StAtivo`. |
+| `LabVet.Models.ModeloExame` | `TModeloExame` | `IdModeloExame`, `IdExame`, `IdAnimalGrupo`, `CdModeloExame`, `NmModeloExame`, `DsFaixaIdade`, `NmArquivoOrigem`, `StAtivo`. |
+| `LabVet.Models.Analito` | `TAnalito` | `IdAnalito`, `CdAnalito`, `NmAnalito`, `DsTecnica`, `DsUnidadeMedida`, `TpValor`, `FgPercentual`, `StAtivo`. |
 | `LabVet.Models.ExameAnalito` | `TExameAnalito` | `IdExameAnalito`, `IdExame`, `IdAnalito`, `StAtivo`. |
-| `LabVet.Models.ModeloExameAnalito` | `TModeloExameAnalito` | `IdModeloExameAnalito`, `IdModeloLaudo`, `IdExameAnalito`, `DsSecao`, `NrExibicao`, `DsRotulo`, `DsTecnica`, `DsUnidadeMedida`, `DsReferencia`, `VrRefMinimo`, `VrRefMaximo`, `StAtivo`. |
+| `LabVet.Models.ModeloExameAnalito` | `TModeloExameAnalito` | `IdModeloExameAnalito`, `IdModeloExame`, `IdExameAnalito`, `DsSecao`, `NrExibicao`, `DsRotulo`, `DsTecnica`, `DsUnidadeMedida`, `DsReferencia`, `VrRefMinimo`, `VrRefMaximo`, `VrRefPerMinimo`, `VrRefPerMaximo`, `StAtivo`. |
 | `LabVet.Models.ModeloExame` | `TModeloExameDetalhe`, `TModeloExameAnalitoDetalhe` | Agregado e itens compostos usados pelo controlador. |
 
-`TpValor` será um tipo enumerado no Delphi: `Inteiro = 1`, `Decimal = 2`, `Caractere = 3` e `Misto = 4`.
+`TpValor` é um tipo enumerado no Delphi: `Inteiro = 1`, `Decimal = 2` e
+`Caractere = 3`. `FgPercentual` determina se o analito aceita os limites
+percentuais do modelo.
 
 ## Arquitetura do backend
 
@@ -94,11 +99,13 @@ Ao salvar um modelo, `TModeloExameService` deverá:
 
 | Controlador | Rotas iniciais |
 | --- | --- |
-| `TExameCategoriasController` | `GET/POST /api/v1/examecategorias`, `GET/PUT/PATCH /api/v1/examecategorias/:id` |
-| `TExamesController` | `GET/POST /api/v1/exames`, `GET/PUT/PATCH /api/v1/exames/:id` |
-| `TTiposAnimaisController` | `GET /api/v1/tiposanimais`, `GET /api/v1/tiposanimais/arvore`, `POST/PUT/PATCH` para manutenção |
-| `TAnalitosController` | `GET/POST /api/v1/analitos`, `GET/PUT/PATCH /api/v1/analitos/:id` |
-| `TModelosExamesController` | `GET /api/v1/modelosexames`, `GET /api/v1/modelosexames/:id`, `POST /api/v1/modelosexames`, `PUT /api/v1/modelosexames/:id`, `PATCH /api/v1/modelosexames/:id/ativo` |
+| `LabVet.Controllers.ExameCategoria` | `GET/POST /api/v1/exame-categorias`, `GET/PUT/DELETE /api/v1/exame-categorias/:id`, `POST /:id/reativar` |
+| `LabVet.Controllers.Exame` | `GET/POST /api/v1/exames`, `GET/PUT/DELETE /api/v1/exames/:id`, `POST /:id/reativar` |
+| `LabVet.Controllers.AnimalGrupo` | `GET/POST /api/v1/animal-grupos`, `GET/PUT/DELETE /api/v1/animal-grupos/:id`, `POST /:id/reativar` |
+| `LabVet.Controllers.Analito` | `GET/POST /api/v1/analitos`, `GET/PUT/DELETE /api/v1/analitos/:id`, `POST /:id/reativar` |
+| `LabVet.Controllers.ExameAnalito` | `GET/POST /api/v1/exame-analitos`, `GET/PUT/DELETE /api/v1/exame-analitos/:id`, `POST /:id/reativar` |
+| `LabVet.Controllers.ModeloExame` | `GET/POST /api/v1/modelos-exames`, `GET/PUT/DELETE /api/v1/modelos-exames/:id`, `POST /:id/reativar` |
+| `LabVet.Controllers.ModeloExameAnalito` | `GET /api/v1/modelos-exames-analitos?idModeloExame=:id`, `GET/POST/PUT/DELETE /api/v1/modelos-exames-analitos/:id`, `POST /:id/reativar` |
 
 Os controladores recebem e devolvem JSON, traduzem erros conhecidos para `400`, `404` ou `409` e delegam regras e transações aos services.
 
@@ -107,7 +114,12 @@ Os controladores recebem e devolvem JSON, traduzem erros conhecidos para `400`, 
 - `CdExame`, `CdAnalito` e `CdModeloLaudo` são únicos.
 - Um `TExameAnalito` é único por exame e analito.
 - `NrExibicao` é único por modelo de laudo e deve ser maior que zero.
-- `VrRefMinimo` não pode ser maior que `VrRefMaximo`; referências livres permanecem em `DsReferencia`.
+- `VrRefMinimo` e `VrRefMaximo` são textos curtos, validados como inteiro,
+  decimal ou caractere conforme `TpValor`; referências livres permanecem em
+  `DsReferencia`.
+- `VrRefPerMinimo` e `VrRefPerMaximo` aceitam valores entre 0 e 100, com até
+  quatro casas decimais, e somente podem ser preenchidos quando `FgPercentual`
+  estiver ativo no analito.
 - `DsSecao` é opcional e identifica a parte visual/clínica do laudo, como Eritrograma, Leucograma ou Sedimentoscopia.
 - Não haverá exclusão física das entidades do módulo; a remoção funcional será por `StAtivo`.
 - Modelos históricos sem exame comercial mapeado podem ser consultados, mas não receberão novos itens até que o exame seja associado.

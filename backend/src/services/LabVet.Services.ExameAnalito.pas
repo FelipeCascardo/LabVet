@@ -19,6 +19,11 @@ type
     function Listar(ApenasAtivos: Boolean = True): TObjectList<TExameAnalito>;
     function ObterPorId(AId: Int64): TExameAnalito;
     function Criar(AValue: TExameAnalito; AActorId: Int64): TExameAnalito;
+    function Atualizar(
+      AId: Int64;
+      AValue: TExameAnalito;
+      AActorId: Int64
+    ): TExameAnalito;
     procedure DefinirAtivo(AId: Int64; AAtivo: Boolean; AActorId: Int64);
   end;
 
@@ -104,6 +109,44 @@ begin
     end;
     LRepository.Insert(AValue, AActorId);
     Result := AValue;
+  finally
+    LRepository.Free;
+  end;
+end;
+
+function TExameAnalitoService.Atualizar(
+  AId: Int64;
+  AValue: TExameAnalito;
+  AActorId: Int64
+): TExameAnalito;
+var
+  LRepository: TExameAnalitoRepository;
+  LSameLink: TExameAnalito;
+begin
+  Validar(AValue);
+
+  LRepository := TExameAnalitoRepository.Create;
+  try
+    Result := LRepository.FindById(AId);
+    if (not Assigned(Result)) or (not Result.StAtivo) then
+      raise EExameAnalitoNaoEncontrado.Create('Vínculo não encontrado.');
+
+    LSameLink := LRepository.FindByExameAnalito(
+      AValue.IdExame,
+      AValue.IdAnalito
+    );
+    try
+      if Assigned(LSameLink) and (LSameLink.IdExameAnalito <> AId) then
+        raise EExameAnalitoValidacao.Create(
+          'O analito já está vinculado ao exame.'
+        );
+    finally
+      LSameLink.Free;
+    end;
+
+    Result.IdExame := AValue.IdExame;
+    Result.IdAnalito := AValue.IdAnalito;
+    LRepository.Update(Result, AActorId);
   finally
     LRepository.Free;
   end;

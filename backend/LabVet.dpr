@@ -41,7 +41,15 @@ uses
   LabVet.Services.Auth in 'src\services\LabVet.Services.Auth.pas',
   LabVet.Middlewares.Auth in 'src\middlewares\LabVet.Middlewares.Auth.pas',
   LabVet.Controllers.Auth in 'src\controllers\LabVet.Controllers.Auth.pas',
-  LabVet.Controllers.User in 'src\controllers\LabVet.Controllers.User.pas';
+  LabVet.Controllers.User in 'src\controllers\LabVet.Controllers.User.pas',
+  LabVet.Controllers.Base in 'src\controllers\LabVet.Controllers.Base.pas',
+  LabVet.Controllers.Analito in 'src\controllers\LabVet.Controllers.Analito.pas',
+  LabVet.Controllers.AnimalGrupo in 'src\controllers\LabVet.Controllers.AnimalGrupo.pas',
+  LabVet.Controllers.ExameCategoria in 'src\controllers\LabVet.Controllers.ExameCategoria.pas',
+  LabVet.Controllers.Exame in 'src\controllers\LabVet.Controllers.Exame.pas',
+  LabVet.Controllers.ExameAnalito in 'src\controllers\LabVet.Controllers.ExameAnalito.pas',
+  LabVet.Controllers.ModeloExame in 'src\controllers\LabVet.Controllers.ModeloExame.pas',
+  LabVet.Controllers.ModeloExameAnalito in 'src\controllers\LabVet.Controllers.ModeloExameAnalito.pas';
 
 procedure Health(ARequest: THorseRequest; AResponse: THorseResponse);
 begin
@@ -54,6 +62,13 @@ begin
     LabVet.Middlewares.Auth.Register;
     LabVet.Controllers.Auth.Register;
     LabVet.Controllers.User.Register;
+    LabVet.Controllers.Analito.Register;
+    LabVet.Controllers.AnimalGrupo.Register;
+    LabVet.Controllers.ExameCategoria.Register;
+    LabVet.Controllers.Exame.Register;
+    LabVet.Controllers.ExameAnalito.Register;
+    LabVet.Controllers.ModeloExame.Register;
+    LabVet.Controllers.ModeloExameAnalito.Register;
     Writeln(
       'LabVet API: http://localhost:' +
       TLabVetConfig.GetValue('LABVET_API_PORT', '9010') +

@@ -3,9 +3,17 @@ classDiagram
   class TExame
   class TAnimalGrupo
   class TModeloExame
-  class TAnalito
+  class TAnalito {
+    +TTipoValorAnalito TpValor
+    +Boolean FgPercentual
+  }
   class TExameAnalito
-  class TModeloExameAnalito
+  class TModeloExameAnalito {
+    +TTextoOpcional VrRefMinimo
+    +TTextoOpcional VrRefMaximo
+    +TNumeroOpcional VrRefPerMinimo
+    +TNumeroOpcional VrRefPerMaximo
+  }
   class TModeloExameDetalhe
   class TModeloExameService
   class TModeloExameRepository

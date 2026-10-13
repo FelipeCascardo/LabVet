@@ -19,10 +19,10 @@ no LabVet.
 | Área | Estado confirmado |
 | --- | --- |
 | Backend | Aplicação console Win64 Delphi, Horse, FireDAC e camadas de controllers, services, repositories, models, providers e middlewares. |
-| API | Healthcheck, autenticação, sessões, usuários e fundação do módulo de catálogo de exames. |
+| API | Healthcheck, autenticação, sessões, usuários e controllers REST do catálogo de exames. |
 | Banco | PostgreSQL 17 via `docker-compose.yml`; a base oficial é Labvet V1. |
 | Frontend | React 19, TypeScript e Vite. |
-| Contratos | As rotas de catálogo serão documentadas junto dos controllers; ainda não há OpenAPI versionado. |
+| Contratos | As rotas de catálogo estão registradas em `spec-backend-modelosexames.md`; ainda não há OpenAPI versionado. |
 | Testes | Validações de schema e de API ainda precisam ser consolidadas em suíte automatizada. |
 
 ## Autenticação e sessão
@@ -38,6 +38,19 @@ oficial. As entidades do módulo de exames são `examecategorias`, `exames`,
 `analitos`, `animalgrupos`, `exameanalitos`, `modeloexames` e
 `modeloexameanalitos`.
 
+O script `014_laudos_e_laudoanalitos.sql` é um rascunho não aplicado da camada
+transacional: `laudos` registra a realização e `laudoanalitos` os itens
+realizados. Ele reutiliza a estrutura de configuração como ponto de partida,
+mas ainda depende da modelagem de paciente, atendimento, coleta, resultados e
+emissão antes de integrar o esquema oficial.
+
+Em `analitos`, `tpvalor` aceita somente `1` (inteiro), `2` (decimal) e `3`
+(caractere); `fgpercentual` determina se o analito pode receber limites
+percentuais. Em `modeloexameanalitos`, `vrrefminimo` e `vrrefmaximo` são
+textuais e seguem a validação de `tpvalor`; `vrrefperminimo` e
+`vrrefpermaximo` são `NUMERIC(7,4)`, limitados ao intervalo de 0 a 100. O
+banco bloqueia a gravação de percentual para analitos sem essa autorização.
+
 Antes de aplicar qualquer script, o destino deve ser confirmado com:
 
 ```sql
@@ -51,8 +64,8 @@ alterar o schema. Consulte [BASES_DE_DADOS.md](BASES_DE_DADOS.md).
 ## Regras de domínio com documentação existente
 
 - [Especificação do backend de modelos de exames](spec-backend-modelosexames.md)
-  descreve o agregado, regras e rotas previstas; ela precisa ser atualizada com
-  as nomenclaturas `modeloexames` e `animalgrupos`.
+  descreve o agregado, regras e rotas registradas, com as nomenclaturas
+  `modeloexames` e `animalgrupos`.
 - [Diagrama ER de exames](diagrama-er-exames.svg) e o diagrama de classes em
   `docs` são referência para as relações persistidas.
 - O guia canônico de programação Delphi está em
@@ -71,6 +84,19 @@ Controller → Service → Repository → PostgreSQL
 Controllers traduzem HTTP e JSON; services concentram validações, auditoria e
 transações; repositories usam SQL parametrizado e FireDAC. Controllers não
 executam SQL e repositories não decidem regras de negócio.
+
+Os recursos `Analito`, `AnimalGrupo`, `ExameCategoria`, `Exame`,
+`ExameAnalito`, `ModeloExame` e `ModeloExameAnalito` expõem listagem, consulta
+por identificador, criação, atualização, inativação e reativação. A unit
+`LabVet.Controllers.Base` concentra apenas a leitura técnica de JSON e IDs e a
+serialização das respostas.
+
+No frontend, a rota `/cadastros/modelos-exames` consome os recursos de grupos
+de animais, modelos de exames e itens de modelo. A hierarquia visual é montada
+no cliente com `idGrupoPai`, enquanto os analitos são carregados por modelo.
+Para a composição dos três painéis, a página também consulta `Exame`,
+`ExameAnalito` e `Analito`, resolvendo os identificadores no cliente até a
+disponibilização do endpoint agregado de detalhe.
 
 As units seguem o padrão `LabVet.<Camada>.<Entidade>`, por exemplo
 `LabVet.Repositories.Exame`, `LabVet.Services.Exame` e

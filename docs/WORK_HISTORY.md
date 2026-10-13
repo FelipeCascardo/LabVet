@@ -1,5 +1,133 @@
 # LabVet — Histórico de Trabalho
 
+## 12/10/2026 — Rascunho do modelo de realização de exames
+
+- Criado o script não aplicado `014_laudos_e_laudoanalitos.sql`, baseado nas
+  tabelas de configuração `modeloexames` e `modeloexameanalitos`.
+- As chaves foram renomeadas para `idlaudo`, `idlaudoanalito` e `idlaudo` como
+  vínculo dos itens. O script foi deixado propositalmente como base editável
+  para a definição dos dados de paciente, atendimento, coleta e resultado.
+- A sintaxe foi validada em uma transação revertida na base oficial; nenhuma
+  tabela, trigger ou função do rascunho permaneceu persistida.
+
+## 12/10/2026 — Migration 012: referências percentuais por modelo
+
+- Criada e aplicada a migration
+  `012_referencias_percentuais_modeloexameanalitos.sql` na base oficial
+  `Labvet V1`, após o backup local confirmado.
+- `analitos` recebeu `fgpercentual`; `tpvalor` passou a aceitar somente
+  inteiro, decimal e caractere. Os 11 registros anteriormente marcados como
+  mistos foram migrados para caractere.
+- `modeloexameanalitos.vrrefminimo` e `vrrefmaximo` passaram a ser textuais;
+  foram incluídos `vrrefperminimo` e `vrrefpermaximo` como `NUMERIC(7,4)`.
+- Constraints e triggers impedem percentuais fora de 0 a 100 ou associados a
+  analitos sem `fgpercentual`.
+- A migration corretiva 013 qualifica o schema `labvet` nas funções dos
+  triggers, garantindo sua execução em conexões cujo `search_path` padrão não
+  contém esse schema.
+- Models, repositories e services do backend foram alinhados ao novo contrato;
+  a recompilação Win64 no Delphi local permanece pendente.
+
+## 12/10/2026 — Backup antes da evolução das referências
+
+- Foi confirmado o destino `Labvet V1`, com o usuário `labvet_app`.
+- Foi criado o backup PostgreSQL em formato custom:
+  `database/backups/labvet-v1-2026-10-12-before-referencias-modeloexameanalitos.dump`.
+- O arquivo de backup é local e foi incluído no `.gitignore`; ele não será
+  versionado no repositório.
+
+## 12/10/2026 — Página de Modelo de Exames
+
+- Criada a página `ModeloExamesPage` na rota
+  `/cadastros/modelos-exames`.
+- A tela monta a estrutura hierárquica de grupos de animais a partir de
+  `idGrupoPai`, permite selecionar um grupo e apresenta seus modelos ativos.
+- Os analitos de cada modelo visível são carregados pela rota específica e
+  exibidos em ordem, com rótulo e referência configurada.
+- Criado o cliente autenticado `modeloExamesApi` para as rotas de grupos,
+  modelos e itens de modelo.
+- A compilação de produção do frontend (`tsc` e Vite) foi concluída com
+  sucesso.
+
+## 12/10/2026 — Organização em três painéis de Modelo de Exames
+
+- A tela foi reorganizada em painéis simultâneos de grupos, modelos e analitos.
+- Os cards de modelo passaram a apresentar os campos do exame vinculado:
+  código, nome, quantidade total e valor; e do modelo: nome, faixa de idade e
+  arquivo de origem.
+- O painel de analitos busca e relaciona `ExameAnalito` e `Analito` para
+  apresentar nome e unidade em azul-escuro, além da configuração do
+  `ModeloExameAnalito`.
+- Os analitos são agrupados por `DsSecao` e ordenados por `NrExibicao`.
+- A compilação de produção do frontend foi concluída com sucesso.
+
+## 12/10/2026 — Compactação dos cards de analitos
+
+- O card de analito passou a exibir o nome e a unidade entre parênteses no
+  cabeçalho, em azul-escuro.
+- Os rótulos internos foram removidos; rótulo, referência e unidade do modelo
+  são apresentados em uma linha compacta, e a técnica é exibida em itálico.
+- A compilação de produção do frontend foi concluída com sucesso.
+
+## 12/10/2026 — Reorganização de cards de modelos e analitos
+
+- O card de modelo passou a exibir o código do exame em selo circular verde,
+  o nome do exame ao lado e os campos em duas linhas: faixa etária, quantidade
+  e valor; seguida do arquivo de origem.
+- O card de analito passou a exibir rótulo, referência mínima e máxima na
+  primeira linha e a técnica em itálico na segunda.
+- A compilação de produção do frontend foi concluída com sucesso.
+
+## 12/10/2026 — Hierarquia tipográfica dos analitos
+
+- `DsRotulo`, `VrRefMinimo` e `VrRefMaximo` passaram a usar fonte de 13px;
+  `DsTecnica` permanece em 11px, preservando a diferença de 2px solicitada.
+
+## 12/10/2026 — Alternância visual dos analitos
+
+- As linhas de analitos dentro de cada seção passaram a alternar entre fundo
+  branco e verde-pastel suave para facilitar a leitura.
+
+## 12/10/2026 — Simplificação dos dados de ModeloExameAnalito
+
+- Removida a apresentação duplicada do nome de `Analito` nos cards.
+- Cada linha agora usa somente `DsRotulo`, `VrRefMinimo` e `VrRefMaximo`; se
+  presente, `DsTecnica` é exibida abaixo do rótulo em itálico.
+- A compilação de produção do frontend foi concluída com sucesso.
+
+## 12/10/2026 — Controllers do catálogo de exames
+
+- Foram criadas as units `LabVet.Controllers.Analito`,
+  `LabVet.Controllers.AnimalGrupo`, `LabVet.Controllers.ExameCategoria`,
+  `LabVet.Controllers.Exame`, `LabVet.Controllers.ExameAnalito`,
+  `LabVet.Controllers.ModeloExame` e
+  `LabVet.Controllers.ModeloExameAnalito`.
+- Cada controller converte JSON para o model correspondente, delega as regras
+  ao service e traduz erros de validação e de recurso não encontrado para HTTP
+  400 e 404; erros não tratados retornam HTTP 500 sem expor detalhes internos.
+- As rotas de exclusão aplicam inativação lógica e cada recurso recebeu a rota
+  `POST /:id/reativar`.
+- As novas units foram registradas simultaneamente em `backend/LabVet.dpr` e
+  `backend/LabVet.dproj`, incluindo a unit técnica comum
+  `LabVet.Controllers.Base`.
+- A especificação de rotas foi atualizada. A compilação Win64 e a validação
+  HTTP contra `Labvet V1` permanecem pendentes no ambiente Delphi local.
+
+## 12/10/2026 — Correção de compilação dos controllers
+
+- Corrigida a declaração de `LInput` no procedimento `Save` de
+  `LabVet.Controllers.Analito`, que impedia a compilação da unit.
+- Eliminado o hint de variável não usada no service de `ExameAnalito`.
+- As units novas de controller foram convertidas para CRLF, formato requerido
+  pelo RAD Studio.
+
+## 12/10/2026 — Branch de controllers e frontend de exames
+
+- Foi criado o branch `codex/controllers-e-frontend-de-exames` a partir de
+  `main` para a próxima etapa do módulo de exames.
+- O checklist do projeto passou a exigir, no início de cada sessão, a decisão
+  explícita entre criar um branch novo ou continuar no branch atual.
+
 ## 12/10/2026 — Compilação limpa das services de catálogo
 
 - Foram implementadas as operações pendentes de inclusão e alteração do

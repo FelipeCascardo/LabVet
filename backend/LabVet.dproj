@@ -157,6 +157,14 @@
         <DCCReference Include="src\middlewares\LabVet.Middlewares.Auth.pas"/>
         <DCCReference Include="src\controllers\LabVet.Controllers.Auth.pas"/>
         <DCCReference Include="src\controllers\LabVet.Controllers.User.pas"/>
+        <DCCReference Include="src\controllers\LabVet.Controllers.Base.pas"/>
+        <DCCReference Include="src\controllers\LabVet.Controllers.Analito.pas"/>
+        <DCCReference Include="src\controllers\LabVet.Controllers.AnimalGrupo.pas"/>
+        <DCCReference Include="src\controllers\LabVet.Controllers.ExameCategoria.pas"/>
+        <DCCReference Include="src\controllers\LabVet.Controllers.Exame.pas"/>
+        <DCCReference Include="src\controllers\LabVet.Controllers.ExameAnalito.pas"/>
+        <DCCReference Include="src\controllers\LabVet.Controllers.ModeloExame.pas"/>
+        <DCCReference Include="src\controllers\LabVet.Controllers.ModeloExameAnalito.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

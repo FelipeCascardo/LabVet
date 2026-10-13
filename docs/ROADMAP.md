@@ -4,10 +4,10 @@ Atualizado: 12/10/2026
 
 ## Fundação do ambiente
 
-- [ ] Disponibilizar a base oficial Labvet V1 no PostgreSQL de desenvolvimento.
-- [ ] Registrar como o ambiente seleciona essa base.
-- [ ] Validar e aplicar as migrations de estrutura na ordem correta.
-- [ ] Confirmar backup e restauração antes de cargas relevantes.
+- [x] Disponibilizar a base oficial Labvet V1 no PostgreSQL de desenvolvimento.
+- [x] Registrar como o ambiente seleciona essa base.
+- [x] Validar e aplicar as migrations de estrutura na ordem correta até a 013.
+- [x] Confirmar backup antes de evolução estrutural relevante.
 
 ## Catálogo de exames
 
@@ -17,7 +17,7 @@ Atualizado: 12/10/2026
   `tiposanimais → animalgrupos`.
 - [ ] Concluir o CRUD dos repositories individuais.
 - [ ] Criar services individuais com validações de domínio.
-- [ ] Criar controllers e rotas HTTP para cada entidade.
+- [x] Criar controllers e rotas HTTP para cada entidade.
 - [ ] Validar inativação e auditoria de alterações.
 
 ## Modelos de exame
@@ -27,11 +27,18 @@ Atualizado: 12/10/2026
 - [ ] Validar ordem de exibição, referências numéricas e referências textuais.
 - [ ] Inativar itens removidos sem perder histórico.
 
+## Realização de exames e laudos
+
+- [x] Criar o rascunho estrutural de `laudos` e `laudoanalitos`.
+- [ ] Definir vínculos com paciente, atendimento, coleta e responsáveis.
+- [ ] Definir a persistência dos valores realizados e o ciclo de emissão.
+- [ ] Revisar e aplicar a migration de laudos após aprovação funcional.
+
 ## Interface e operação
 
-- [ ] Integrar o cadastro de modelos de exame à API.
+- [x] Integrar a consulta de modelos de exame à API.
 - [ ] Validar login, sessão e autorização nas novas rotas.
-- [ ] Compilar o backend Delphi Win64 e testar a API localmente.
+- [x] Compilar o backend Delphi Win64 e testar a API localmente.
 - [ ] Documentar o contrato HTTP conforme cada controller for entregue.
 
 ## Critério de passagem

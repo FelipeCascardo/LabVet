@@ -18,6 +18,11 @@ type
     Valor: Extended;
   end;
 
+  TTextoOpcional = record
+    PossuiValor: Boolean;
+    Valor: string;
+  end;
+
   TEntidadeAuditavel = class
   public
     IdUsuarioInclusao: TInteiro64Opcional;

@@ -14,6 +14,10 @@ erros e responsabilidades das camadas.
 Em caso de divergência entre esse status e o código ou o banco de dados,
 confira a evidência disponível e atualize o status antes de prosseguir.
 
+Antes de iniciar uma nova sessão de trabalho, pergunte ao usuário se a tarefa
+deve criar um novo branch ou continuar no branch corrente. Só crie ou troque
+de branch após a resposta explícita do usuário.
+
 ## Units Delphi
 
 Toda nova unit Delphi criada para o backend deve ser registrada na mesma

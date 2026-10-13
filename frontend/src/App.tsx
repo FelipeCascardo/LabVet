@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { ProtectedRoute } from './app/auth/ProtectedRoute'
 import { navigationItems } from './app/navigation'
 import { LoginPage } from './features/auth/LoginPage'
+import { ModeloExamesPage } from './features/modelo-exames/ModeloExamesPage'
 import { ModulePage } from './features/shared/ModulePage'
 import { AppShell } from './layouts/AppShell'
 
@@ -12,7 +13,7 @@ function App() {
       <Route element={<ProtectedRoute />}>
         <Route element={<AppShell />}>
           {navigationItems.map((item) => (
-            <Route key={item.path} path={item.path} element={<ModulePage title={item.label} description={item.description} />} />
+            <Route key={item.path} path={item.path} element={item.path === '/cadastros/modelos-exames' ? <ModeloExamesPage /> : <ModulePage title={item.label} description={item.description} />} />
           ))}
         </Route>
       </Route>

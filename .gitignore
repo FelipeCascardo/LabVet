@@ -6,6 +6,7 @@ Importação/
 Excel/
 poc/database/imports/generated/
 poc/database/backups/
+database/backups/
 poc/demo-offline/dados/*.json
 poc/docs/rejeitados-setembro-2026.csv
 poc/dashboard/data.js

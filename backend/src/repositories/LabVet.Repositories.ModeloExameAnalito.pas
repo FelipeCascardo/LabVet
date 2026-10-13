@@ -46,10 +46,16 @@ begin
   Result.StAtivo := AQuery.FieldByName('stativo').AsBoolean;
   Result.VrRefMinimo.PossuiValor := not AQuery.FieldByName('vrrefminimo').IsNull;
   Result.VrRefMaximo.PossuiValor := not AQuery.FieldByName('vrrefmaximo').IsNull;
+  Result.VrRefPerMinimo.PossuiValor := not AQuery.FieldByName('vrrefperminimo').IsNull;
+  Result.VrRefPerMaximo.PossuiValor := not AQuery.FieldByName('vrrefpermaximo').IsNull;
   if Result.VrRefMinimo.PossuiValor then
-    Result.VrRefMinimo.Valor := AQuery.FieldByName('vrrefminimo').AsExtended;
+    Result.VrRefMinimo.Valor := AQuery.FieldByName('vrrefminimo').AsString;
   if Result.VrRefMaximo.PossuiValor then
-    Result.VrRefMaximo.Valor := AQuery.FieldByName('vrrefmaximo').AsExtended;
+    Result.VrRefMaximo.Valor := AQuery.FieldByName('vrrefmaximo').AsString;
+  if Result.VrRefPerMinimo.PossuiValor then
+    Result.VrRefPerMinimo.Valor := AQuery.FieldByName('vrrefperminimo').AsExtended;
+  if Result.VrRefPerMaximo.PossuiValor then
+    Result.VrRefPerMaximo.Valor := AQuery.FieldByName('vrrefpermaximo').AsExtended;
 end;
 
 procedure TModeloExameAnalitoRepository.SetReferences(
@@ -58,13 +64,23 @@ procedure TModeloExameAnalitoRepository.SetReferences(
 );
 begin
   if AValue.VrRefMinimo.PossuiValor then
-    AQuery.ParamByName('reference_minimum').AsExtended := AValue.VrRefMinimo.Valor
+    AQuery.ParamByName('reference_minimum').AsString := AValue.VrRefMinimo.Valor
   else
     AQuery.ParamByName('reference_minimum').Clear;
   if AValue.VrRefMaximo.PossuiValor then
-    AQuery.ParamByName('reference_maximum').AsExtended := AValue.VrRefMaximo.Valor
+    AQuery.ParamByName('reference_maximum').AsString := AValue.VrRefMaximo.Valor
   else
     AQuery.ParamByName('reference_maximum').Clear;
+  if AValue.VrRefPerMinimo.PossuiValor then
+    AQuery.ParamByName('percentage_reference_minimum').AsExtended :=
+      AValue.VrRefPerMinimo.Valor
+  else
+    AQuery.ParamByName('percentage_reference_minimum').Clear;
+  if AValue.VrRefPerMaximo.PossuiValor then
+    AQuery.ParamByName('percentage_reference_maximum').AsExtended :=
+      AValue.VrRefPerMaximo.Valor
+  else
+    AQuery.ParamByName('percentage_reference_maximum').Clear;
 end;
 
 function TModeloExameAnalitoRepository.List(
@@ -146,11 +162,13 @@ begin
       'insert into modeloexameanalitos (' +
       'idmodeloexame, idexameanalito, dssecao, nrexibicao, dsrotulo, dstecnica, ' +
       'dsunidademedida, dsreferencia, vrrefminimo, vrrefmaximo, ' +
+      'vrrefperminimo, vrrefpermaximo, ' +
       'idusuarioinclusao, idusuarioalteracao' +
       ') values (' +
       ':model_id, :exam_analyte_id, nullif(:section, ''''), :display_order, ' +
       'nullif(:label, ''''), nullif(:technique, ''''), nullif(:unit, ''''), ' +
       'nullif(:reference, ''''), :reference_minimum, :reference_maximum, ' +
+      ':percentage_reference_minimum, :percentage_reference_maximum, ' +
       'nullif(:actor, 0), nullif(:actor, 0)' +
       ') returning idmodeloexameanalito, stativo';
     LQuery.ParamByName('model_id').AsLargeInt := AValue.IdModeloExame;
@@ -183,6 +201,8 @@ begin
       'dsrotulo = nullif(:label, ''''), dstecnica = nullif(:technique, ''''), ' +
       'dsunidademedida = nullif(:unit, ''''), dsreferencia = nullif(:reference, ''''), ' +
       'vrrefminimo = :reference_minimum, vrrefmaximo = :reference_maximum, ' +
+      'vrrefperminimo = :percentage_reference_minimum, ' +
+      'vrrefpermaximo = :percentage_reference_maximum, ' +
       'idusuarioalteracao = nullif(:actor, 0) ' +
       'where idmodeloexameanalito = :id and idmodeloexame = :model_id and stativo = true';
     LQuery.ParamByName('id').AsLargeInt := AValue.IdModeloExameAnalito;
