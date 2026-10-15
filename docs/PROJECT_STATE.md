@@ -1,6 +1,6 @@
 # LabVet — Estado do Projeto
 
-Atualizado: 12/10/2026
+Atualizado: 15/10/2026
 
 ## Marco atual
 
@@ -43,6 +43,8 @@ por camadas adotada no Itriax.
   selecionado agrupados por seção;
 - diagramas de entidade-relacionamento e de classes atualizados;
 - regra de importação explícita de `Data.DB` quando units acessam `TDataSet`.
+- ambiente de produção local preparado com Nginx em Docker em
+  `127.0.0.1:8081`, isolado do Itriax em `8080`.
 
 ## Em andamento
 
@@ -52,7 +54,7 @@ por camadas adotada no Itriax.
 
 ## Próximas atividades priorizadas
 
-Prioridade para 13/10/2026:
+Prioridade para 16/10/2026:
 
 1. Revisar e concluir as tabelas `atendimentos`, `laudos`, `laudoanalitos` e
    `laudonotas`, antes de aplicá-las na base oficial.
@@ -74,12 +76,18 @@ Pendências subsequentes:
   oficial versionado.
 - A especificação preserva referências históricas a `ModeloLaudo` no desenho
   do agregado; elas devem ser concluídas na evolução do endpoint de detalhe.
-- A recompilação Win64 e a validação HTTP do backend após a migration 012 estão
-  pendentes no Delphi local.
+- A validação das rotas autenticadas do catálogo deve ser ampliada para os
+  demais recursos além de modelos de exame e seus analitos.
+- Falta configurar Cloudflare Access para proteger o acesso externo de
+  `app.labvet.app`; o Tunnel público já aponta para `127.0.0.1:8081`.
 - `014_laudos_e_laudoanalitos.sql` é um rascunho não aplicado; faltam os
   campos e regras da realização do exame, como paciente, atendimento, coleta,
   resultado e emissão. Sua sintaxe foi validada em transação revertida, sem
   criação persistente de tabelas na base oficial.
+- Um registro de origem de Linfócitos contém a faixa convencional invertida
+  (`1000 - 672`) em `dsreferencia`; a recuperação preservou os percentuais,
+  mas manteve os limites convencionais vazios para não publicar uma referência
+  inválida. A fonte deve ser corrigida antes de completar essa referência.
 
 ## Validação registrada
 
@@ -103,6 +111,33 @@ integração HTTP permanece pendente.
 O frontend possui a página inicial de Modelo de Exames e sua compilação de
 produção foi concluída com sucesso. A validação funcional depende de dados e
 rotas autenticadas em execução.
+
+A estrutura de produção local separa o frontend compilado em Nginx no
+container `labvet-frontend-producao`, em `127.0.0.1:8081`, da API Delphi em
+`9010` e do PostgreSQL já executado no Docker. Docker validou o container
+como saudável e `GET /api/v1/health` pelo proxy respondeu `200` com
+`{"status":"ok"}`. O cookie seguro foi ativado no ambiente de produção e,
+em 14/10/2026, a rota publicada `app.labvet.app` foi criada no Cloudflare
+apontando para o loopback `127.0.0.1:8081`; a tela de login abriu por HTTPS.
+Cloudflare Access ainda não foi configurado.
+
+Em 14/10/2026, uma cópia desatualizada de `LabVet.exe` causava erro 500 na
+consulta de analitos de modelos, apesar dos dados e do código-fonte estarem
+corretos. Após a recompilação e reinicialização da API, a rota autenticada
+`GET /api/v1/modelos-exames-analitos?idModeloExame=249` respondeu HTTP 200
+com 26 analitos e referências como `2.100000` a `3.300000`.
+
+As referências da tela de Modelo de Exames são formatadas pelo tipo de valor
+do analito: decimais usam duas casas no padrão brasileiro, inteiros não exibem
+casas decimais e valores de caractere são preservados.
+
+Em 15/10/2026, a migration 015 foi aplicada na base oficial e recuperou 660
+faixas numéricas que estavam somente em `dsreferencia`. A migration 016 foi
+aplicada em seguida e recuperou 94 referências percentuais de quatro valores,
+habilitando o controle percentual em sete analitos hematológicos. A simulação
+em transação revertida e a aplicação definitiva concluíram sem violar os
+gatilhos de validação; 93 dessas referências também possuem faixa
+convencional ordenada recuperada.
 
 A migration 012 foi aplicada após confirmação de `current_database() =
 Labvet V1` e `current_user = labvet_app`. A validação confirmou

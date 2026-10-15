@@ -1,5 +1,8 @@
 # Credenciais locais
 .env
+.env.producao.local
+ACESSO_LOCAL_TEMPORARIO.txt
+docs/configuracao-tunnel-app-labvet-app.txt
 
 # Arquivos-fonte e exportações com dados clínicos reais
 Importação/

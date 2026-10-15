@@ -17,5 +17,25 @@ services:
       timeout: 5s
       retries: 12
 
+  frontend-producao:
+    profiles: ["producao"]
+    build:
+      context: .
+      dockerfile: deploy/producao/frontend/Dockerfile
+    container_name: labvet-frontend-producao
+    restart: unless-stopped
+    environment:
+      API_UPSTREAM: ${LABVET_API_UPSTREAM:-host.docker.internal:9010}
+    ports:
+      - "${LABVET_FRONTEND_BIND_ADDRESS:-127.0.0.1}:${LABVET_FRONTEND_PORT:-8081}:80"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/ >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+      start_period: 10s
+
 volumes:
   labvet_postgres_data:
