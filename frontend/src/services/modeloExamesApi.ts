@@ -54,6 +54,7 @@ export type Analito = {
   id: number
   nome: string
   unidadeMedida: string
+  tipoValor: number
   percentual: boolean
   ativo: boolean
 }

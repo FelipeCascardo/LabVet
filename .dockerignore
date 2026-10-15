@@ -1,0 +1,15 @@
+.git
+.env
+.env.*
+node_modules
+frontend/node_modules
+frontend/dist
+backend/Lib
+backend/*.exe
+backend/**/*.dcu
+Importação
+Excel
+database/backups
+poc/database/backups
+poc/database/imports/generated
+*.log

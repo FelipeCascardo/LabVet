@@ -1,5 +1,75 @@
 # LabVet — Histórico de Trabalho
 
+## 15/10/2026 — Planejamento da próxima sessão
+
+- Prioridades definidas para 16/10/2026:
+  1. revisar e finalizar o schema de `atendimentos`, `laudos`,
+     `laudoanalitos` e `laudonotas` antes de aplicar a migration 014;
+  2. implementar a importação vinculada aos modelos de exame e analitos;
+  3. criar as consultas de atendimentos e laudos.
+
+## 15/10/2026 — Recuperação de referências percentuais importadas
+
+- A migration 015 foi aplicada na base oficial `Labvet V1`, recuperando 660
+  faixas numéricas que haviam permanecido somente em `dsreferencia`.
+- Criada e aplicada a migration 016 para o formato de quatro valores
+  importado (`percentual mínimo`, `percentual máximo`, `mínimo convencional`
+  e `máximo convencional`). Foram recuperadas 94 referências percentuais de
+  sete analitos hematológicos e habilitado `fgpercentual` para esses analitos.
+- A migration preserva limites convencionais já existentes e só recupera uma
+  nova faixa convencional quando ela está ordenada. Um registro de Linfócitos
+  com origem `12 54 1000 - 672` recebeu os percentuais 12% a 54%, mantendo os
+  limites convencionais vazios, pois a fonte contém a faixa invertida.
+- A execução foi simulada em transação revertida antes da aplicação e a
+  validação posterior confirmou 94 referências percentuais persistidas, sem
+  violação dos gatilhos do banco.
+
+## 14/10/2026 — Recuperação de referências numéricas importadas
+
+- Identificada carga incompleta nos modelos de 2026: faixas como
+  `0 2.3 - 3.1` ficaram preservadas em `dsreferencia`, mas sem limites mínimo
+  e máximo estruturados.
+- Criada a migration 015 para recuperar somente faixas numéricas inequívocas,
+  preservando referências textuais e os limites já existentes.
+
+## 14/10/2026 — Formatação de referências dos analitos
+
+- A tela de Modelo de Exames passou a carregar os vínculos e o tipo de valor
+  do catálogo de analitos para formatar referências corretamente.
+- Valores decimais agora são exibidos com duas casas e separador brasileiro;
+  inteiros não recebem casas decimais e referências de caractere permanecem
+  inalteradas.
+
+## 14/10/2026 — Recompilação da API de modelos de exame
+
+- Identificado que a API em execução havia sido compilada em 12/10 e não
+  correspondia ao código-fonte atual do catálogo de modelos e analitos.
+- Recompilado e reiniciado `LabVet.exe` no ambiente de produção local.
+- Validada a rota autenticada de analitos do modelo 249: HTTP 200, 26 itens e
+  referências mínimas e máximas retornadas corretamente (`2.100000` e
+  `3.300000` no primeiro item referenciado).
+
+## 14/10/2026 — Preparação de produção local e Cloudflare Tunnel
+
+- Criado o perfil de produção local no `docker-compose.yml`: Nginx compila e
+  serve o frontend em `127.0.0.1:8081`, encaminhando `/api` à API Delphi em
+  `127.0.0.1:9010` sem expor a API ou PostgreSQL.
+- Adicionados o Dockerfile, a configuração Nginx, o exemplo de ambiente e o
+  iniciador `deploy/producao/iniciar-producao-local.bat`.
+- A sessão de produção usa o cookie `labvetRefreshProducao`, separado do
+  ambiente de desenvolvimento. A ativação de `LABVET_COOKIE_SECURE=true` ficou
+  documentada como pré-requisito para a publicação em HTTPS pelo Tunnel.
+- Incluído `.dockerignore` para manter credenciais, dados locais, binários e
+  dependências restauráveis fora do contexto de construção da imagem.
+- Docker Desktop construiu a imagem e confirmou o container
+  `labvet-frontend-producao` saudável em `127.0.0.1:8081`. Com a API Delphi
+  iniciada em `9010`, o healthcheck por `/api/v1/health` respondeu HTTP 200
+  com `{"status":"ok"}`.
+- Ativado `LABVET_COOKIE_SECURE=true` no ambiente local de produção e criada a
+  rota publicada `app.labvet.app` no Cloudflare Tunnel, direcionada para
+  `http://127.0.0.1:8081`. A validação externa por HTTPS abriu a tela de
+  login; a proteção por Cloudflare Access permanece pendente.
+
 ## 12/10/2026 — Planejamento para 13/10/2026
 
 - Registradas como prioridades da próxima sessão: concluir as tabelas

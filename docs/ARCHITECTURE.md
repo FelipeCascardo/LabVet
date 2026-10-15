@@ -9,10 +9,11 @@ PostgreSQL em Docker e frontend React/TypeScript/Vite.
 frontend (React) → API HTTP /api/v1 (Horse) → serviços → repositórios (FireDAC) → PostgreSQL
 ```
 
-No ambiente local, o frontend é servido pelo Vite e a API Delphi Win64 é um
-processo separado. O PostgreSQL executa no container `labvet-postgres`. A
-publicação unificada, com proxy reverso, ainda não é uma decisão implementada
-no LabVet.
+No ambiente de desenvolvimento, o frontend é servido pelo Vite e a API Delphi
+Win64 é um processo separado. O PostgreSQL executa no container
+`labvet-postgres`. Para produção local, o frontend compilado é servido por
+Nginx no container `labvet-frontend-producao`, ligado exclusivamente a
+`127.0.0.1:8081`; o proxy encaminha `/api` para a API Delphi local em `9010`.
 
 ## Componentes confirmados
 
@@ -22,6 +23,7 @@ no LabVet.
 | API | Healthcheck, autenticação, sessões, usuários e controllers REST do catálogo de exames. |
 | Banco | PostgreSQL 17 via `docker-compose.yml`; a base oficial é Labvet V1. |
 | Frontend | React 19, TypeScript e Vite. |
+| Proxy de produção local | Nginx em Docker, expondo somente `127.0.0.1:8081` e encaminhando `/api` para a API local. |
 | Contratos | As rotas de catálogo estão registradas em `spec-backend-modelosexames.md`; ainda não há OpenAPI versionado. |
 | Testes | Validações de schema e de API ainda precisam ser consolidadas em suíte automatizada. |
 
@@ -50,6 +52,11 @@ percentuais. Em `modeloexameanalitos`, `vrrefminimo` e `vrrefmaximo` são
 textuais e seguem a validação de `tpvalor`; `vrrefperminimo` e
 `vrrefpermaximo` são `NUMERIC(7,4)`, limitados ao intervalo de 0 a 100. O
 banco bloqueia a gravação de percentual para analitos sem essa autorização.
+As migrations 015 e 016 recuperam referências importadas preservadas em
+`dsreferencia`: a primeira trata faixas numéricas simples, e a segunda o
+formato de quatro valores que combina percentual e faixa convencional. A
+recuperação de quatro valores não substitui limites existentes e descarta a
+faixa convencional quando o mínimo de origem é maior que o máximo.
 
 Antes de aplicar qualquer script, o destino deve ser confirmado com:
 
@@ -106,8 +113,15 @@ As units seguem o padrão `LabVet.<Camada>.<Entidade>`, por exemplo
 
 - API: `http://127.0.0.1:9010`;
 - interface web: `http://127.0.0.1:5173`;
+- interface de produção local: `http://127.0.0.1:8081`;
 - PostgreSQL: porta e credenciais locais definidas em `.env`;
 - cliente nativo PostgreSQL para FireDAC: `backend/Lib`.
 
 Os comandos de inicialização e os detalhes das bibliotecas estão em
 [backend/README.md](../backend/README.md).
+
+O acesso externo em `https://app.labvet.app` é realizado por Cloudflare Tunnel
+apontando para `127.0.0.1:8081`, sem exposição de portas de entrada. A rota
+pública é independente do Tunnel do Itriax e o serviço Cloudflared do LabVet
+executa em paralelo ao já existente. A preparação e o uso local estão documentados em
+[deploy/producao/README.md](../deploy/producao/README.md).

@@ -1,6 +1,6 @@
 # LabVet — Roadmap
 
-Atualizado: 12/10/2026
+Atualizado: 15/10/2026
 
 ## Fundação do ambiente
 
@@ -42,6 +42,10 @@ Atualizado: 12/10/2026
 ## Interface e operação
 
 - [x] Integrar a consulta de modelos de exame à API.
+- [x] Preparar o frontend de produção local em Nginx/Docker, isolado em
+  `127.0.0.1:8081`.
+- [x] Publicar e validar o Cloudflare Tunnel para `app.labvet.app`.
+- [ ] Configurar Cloudflare Access para proteger `app.labvet.app`.
 - [ ] Validar login, sessão e autorização nas novas rotas.
 - [x] Compilar o backend Delphi Win64 e testar a API localmente.
 - [ ] Documentar o contrato HTTP conforme cada controller for entregue.
