@@ -1,5 +1,12 @@
 # LabVet — Histórico de Trabalho
 
+## 12/10/2026 — Planejamento para 13/10/2026
+
+- Registradas como prioridades da próxima sessão: concluir as tabelas
+  `atendimentos`, `laudos`, `laudoanalitos` e `laudonotas`; implementar a
+  importação com mapeamento para modelos de exame; e disponibilizar consultas
+  de atendimentos e laudos.
+
 ## 12/10/2026 — Rascunho do modelo de realização de exames
 
 - Criado o script não aplicado `014_laudos_e_laudoanalitos.sql`, baseado nas

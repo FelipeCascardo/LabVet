@@ -30,7 +30,12 @@ Atualizado: 12/10/2026
 ## Realização de exames e laudos
 
 - [x] Criar o rascunho estrutural de `laudos` e `laudoanalitos`.
+- [ ] Criar e revisar as tabelas `atendimentos`, `laudos`, `laudoanalitos` e
+  `laudonotas`.
 - [ ] Definir vínculos com paciente, atendimento, coleta e responsáveis.
+- [ ] Implementar o processo de importação com mapeamento para os modelos de
+  exame e seus analitos.
+- [ ] Implementar consultas de atendimentos e laudos.
 - [ ] Definir a persistência dos valores realizados e o ciclo de emissão.
 - [ ] Revisar e aplicar a migration de laudos após aprovação funcional.
 
