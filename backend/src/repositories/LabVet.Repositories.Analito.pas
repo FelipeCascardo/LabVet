@@ -37,6 +37,7 @@ begin
   Result.DsTecnica := AQuery.FieldByName('dstecnica').AsString;
   Result.DsUnidadeMedida := AQuery.FieldByName('dsunidademedida').AsString;
   Result.TpValor := TTipoValorAnalito(AQuery.FieldByName('tpvalor').AsInteger);
+  Result.FgPercentual := AQuery.FieldByName('fgpercentual').AsBoolean;
   Result.StAtivo := AQuery.FieldByName('stativo').AsBoolean;
 end;
 
@@ -51,7 +52,7 @@ begin
   try
     LQuery.SQL.Text :=
       'select idanalito, cdanalito, nmanalito, dstecnica, dsunidademedida, ' +
-      'tpvalor, stativo from analitos ' +
+      'tpvalor, fgpercentual, stativo from analitos ' +
       'where (:only_active = false or stativo = true) ' +
       'order by nmanalito';
     LQuery.ParamByName('only_active').AsBoolean := AOnlyActive;
@@ -75,7 +76,7 @@ begin
   try
     LQuery.SQL.Text :=
       'select idanalito, cdanalito, nmanalito, dstecnica, dsunidademedida, ' +
-      'tpvalor, stativo from analitos where idanalito = :id';
+      'tpvalor, fgpercentual, stativo from analitos where idanalito = :id';
     LQuery.ParamByName('id').AsLargeInt := AId;
     LQuery.Open;
     if not LQuery.IsEmpty then
@@ -94,7 +95,7 @@ begin
   try
     LQuery.SQL.Text :=
       'select idanalito, cdanalito, nmanalito, dstecnica, dsunidademedida, ' +
-      'tpvalor, stativo from analitos ' +
+      'tpvalor, fgpercentual, stativo from analitos ' +
       'where lower(cdanalito) = lower(:code)';
     LQuery.ParamByName('code').AsString := ACode;
     LQuery.Open;
@@ -113,10 +114,10 @@ begin
   try
     LQuery.SQL.Text :=
       'insert into analitos (' +
-      '  cdanalito, nmanalito, dstecnica, dsunidademedida, tpvalor, ' +
+      '  cdanalito, nmanalito, dstecnica, dsunidademedida, tpvalor, fgpercentual, ' +
       '  idusuarioinclusao, idusuarioalteracao' +
       ') values (' +
-      '  :code, :name, nullif(:technique, ''''), nullif(:unit, ''''), :value_type, ' +
+      '  :code, :name, nullif(:technique, ''''), nullif(:unit, ''''), :value_type, :percentage, ' +
       '  nullif(:actor, 0), nullif(:actor, 0)' +
       ') returning idanalito, stativo';
     LQuery.ParamByName('code').AsString := AValue.CdAnalito;
@@ -124,6 +125,7 @@ begin
     LQuery.ParamByName('technique').AsString := AValue.DsTecnica;
     LQuery.ParamByName('unit').AsString := AValue.DsUnidadeMedida;
     LQuery.ParamByName('value_type').AsInteger := Ord(AValue.TpValor);
+    LQuery.ParamByName('percentage').AsBoolean := AValue.FgPercentual;
     LQuery.ParamByName('actor').AsLargeInt := AActorId;
     LQuery.Open;
     AValue.IdAnalito := LQuery.FieldByName('idanalito').AsLargeInt;
@@ -144,6 +146,7 @@ begin
       '  cdanalito = :code, nmanalito = :name, ' +
       '  dstecnica = nullif(:technique, ''''), ' +
       '  dsunidademedida = nullif(:unit, ''''), tpvalor = :value_type, ' +
+      '  fgpercentual = :percentage, ' +
       '  idusuarioalteracao = nullif(:actor, 0) ' +
       'where idanalito = :id and stativo = true';
     LQuery.ParamByName('id').AsLargeInt := AValue.IdAnalito;
@@ -152,6 +155,7 @@ begin
     LQuery.ParamByName('technique').AsString := AValue.DsTecnica;
     LQuery.ParamByName('unit').AsString := AValue.DsUnidadeMedida;
     LQuery.ParamByName('value_type').AsInteger := Ord(AValue.TpValor);
+    LQuery.ParamByName('percentage').AsBoolean := AValue.FgPercentual;
     LQuery.ParamByName('actor').AsLargeInt := AActorId;
     LQuery.ExecSQL;
     if LQuery.RowsAffected <> 1 then

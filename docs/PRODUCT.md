@@ -22,7 +22,8 @@ essas estruturas e que sirva de base para as telas administrativas do LabVet.
 - grupos de animais com hierarquia opcional;
 - analitos e associação entre exame e analito;
 - modelos de exame e a configuração de seus analitos;
-- preparação de dados de laudos para uso futuro, separada do cadastro operacional.
+- preparação do registro de realização de exames e laudos, separado do cadastro
+  operacional de modelos.
 
 ## Princípios do domínio
 
@@ -31,6 +32,8 @@ essas estruturas e que sirva de base para as telas administrativas do LabVet.
 - Um modelo de exame pode ser associado a um exame e, opcionalmente, a um grupo
   de animais e a uma faixa de idade.
 - Os itens de um modelo preservam a ordem de apresentação e suas referências.
+- A realização de um exame deve preservar os valores e referências vigentes no
+  momento da emissão, sem alterar a configuração reutilizável do modelo.
 
 ## Fora do escopo atual
 
@@ -44,3 +47,4 @@ essas estruturas e que sirva de base para as telas administrativas do LabVet.
 - [Diagrama ER de exames](diagrama-er-exames.svg)
 - [Especificação do backend de modelos de exames](spec-backend-modelosexames.md)
 - [Bases de dados](BASES_DE_DADOS.md)
+- [Rascunho de laudos](../database/estrutura/014_laudos_e_laudoanalitos.sql)

@@ -38,7 +38,7 @@ begin
   if AValue.NmAnalito.Trim.IsEmpty or
     (Length(AValue.NmAnalito.Trim) > 200) then
     raise EAnalitoValidacao.Create('Informe um nome de até 200 caracteres.');
-  if not (AValue.TpValor in [tvaInteiro..tvaMisto]) then
+  if not (AValue.TpValor in [tvaInteiro..tvaCaractere]) then
     raise EAnalitoValidacao.Create('Tipo de valor inválido.');
 end;
 
@@ -126,6 +126,7 @@ begin
     Result.DsTecnica := AValue.DsTecnica.Trim;
     Result.DsUnidadeMedida := AValue.DsUnidadeMedida.Trim;
     Result.TpValor := AValue.TpValor;
+    Result.FgPercentual := AValue.FgPercentual;
     LRepository.Update(Result, AActorId);
   finally
     LRepository.Free;

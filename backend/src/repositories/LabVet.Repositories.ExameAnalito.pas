@@ -17,6 +17,7 @@ type
     function FindById(AId: Int64): TExameAnalito;
     function FindByExameAnalito(AExameId, AAnalitoId: Int64): TExameAnalito;
     procedure Insert(AValue: TExameAnalito; AActorId: Int64);
+    procedure Update(AValue: TExameAnalito; AActorId: Int64);
     procedure SetActive(AId: Int64; AActive: Boolean; AActorId: Int64);
   end;
 
@@ -128,6 +129,33 @@ begin
     LQuery.Open;
     AValue.IdExameAnalito := LQuery.FieldByName('idexameanalito').AsLargeInt;
     AValue.StAtivo := LQuery.FieldByName('stativo').AsBoolean;
+  finally
+    LQuery.Free;
+  end;
+end;
+
+procedure TExameAnalitoRepository.Update(
+  AValue: TExameAnalito;
+  AActorId: Int64
+);
+var
+  LQuery: TFDQuery;
+begin
+  LQuery := NewQuery;
+  try
+    LQuery.SQL.Text :=
+      'update exameanalitos set ' +
+      'idexame = :exam_id, ' +
+      'idanalito = :analyte_id, ' +
+      'idusuarioalteracao = nullif(:actor, 0) ' +
+      'where idexameanalito = :id and stativo = true';
+    LQuery.ParamByName('id').AsLargeInt := AValue.IdExameAnalito;
+    LQuery.ParamByName('exam_id').AsLargeInt := AValue.IdExame;
+    LQuery.ParamByName('analyte_id').AsLargeInt := AValue.IdAnalito;
+    LQuery.ParamByName('actor').AsLargeInt := AActorId;
+    LQuery.ExecSQL;
+    if LQuery.RowsAffected <> 1 then
+      raise EInvalidOp.Create('Vínculo não encontrado ou inativo.');
   finally
     LQuery.Free;
   end;
