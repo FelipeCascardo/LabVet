@@ -9,7 +9,7 @@ SET search_path TO labvet, public;
 
 CREATE TABLE laudos (
   idlaudo BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  idmodeloexame BIGINT,
+  idexame BIGINT,
   cdlaudo VARCHAR(100) NOT NULL,
   nmlaudo VARCHAR(250) NOT NULL,
   dsidade VARCHAR(20),

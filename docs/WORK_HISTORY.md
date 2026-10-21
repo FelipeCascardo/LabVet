@@ -1,5 +1,93 @@
 # LabVet — Histórico de Trabalho
 
+## 21/10/2026 — Consolidação da primeira entrega de cadastros
+
+- Consolidado o padrão compartilhado de pesquisa/seleção e edição no cadastro
+  de Analitos, com grade rolável, painéis fixos, ordenação e paginação local
+  de 25 registros.
+- Confirmada a organização definitiva do menu **Exames** e o redirecionamento
+  de Modelo de Exames para a nova rota.
+- Recompilado e publicado o frontend no ambiente local de produção.
+- Validação: build TypeScript/Vite concluído e healthcheck do proxy retornando
+  HTTP 200 em `127.0.0.1:8081`; o lint mantém somente avisos preexistentes em
+  `ModeloExamesPage`.
+
+## 20/10/2026 — Refinamento de alinhamento da grade de Analitos
+
+- Alinhadas as larguras dos painéis de título, filtros, grade e rodapé.
+- Removido o atalho de atualização que ocupava espaço entre a grade e o
+  rodapé; o espaçamento inferior da grade foi reduzido.
+- Ampliada a coluna Código para 350px, mantendo códigos longos legíveis.
+- Validação: `npm run build` concluído sem erros; o lint conserva somente os
+  avisos preexistentes na página de Modelo de Exames.
+
+## 20/10/2026 — Rolagem e paginação da listagem de Analitos
+
+- A área de pesquisa/seleção passou a fixar título, filtros e rodapé no limite
+  da página, restringindo a rolagem ao painel da grade.
+- Implementada paginação local de 25 registros por página, com controles de
+  início, anterior, próxima e última página, estado desabilitado nos limites e
+  total de registros compatível com os filtros aplicados.
+- A seleção de todos agora se limita aos registros visíveis da página atual.
+- Validação: `npm run build` concluiu sem erros; o lint conserva apenas dois
+  avisos preexistentes na página de Modelo de Exames.
+
+## 20/10/2026 — Padrão de cadastros e implementação de Analitos
+
+- Criados os componentes reutilizáveis de pesquisa/seleção e edição para as
+  páginas administrativas do grupo **Exames**.
+- Implementada a rota `/exames/analitos`, com carregamento autenticado,
+  filtros por texto, situação e tipo de valor, ordenação pelos cabeçalhos,
+  seleção de registros e ações de inclusão, edição, inativação e reativação.
+- A edição apresenta painel com rolagem, identificação e configuração
+  laboratorial; os dados são enviados aos contratos existentes de Analito.
+- Criado o grupo **Exames** no menu lateral com os cinco submenus definidos;
+  Modelo de Exames foi removido de Cadastros, movido para `/exames/modelos` e
+  a rota antiga passou a redirecionar para a nova.
+- Incluída a imagem do analito em `frontend/public/images`, para ser servida
+  pelo próprio Vite/Nginx nas páginas reais.
+- Validação: `npm run build` do frontend concluiu TypeScript e Vite sem erros.
+  A validação navegada depende de uma sessão autenticada e da API em execução.
+
+## 20/10/2026 — Especificação das páginas de cadastro de exames
+
+- Criado o branch `paginas-cadastros`, conforme solicitado pelo usuário.
+- Criada a especificação `spec-frontend-cadastros-exames.md` para os cadastros
+  de categorias, exames e seus analitos, grupos de animais, analitos e modelos
+  de exames.
+- Definido o novo grupo de navegação **Exames**, com cinco submenus, a remoção
+  de Modelo de Exames de **Cadastros** e o redirecionamento da rota antiga.
+- A especificação foi limitada aos endpoints já existentes: a manutenção de
+  cabeçalho e itens do modelo é explicitamente não transacional até que o
+  backend ofereça um endpoint composto.
+- Validação: contratos JSON e rotas foram conferidos nas models e controllers
+  Delphi; não houve alteração de código nem execução de migrations.
+
+## 17/10/2026 — Inicialização conjunta da API e do frontend
+
+- Usuário confirmou o restabelecimento do login após iniciar a API.
+- Atualizado o iniciador para reutilizar a API do mesmo executável na porta
+  9010 ou iniciá-la sem janela adicional, aguardar os containers e verificar
+  a API pelo proxy antes de abrir o domínio HTTPS. Adicionado `--no-browser`.
+- Corrigidas as aspas do healthcheck do PostgreSQL para `Labvet V1`.
+- Atualizado o guia de produção com comportamento e requisitos do iniciador.
+- Validação: execução real com `--no-browser` terminou com código zero,
+  reutilizou a API e confirmou banco e frontend saudáveis e HTTP 200 pelo
+  proxy. A partida da API ausente foi validada na recuperação anterior;
+  esse caminho do script foi revisado sem parar a API durante o teste.
+
+## 17/10/2026 — Restabelecimento da API de produção local
+
+- Sessão mantida no branch `main`, conforme autorização do usuário.
+- Investigado erro de login: a API Delphi estava parada e o proxy local e
+  o endereço público retornavam HTTP 502. Frontend e PostgreSQL estavam
+  saudáveis, com processos do Cloudflare Tunnel em execução.
+- Iniciado `backend/LabVet.exe` com a configuração `.env.producao.local`.
+- Validação: `/api/v1/health` respondeu HTTP 200 e `{"status":"ok"}` na
+  API local, no proxy local e em `https://app.labvet.app`.
+- Login com credenciais reais não foi validado. A alteração preexistente
+  na migration 014 foi preservada.
+
 ## 15/10/2026 — Planejamento da próxima sessão
 
 - Prioridades definidas para 16/10/2026:

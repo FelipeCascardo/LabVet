@@ -21,6 +21,8 @@ essas estruturas e que sirva de base para as telas administrativas do LabVet.
 - categorias e catálogo de exames;
 - grupos de animais com hierarquia opcional;
 - analitos e associação entre exame e analito;
+- manutenção de analitos pela interface administrativa, como primeiro cadastro
+  conectado aos contratos do catálogo;
 - modelos de exame e a configuração de seus analitos;
 - preparação do registro de realização de exames e laudos, separado do cadastro
   operacional de modelos.
@@ -46,5 +48,6 @@ essas estruturas e que sirva de base para as telas administrativas do LabVet.
 
 - [Diagrama ER de exames](diagrama-er-exames.svg)
 - [Especificação do backend de modelos de exames](spec-backend-modelosexames.md)
+- [Especificação das páginas de cadastro de exames](spec-frontend-cadastros-exames.md)
 - [Bases de dados](BASES_DE_DADOS.md)
 - [Rascunho de laudos](../database/estrutura/014_laudos_e_laudoanalitos.sql)

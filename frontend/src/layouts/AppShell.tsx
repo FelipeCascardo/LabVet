@@ -6,6 +6,8 @@ import { useAuth } from '../app/auth/useAuth'
 
 export function AppShell() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const location = useLocation()
+  const isCadastroExames = location.pathname.startsWith('/exames')
   return <div className="app-shell">
     <button className="mobile-menu" onClick={() => setSidebarOpen(true)} aria-label="Abrir menu"><Menu /></button>
     <aside className={`sidebar ${sidebarOpen ? 'is-open' : ''}`}>
@@ -21,7 +23,7 @@ export function AppShell() {
       </div>
     </aside>
     {sidebarOpen && <button className="sidebar-overlay" onClick={() => setSidebarOpen(false)} aria-label="Fechar menu" />}
-    <main className="app-content"><Topbar /><Outlet /></main>
+    <main className={`app-content ${isCadastroExames ? 'exam-catalog-content' : ''}`}>{!isCadastroExames && <Topbar />}<Outlet /></main>
   </div>
 }
 

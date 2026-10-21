@@ -1,6 +1,6 @@
 # LabVet — Roadmap
 
-Atualizado: 15/10/2026
+Atualizado: 21/10/2026
 
 ## Fundação do ambiente
 
@@ -42,6 +42,11 @@ Atualizado: 15/10/2026
 ## Interface e operação
 
 - [x] Integrar a consulta de modelos de exame à API.
+- [x] Especificar as páginas de cadastro e a navegação do menu Exames.
+- [~] Implementar as páginas de Categorias, Exames, Grupos de Animais,
+  Analitos e Modelo de Exames conforme a especificação do frontend.
+  O padrão compartilhado e o cadastro de Analitos já estão implementados;
+  os demais cadastros ainda aguardam adoção do padrão.
 - [x] Preparar o frontend de produção local em Nginx/Docker, isolado em
   `127.0.0.1:8081`.
 - [x] Publicar e validar o Cloudflare Tunnel para `app.labvet.app`.

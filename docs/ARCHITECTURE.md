@@ -98,12 +98,24 @@ por identificador, criação, atualização, inativação e reativação. A unit
 `LabVet.Controllers.Base` concentra apenas a leitura técnica de JSON e IDs e a
 serialização das respostas.
 
-No frontend, a rota `/cadastros/modelos-exames` consome os recursos de grupos
-de animais, modelos de exames e itens de modelo. A hierarquia visual é montada
-no cliente com `idGrupoPai`, enquanto os analitos são carregados por modelo.
-Para a composição dos três painéis, a página também consulta `Exame`,
-`ExameAnalito` e `Analito`, resolvendo os identificadores no cliente até a
-disponibilização do endpoint agregado de detalhe.
+No frontend, o menu **Exames** reúne as páginas de categorias, exames, grupos
+de animais, analitos e modelos. A rota de modelos será `/exames/modelos`; a
+rota anterior `/cadastros/modelos-exames` deve apenas redirecionar para ela.
+A página de modelos consome os recursos de grupos de animais, modelos de
+exames e itens de modelo. A hierarquia visual é montada no cliente com
+`idGrupoPai`, enquanto os analitos são carregados por modelo. Para a composição
+dos três painéis, a página também consulta `Exame`, `ExameAnalito` e
+`Analito`, resolvendo os identificadores no cliente até a disponibilização do
+endpoint agregado de detalhe. A manutenção atual realiza operações individuais
+de cabeçalho e itens, pois não existe uma gravação composta transacional.
+
+As páginas administrativas do grupo compartilham os componentes
+`CadastroPesquisaSelecao` e `CadastroEdicao`. O primeiro centraliza título,
+ações, filtros, grade ordenável, seleção e paginação local de 25 registros;
+mantém título, filtros e rodapé fixos, restringindo a rolagem à grade. O segundo compõe
+o painel rolável de campos e o rodapé de cancelar/salvar. A implementação de
+`AnalitosPage` é a referência inicial e consome `examesApi`, que centraliza os
+erros HTTP e os contratos do recurso `analitos`.
 
 As units seguem o padrão `LabVet.<Camada>.<Entidade>`, por exemplo
 `LabVet.Repositories.Exame`, `LabVet.Services.Exame` e

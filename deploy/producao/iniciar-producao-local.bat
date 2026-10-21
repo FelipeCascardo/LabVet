@@ -22,35 +22,38 @@ for /f "usebackq eol=# tokens=1,* delims==" %%A in ("%LABVET_ENV_FILE%") do (
   if not "%%A"=="" set "%%A=%%B"
 )
 
-netstat -ano | findstr /R /C:":9010 .*LISTENING" >nul
-if not errorlevel 1 (
-  echo A porta 9010 ja esta em uso. Encerre a API de desenvolvimento antes de iniciar a producao.
-  exit /b 1
-)
-
-netstat -ano | findstr /R /C:":8081 .*LISTENING" >nul
-if not errorlevel 1 (
-  echo A porta 8081 ja esta em uso. Encerre o processo que a utiliza antes de iniciar a producao.
+docker info >nul 2>&1
+if errorlevel 1 (
+  echo Docker indisponivel. Inicie o Docker Desktop e execute novamente.
   exit /b 1
 )
 
 echo Iniciando PostgreSQL local...
-docker compose --env-file "%LABVET_ENV_FILE%" -f "%LABVET_ROOT%\docker-compose.yml" up -d postgres
+docker compose --env-file "%LABVET_ENV_FILE%" -f "%LABVET_ROOT%\docker-compose.yml" up -d --wait --wait-timeout 90 postgres
 if errorlevel 1 exit /b 1
 
 echo Iniciando API do LabVet...
-start "LabVet API - Producao" /D "%LABVET_ROOT%\backend" "%LABVET_API_EXE%"
+powershell -NoProfile -Command "$ErrorActionPreference='Stop'; try { $listeners=@(Get-NetTCPConnection -LocalPort 9010 -State Listen -ErrorAction SilentlyContinue); if ($listeners.Count -gt 0) { foreach ($listener in $listeners) { $process=Get-Process -Id $listener.OwningProcess; if ($process.Path -ne $env:LABVET_API_EXE) { throw 'A porta 9010 pertence a outro executavel.' } }; Write-Host 'API existente reutilizada.' } else { $running=@(Get-Process -Name LabVet -ErrorAction SilentlyContinue); if ($running.Count -gt 0) { throw 'Existe um processo LabVet sem resposta na porta 9010. Verifique-o antes de tentar novamente.' }; Start-Process -FilePath $env:LABVET_API_EXE -WorkingDirectory (Join-Path $env:LABVET_ROOT 'backend') -WindowStyle Hidden } } catch { Write-Host $_.Exception.Message; exit 1 }"
+if errorlevel 1 exit /b 1
 
 echo Aguardando a API...
 powershell -NoProfile -Command "$limite=(Get-Date).AddSeconds(20); do { try { if ((Invoke-WebRequest -UseBasicParsing http://127.0.0.1:9010/api/v1/health -TimeoutSec 2).StatusCode -eq 200) { exit 0 } } catch {} Start-Sleep -Milliseconds 500 } while ((Get-Date) -lt $limite); exit 1"
 if errorlevel 1 (
-  echo A API nao respondeu. Verifique a janela 'LabVet API - Producao'.
+  echo A API nao respondeu na porta 9010. Verifique o processo LabVet.exe.
   exit /b 1
 )
 
 echo Publicando frontend de producao em 127.0.0.1:8081...
-docker compose --env-file "%LABVET_ENV_FILE%" -f "%LABVET_ROOT%\docker-compose.yml" --profile producao up --build -d frontend-producao
+docker compose --env-file "%LABVET_ENV_FILE%" -f "%LABVET_ROOT%\docker-compose.yml" --profile producao up --build -d --wait --wait-timeout 90 frontend-producao
 if errorlevel 1 exit /b 1
 
-start "" "http://127.0.0.1:8081/"
-echo Producao local iniciada em http://127.0.0.1:8081/
+echo Validando a API pelo frontend...
+powershell -NoProfile -Command "$port=if ($env:LABVET_FRONTEND_PORT) { $env:LABVET_FRONTEND_PORT } else { '8081' }; $limite=(Get-Date).AddSeconds(30); do { try { $r=Invoke-WebRequest -UseBasicParsing ('http://127.0.0.1:'+$port+'/api/v1/health') -TimeoutSec 2; if ($r.StatusCode -eq 200 -and ($r.Content | ConvertFrom-Json).status -eq 'ok') { exit 0 } } catch {}; Start-Sleep -Milliseconds 500 } while ((Get-Date) -lt $limite); exit 1"
+if errorlevel 1 (
+  echo O frontend iniciou, mas nao conseguiu acessar a API. Verifique o proxy.
+  exit /b 1
+)
+
+if /I not "%~1"=="--no-browser" start "" "https://app.labvet.app/"
+echo API e frontend iniciados. Acesse https://app.labvet.app/
+exit /b 0

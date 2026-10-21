@@ -24,5 +24,8 @@ O servidor Vite encaminha chamadas iniciadas por `/api` para a API local. Assim,
 - a sessão é mantida apenas enquanto a página está aberta: ao recarregar ou abrir novamente o LabVet, o login é solicitado;
 - identidade visual do LabVet aplicada no login e no menu lateral;
 - sidebar com os módulos de dashboard, cadastros, laboratório e utilitários;
-- páginas-base prontas para receber listagens e formulários;
+- grupo Exames com rotas de catálogo; Analitos é o primeiro cadastro conectado
+  à API, com pesquisa, seleção, ordenação, paginação local e edição;
+- componentes reutilizáveis de pesquisa/seleção e edição para os demais
+  cadastros de Exames;
 - dashboard ainda sem indicadores reais: o próximo corte conectará os contratos de dados da API.

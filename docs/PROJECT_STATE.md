@@ -1,6 +1,6 @@
 # LabVet — Estado do Projeto
 
-Atualizado: 15/10/2026
+Atualizado: 21/10/2026
 
 ## Marco atual
 
@@ -41,6 +41,15 @@ por camadas adotada no Itriax.
 - página de Modelo de Exames no frontend, organizada em três painéis: árvore
   de grupos de animais, modelos do grupo selecionado e analitos do modelo
   selecionado agrupados por seção;
+- especificação funcional e técnica das páginas de cadastro do catálogo,
+  incluindo a reorganização da navegação no novo menu Exames;
+- padrão reutilizável de página de pesquisa/seleção e de edição para os
+  cadastros de Exames no frontend;
+- cadastro de Analitos implementado com listagem, filtros, ordenação,
+  seleção, inclusão, edição, inativação e reativação pelos endpoints
+  autenticados já existentes;
+- novo menu **Exames** com Categorias, Exames, Grupos de Animais, Analitos e
+  Modelo de Exames; a rota anterior de modelos redireciona para o novo menu;
 - diagramas de entidade-relacionamento e de classes atualizados;
 - regra de importação explícita de `Data.DB` quando units acessam `TDataSet`.
 - ambiente de produção local preparado com Nginx em Docker em
@@ -51,6 +60,9 @@ por camadas adotada no Itriax.
 - concluir o CRUD consistente de cada repository;
 - criar services individuais, com validações e transações;
 - validar as rotas autenticadas contra a base Labvet V1 no ambiente Docker.
+- implementar as páginas de Categorias, Exames, Grupos de Animais, Analitos e
+  Modelo de Exames conforme `spec-frontend-cadastros-exames.md`; Analitos foi
+  concluído como referência inicial do padrão compartilhado.
 
 ## Próximas atividades priorizadas
 
@@ -91,6 +103,18 @@ Pendências subsequentes:
 
 ## Validação registrada
 
+Em 17/10/2026, o acesso a `app.labvet.app` retornava HTTP 502 porque a
+API Delphi estava parada, sem processo `LabVet.exe` ou serviço na porta
+9010. Os containers de frontend e PostgreSQL estavam saudáveis. A API foi
+iniciada com `.env.producao.local`; os healthchecks direto em 9010, pelo
+proxy em 8081 e pelo endereço público HTTPS responderam HTTP 200 com
+`{"status":"ok"}`. O usuário confirmou que o login voltou a funcionar.
+
+O iniciador de produção foi ajustado para reutilizar a API existente do mesmo
+executável, iniciar a API ausente sem janela adicional, aguardar banco e
+frontend saudáveis e validar a API pelo proxy antes de abrir o domínio HTTPS.
+O healthcheck do PostgreSQL passou a aceitar nomes de banco com espaços.
+
 A migration 011 foi aplicada após confirmação de `current_database() =
 Labvet V1` e `current_user = labvet_app`. A validação do schema confirmou a
 remoção de `tiposanimais`, a presença de `animalgrupos`, das colunas
@@ -111,6 +135,34 @@ integração HTTP permanece pendente.
 O frontend possui a página inicial de Modelo de Exames e sua compilação de
 produção foi concluída com sucesso. A validação funcional depende de dados e
 rotas autenticadas em execução.
+
+Em 20/10/2026, o frontend recebeu os componentes reutilizáveis de
+pesquisa/seleção e edição para os cadastros de Exames. A primeira adoção é a
+página de Analitos em `/exames/analitos`, integrada a `GET`, `GET /:id`,
+`POST`, `PUT`, `DELETE` e `POST /:id/reativar`. A página mantém filtros no
+cliente, ordenação pelos títulos da grade e ações sobre a seleção. A imagem do
+analito passou a fazer parte dos arquivos públicos do frontend, eliminando a
+dependência de imagens externas ou da prévia de layout. A compilação de
+produção TypeScript/Vite foi concluída com sucesso; a validação interativa com
+uma sessão autenticada da API ainda é pendente.
+
+Em 20/10/2026, a listagem de Analitos passou a manter título, filtros e
+rodapé fixos nos limites da área útil, com rolagem restrita ao painel da grade.
+A paginação local agora apresenta 25 registros por página e responde aos
+controles de primeira, anterior, próxima e última página sobre o resultado
+filtrado e ordenado. A compilação de produção do frontend foi concluída sem
+erros; a validação visual autenticada permanece pendente.
+
+Na revisão seguinte da listagem, os painéis de título, filtros, grade e rodapé
+foram alinhados à mesma largura útil. O atalho de atualização foi removido da
+base da grade e a coluna Código foi ampliada para 350px, acomodando códigos
+longos sem quebra prematura.
+
+Em 21/10/2026, a versão consolidada do frontend foi recompilada e publicada
+no ambiente local de produção. O healthcheck pelo proxy em `127.0.0.1:8081`
+respondeu HTTP 200 com `{"status":"ok"}`. A validação de lint não encontrou
+novos avisos nas páginas de cadastro; permanecem somente dois avisos já
+existentes em `ModeloExamesPage` sobre atualização de estado em effects.
 
 A estrutura de produção local separa o frontend compilado em Nginx no
 container `labvet-frontend-producao`, em `127.0.0.1:8081`, da API Delphi em
