@@ -109,6 +109,9 @@ ativos que ainda não estão vinculados, criando `POST /exame-analitos` com
 `{ "idExame": ..., "idAnalito": ... }`. A remoção funcional usa
 `DELETE /exame-analitos/:id`; um vínculo já conhecido pode ser reativado por
 `POST /exame-analitos/:id/reativar` em vez de criar duplicata.
+Para apresentar também vínculos históricos na edição, a tela consulta
+`GET /exame-analitos?incluirInativos=true`; sem esse parâmetro, a listagem
+mantém o comportamento padrão de retornar somente vínculos ativos.
 
 O botão de analitos fica desabilitado no cadastro novo até a confirmação do
 exame, com a orientação de salvar o cabeçalho primeiro.
@@ -163,15 +166,15 @@ confiar a decisão final à validação da API.
 `/api/v1/animal-grupos`, `/api/v1/exames`, `/api/v1/exame-analitos` e
 `/api/v1/analitos`
 
-A página preserva a organização visual de três painéis já existente:
+A página começa pela árvore de grupos de animais. A escolha de um grupo abre
+uma página própria de modelos (`/exames/modelos/grupo/:grupoId`), com filtro,
+seleção, inclusão, alteração e exclusão lógica. Essa separação é obrigatória
+no celular, evitando combinar árvore, cartões e editor em uma única rolagem.
 
-1. árvore de grupos de animais;
-2. modelos do grupo selecionado;
-3. analitos do modelo selecionado, agrupados por seção e ordenados por
-   `ordem`.
-
-O cabeçalho ganha as ações **Novo modelo**, **Editar modelo** e **Inativar /
-Reativar modelo**. O formulário de modelo usa:
+O editor usa uma página própria e mantém livres os campos de `modeloexames` e
+`modeloexameanalitos`. Os dados de `exames` e `analitos` usados como origem
+são apresentados somente para consulta, sem comandos para modificar esses
+cadastros. O formulário de modelo usa:
 
 | Campo | JSON | Obrigatório | Regra da tela |
 | --- | --- | --- | --- |
@@ -231,6 +234,10 @@ Os recursos de cadastro seguem a mesma convenção:
 `modelos-exames-analitos` usa `GET /api/v1/modelos-exames-analitos?idModeloExame=<id>` para listar itens de um modelo. Os corpos e respostas mantêm os
 nomes JSON emitidos pelas classes Delphi; a camada de serviço TypeScript deve
 centralizar `request`, normalização de erros e tipos compartilhados.
+
+As listagens de categorias, exames, analitos e vínculos aceitam
+`?incluirInativos=true` quando a tela precisa exibir registros históricos;
+sem o parâmetro, retornam somente os ativos.
 
 Erros `400` ficam associados ao formulário; `404` pede recarregamento da
 lista; `409`, quando disponibilizado pela API, explica o conflito sem descartar

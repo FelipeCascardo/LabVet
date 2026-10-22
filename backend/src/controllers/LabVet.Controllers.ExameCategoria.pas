@@ -33,6 +33,14 @@ begin
     .Error('Não foi possível processar a solicitação.');
 end;
 
+function IncluirInativos(ARequest: THorseRequest): Boolean;
+var
+  LValor: string;
+begin
+  LValor := ARequest.Query['incluirInativos'];
+  Result := SameText(LValor, 'true') or (LValor = '1');
+end;
+
 procedure List(ARequest: THorseRequest; AResponse: THorseResponse; ANext: TProc);
 var
   LCategorias: TObjectList<TExameCategoria>;
@@ -43,7 +51,7 @@ begin
   try
     LService := TExameCategoriaService.Create;
     try
-      LCategorias := LService.Listar;
+      LCategorias := LService.Listar(not IncluirInativos(ARequest));
       try
         LResponse := TJSONArray.Create;
         for LCategoria in LCategorias do

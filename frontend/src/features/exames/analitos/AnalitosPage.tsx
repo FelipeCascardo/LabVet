@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent, type FormEvent, type PointerEvent as ReactPointerEvent } from 'react'
 import { ArrowDown, ArrowUp, FlaskConical } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../app/auth/useAuth'
@@ -43,19 +43,20 @@ export function AnalitosPage() {
   const [ordenacao, setOrdenacao] = useState<Ordenacao>('nome')
   const [direcao, setDirecao] = useState<'asc' | 'desc'>('asc')
   const [paginaAtual, setPaginaAtual] = useState(1)
-  const [filtrosAbertos, setFiltrosAbertos] = useState(true)
+  const [filtrosAbertos, setFiltrosAbertos] = useState(false)
   const [carregando, setCarregando] = useState(true)
   const [erro, setErro] = useState<string | null>(null)
   const [registroEmEdicao, setRegistroEmEdicao] = useState<Analito | null | undefined>(undefined)
   const [formulario, setFormulario] = useState<FormularioAnalito>(formularioInicial)
   const [salvando, setSalvando] = useState(false)
+  const temporizadorPressionamento = useRef<number | null>(null)
 
   const carregar = useCallback(async () => {
     if (!accessToken) return
     setCarregando(true)
     setErro(null)
     try {
-      setAnalitos(await examesApi.listarAnalitos(accessToken))
+      setAnalitos(await examesApi.listarAnalitos(accessToken, true))
     } catch (error) {
       setErro(error instanceof Error ? error.message : 'Não foi possível carregar os analitos.')
     } finally {
@@ -64,6 +65,10 @@ export function AnalitosPage() {
   }, [accessToken])
 
   useEffect(() => { void Promise.resolve().then(carregar) }, [carregar])
+
+  useEffect(() => () => {
+    if (temporizadorPressionamento.current !== null) window.clearTimeout(temporizadorPressionamento.current)
+  }, [])
 
   const registros = useMemo(() => {
     const termo = busca.trim().toLocaleLowerCase('pt-BR')
@@ -93,6 +98,21 @@ export function AnalitosPage() {
 
   function alternarSelecao(id: number) {
     setSelecionados((atuais) => atuais.includes(id) ? atuais.filter((item) => item !== id) : [...atuais, id])
+  }
+
+  function cancelarPressionamento() {
+    if (temporizadorPressionamento.current === null) return
+    window.clearTimeout(temporizadorPressionamento.current)
+    temporizadorPressionamento.current = null
+  }
+
+  function iniciarPressionamento(id: number, event: ReactPointerEvent<HTMLElement>) {
+    if (event.target instanceof HTMLInputElement || (event.pointerType === 'mouse' && event.button !== 0)) return
+    cancelarPressionamento()
+    temporizadorPressionamento.current = window.setTimeout(() => {
+      alternarSelecao(id)
+      temporizadorPressionamento.current = null
+    }, 300)
   }
 
   function abrirInclusao() {
@@ -225,9 +245,9 @@ export function AnalitosPage() {
     {erro && <p className="form-error cadastro-list-error">{erro}</p>}
     {carregando ? <p className="cadastro-state">Carregando analitos…</p> : <div className="cadastro-grid" role="table" aria-label="Analitos cadastrados">
       <div className="cadastro-grid-header" role="row"><span></span>{cabecalho('Código', 'codigo')}{cabecalho('Analito', 'nome')}{cabecalho('Unidade', 'unidadeMedida')}{cabecalho('Tipo de valor', 'tipoValor')}{cabecalho('Status', 'ativo')}</div>
-      {registrosDaPagina.map((analito) => <article className="cadastro-row" key={analito.id} role="row">
+      {registrosDaPagina.map((analito) => <article className="cadastro-row" key={analito.id} role="row" onPointerDown={(event) => iniciarPressionamento(analito.id, event)} onPointerUp={cancelarPressionamento} onPointerCancel={cancelarPressionamento} onPointerLeave={cancelarPressionamento} onPointerMove={cancelarPressionamento}>
         <input type="checkbox" checked={selecionados.includes(analito.id)} onChange={() => alternarSelecao(analito.id)} aria-label={`Selecionar ${analito.nome}`} />
-        <span className="cadastro-code">{analito.codigo}</span><strong>{analito.nome}</strong><span>{analito.unidadeMedida || '—'}</span><span>{descricaoTipo(analito.tipoValor)}</span>{badgeSituacao(analito.ativo)}
+        <span className="cadastro-code">{analito.codigo}</span><strong className="analito-name">{analito.nome}</strong><span className="analito-unit">{analito.unidadeMedida || '—'}</span><span className="analito-value-type">{descricaoTipo(analito.tipoValor)}</span>{badgeSituacao(analito.ativo)}
       </article>)}
       {registros.length === 0 && <p className="cadastro-state">Nenhum analito encontrado com os filtros informados.</p>}
     </div>}

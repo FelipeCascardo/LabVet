@@ -47,7 +47,13 @@ begin
   if Assigned(LValue) and not (LValue is TJSONNull) then
   begin
     Result.VlExame.PossuiValor := True;
-    Result.VlExame.Valor := LValue.GetValue<Currency>;
+    if LValue is TJSONNumber then
+      Result.VlExame.Valor := StrToCurr(
+        TJSONNumber(LValue).Value,
+        TFormatSettings.Invariant
+      )
+    else
+      Result.VlExame.Valor := LValue.GetValue<Currency>;
   end;
   LValue := AJSON.GetValue('idExamePai');
   if Assigned(LValue) and not (LValue is TJSONNull) then

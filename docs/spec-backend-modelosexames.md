@@ -99,11 +99,11 @@ Ao salvar um modelo, `TModeloExameService` deverá:
 
 | Controlador | Rotas iniciais |
 | --- | --- |
-| `LabVet.Controllers.ExameCategoria` | `GET/POST /api/v1/exame-categorias`, `GET/PUT/DELETE /api/v1/exame-categorias/:id`, `POST /:id/reativar` |
-| `LabVet.Controllers.Exame` | `GET/POST /api/v1/exames`, `GET/PUT/DELETE /api/v1/exames/:id`, `POST /:id/reativar` |
+| `LabVet.Controllers.ExameCategoria` | `GET/POST /api/v1/exame-categorias` (`GET` aceita `?incluirInativos=true`), `GET/PUT/DELETE /api/v1/exame-categorias/:id`, `POST /:id/reativar` |
+| `LabVet.Controllers.Exame` | `GET/POST /api/v1/exames` (`GET` aceita `?incluirInativos=true`), `GET/PUT/DELETE /api/v1/exames/:id`, `POST /:id/reativar` |
 | `LabVet.Controllers.AnimalGrupo` | `GET/POST /api/v1/animal-grupos`, `GET/PUT/DELETE /api/v1/animal-grupos/:id`, `POST /:id/reativar` |
-| `LabVet.Controllers.Analito` | `GET/POST /api/v1/analitos`, `GET/PUT/DELETE /api/v1/analitos/:id`, `POST /:id/reativar` |
-| `LabVet.Controllers.ExameAnalito` | `GET/POST /api/v1/exame-analitos`, `GET/PUT/DELETE /api/v1/exame-analitos/:id`, `POST /:id/reativar` |
+| `LabVet.Controllers.Analito` | `GET/POST /api/v1/analitos` (`GET` aceita `?incluirInativos=true`), `GET/PUT/DELETE /api/v1/analitos/:id`, `POST /:id/reativar` |
+| `LabVet.Controllers.ExameAnalito` | `GET/POST /api/v1/exame-analitos` (`GET` aceita `?incluirInativos=true`), `GET/PUT/DELETE /api/v1/exame-analitos/:id`, `POST /:id/reativar` |
 | `LabVet.Controllers.ModeloExame` | `GET/POST /api/v1/modelos-exames`, `GET/PUT/DELETE /api/v1/modelos-exames/:id`, `POST /:id/reativar` |
 | `LabVet.Controllers.ModeloExameAnalito` | `GET /api/v1/modelos-exames-analitos?idModeloExame=:id`, `GET/POST/PUT/DELETE /api/v1/modelos-exames-analitos/:id`, `POST /:id/reativar` |
 

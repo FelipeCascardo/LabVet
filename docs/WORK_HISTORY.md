@@ -1,5 +1,160 @@
 # LabVet — Histórico de Trabalho
 
+## 21/10/2026 — Rodapé e rolagem da lista de modelos por grupo
+
+- A página de modelos aberta a partir do grupo de animal foi migrada para o
+  padrão de pesquisa e seleção dos demais cadastros.
+- Cabeçalho, filtros e rodapé com seleção/paginação são fixos; a rolagem fica
+  limitada à grade de modelos, inclusive no celular.
+- Validação: `npm run build` do frontend concluiu TypeScript e Vite sem erros.
+- Publicada a correção no ambiente local de produção; o healthcheck do proxy
+  respondeu HTTP 200 com `{"status":"ok"}`.
+
+## 21/10/2026 — Manutenção de Modelos de Exames por grupo
+
+- A página inicial de Modelo de Exames agora parte da seleção de um grupo de
+  animais. A lista filtrável do grupo é uma página própria, o que preserva a
+  usabilidade em telas móveis.
+- A lista permite incluir, selecionar, alterar e inativar o modelo escolhido.
+- Criado o editor do modelo, com manutenção livre dos campos de
+  `modeloexames` e dos itens de `modeloexameanalitos` após a gravação do
+  cabeçalho.
+- As informações do Exame e do Analito de origem são mostradas como consulta;
+  a tela não altera os cadastros de Exames nem de Analitos.
+- Validação: `npm run build` do frontend concluiu TypeScript e Vite sem erros.
+- Publicado no ambiente local de produção; o healthcheck do proxy respondeu
+  HTTP 200 com `{"status":"ok"}`.
+
+## 21/10/2026 — Cadastro hierárquico de Grupos de Animais
+
+- Implementada a rota `/exames/grupos-animais`, com árvore navegável da
+  hierarquia e painel de manutenção dos grupos selecionados.
+- A seleção de um nó mostra o grupo e seus descendentes na grade. A árvore
+  permite expandir e recolher ramos sem perder a seleção.
+- Incluídos pesquisa, filtro de situação, paginação, seleção por caixa ou
+  toque contínuo, inclusão, edição, inativação e reativação.
+- O editor apresenta a escolha de grupo pai na própria hierarquia e bloqueia
+  o grupo em edição e seus descendentes, evitando ciclos no cliente.
+- A rota de listagem de grupos passou a aceitar `?incluirInativos=true`, em
+  alinhamento com os demais cadastros do catálogo. A disponibilização dessa
+  parte depende da compilação do backend Delphi pela IDE.
+- Validação: `npm run build` do frontend concluiu TypeScript e Vite sem erros.
+- Publicada a interface no ambiente local de produção; o healthcheck do proxy
+  respondeu HTTP 200 com `{"status":"ok"}`.
+
+## 21/10/2026 — Valor monetário e mensagens de erro de Exames
+
+- O campo de valor passou a preservar sempre duas casas decimais, inclusive em
+  valores inteiros, e mantém pontos de milhar e vírgula decimal durante a
+  edição.
+- Corrigida a leitura de respostas de erro cujo campo `error` é um texto, para
+  apresentar mensagens com acentos em vez do JSON com escapes Unicode.
+- O parser Delphi de `valor` foi ajustado para interpretar números JSON com
+  ponto decimal de forma independente da configuração regional do servidor.
+- Validação: `npm run build` do frontend concluiu TypeScript e Vite sem erros.
+
+## 21/10/2026 — Formulário e moeda de Exames no celular
+
+- Reorganizado o formulário de Exames em Código/Categoria, Nome e
+  Quantidade/Valor, mantendo a composição complementar abaixo dessas linhas.
+- Criado o campo de moeda reutilizável com a interação do Itriax: pontos nos
+  milhares, vírgula decimal e interpretação de ponto ou vírgula como início
+  da fração durante a digitação.
+- Corrigida a contenção horizontal do painel rolável de edição, para que uma
+  lista de analitos não amplie a área de formulário no celular.
+- Validação: `npm run build` do frontend concluiu TypeScript e Vite sem erros.
+
+## 21/10/2026 — Ajuste móvel dos analitos do exame
+
+- Corrigida a largura dos painéis e cartões de analitos no editor móvel,
+  impedindo que seu conteúdo ultrapasse a área útil.
+- A remoção passou a usar apenas um botão compacto com ícone, alinhado à
+  direita de cada cartão de analito.
+
+## 21/10/2026 — Cadastro de Exames e analitos vinculados
+
+- Implementada a rota `/exames` com busca, filtros de categoria e situação,
+  ordenação, paginação local, seleção por caixa ou toque contínuo, inclusão,
+  edição, inativação e reativação.
+- O editor separa a identificação do exame de sua composição e valor. Depois
+  de salvo o cabeçalho, apresenta o painel **Analitos do exame**, com seletor
+  de analitos ativos, pesquisa nos vínculos, inclusão, remoção funcional e
+  reativação de vínculos históricos.
+- As APIs de categorias, exames, analitos e vínculos passaram a aceitar
+  `?incluirInativos=true`, habilitando os filtros de inativos e a reativação
+  de um vínculo sem duplicá-lo.
+- Validação: `npm run build` do frontend concluiu TypeScript e Vite sem erros.
+- Publicada a interface no ambiente local de produção; o healthcheck do proxy
+  respondeu HTTP 200 com `{"status":"ok"}`. A confirmação da compilação do
+  controller Delphi fica para a IDE, pois a edição Community não oferece
+  validação por linha de comando neste ambiente.
+
+## 21/10/2026 — Pesquisa e edição de Categorias de Exame
+
+- Implementada a rota `/exames/categorias` com busca, filtro de situação,
+  ordenação, paginação, seleção por caixa ou toque contínuo e rodapé fixo.
+- Incluídos formulário de criação/edição com o campo obrigatório Nome, e as
+  operações autenticadas de inclusão, alteração, inativação e reativação.
+- O nome enviado à API remove espaços excedentes, conforme a especificação.
+- Validação: `npm run build` do frontend concluiu TypeScript e Vite sem erros.
+- Publicada a versão no ambiente local de produção; o healthcheck do proxy
+  respondeu HTTP 200 com `{"status":"ok"}`.
+
+## 21/10/2026 — Imagem PNG do diagrama ER
+
+- Convertido o diagrama ER de exames e modelos para
+  `docs/diagrama-er-exames-modelos.png`.
+- Validação: a imagem PNG foi aberta e conferida visualmente.
+
+## 21/10/2026 — Navegação e diagrama ER de exames
+
+- Corrigido o destaque dos itens do menu para que cada submenu seja ativo
+  apenas na sua rota exata.
+- Restaurada a exibição do botão de primeira página na paginação móvel.
+- Criado `docs/diagrama-er-exames-modelos.svg`, com as relações entre
+  categorias, exames, analitos, grupos de animais, modelos e itens de modelo.
+- Validação: `npm run build` do frontend concluiu TypeScript e Vite sem erros.
+- Publicada a versão no ambiente local de produção; o healthcheck do proxy
+  respondeu HTTP 200 com `{"status":"ok"}`.
+
+## 21/10/2026 — Lista móvel fixa e seleção por toque contínuo
+
+- Delimitada a página de pesquisa e seleção pela viewport para manter título,
+  filtros e rodapé fixos; a rolagem ficou restrita à grade de cartões.
+- Implementada a alternância de seleção do analito após 0,3 segundo de toque
+  contínuo no cartão; o gesto é cancelado quando o usuário move o dedo.
+- Validação: `npm run build` do frontend concluiu TypeScript e Vite sem erros.
+- Publicada a versão no ambiente local de produção; API e frontend foram
+  validados pelo healthcheck do proxy.
+
+## 21/10/2026 — Área de edição móvel fixa
+
+- Delimitada a página de edição pela viewport para manter o cabeçalho e as
+  ações de Cancelar/Salvar sempre visíveis.
+- A rolagem foi restrita à área que contém o painel de campos do formulário.
+- Validação: `npm run build` do frontend concluiu TypeScript e Vite sem erros.
+- Publicada a versão no ambiente local de produção; API e frontend foram
+  validados pelo healthcheck do proxy.
+
+## 21/10/2026 — Compactação da lista móvel de Analitos
+
+- Reduzida a altura dos cartões móveis de Analitos e removido o espaço vertical
+  entre as linhas de código/nome e unidade/tipo.
+- O painel de filtros da página passou a iniciar recolhido.
+- Validação: `npm run build` do frontend concluiu TypeScript e Vite sem erros.
+- Publicada a versão no ambiente local de produção; API e frontend foram
+  validados pelo healthcheck do proxy.
+
+## 21/10/2026 — Ajuste da listagem móvel de Analitos
+
+- Reorganizada a visualização móvel de cada analito: o código ocupa a primeira
+  linha em uma coluna mais larga e o nome passou para a segunda linha.
+- Unidade de medida e tipo de valor passaram a ocupar, respectivamente, a
+  primeira e a segunda linha da coluna direita, ambas alinhadas à direita.
+- Validação: `npm run build` do frontend concluiu TypeScript e Vite sem erros.
+- Publicada a versão no ambiente local de produção; o healthcheck pelo proxy
+  em `127.0.0.1:8081` respondeu HTTP 200 com `{"status":"ok"}`.
+
 ## 21/10/2026 — Consolidação da primeira entrega de cadastros
 
 - Consolidado o padrão compartilhado de pesquisa/seleção e edição no cadastro

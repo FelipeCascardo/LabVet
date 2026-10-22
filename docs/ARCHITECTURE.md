@@ -73,8 +73,10 @@ alterar o schema. Consulte [BASES_DE_DADOS.md](BASES_DE_DADOS.md).
 - [Especificação do backend de modelos de exames](spec-backend-modelosexames.md)
   descreve o agregado, regras e rotas registradas, com as nomenclaturas
   `modeloexames` e `animalgrupos`.
-- [Diagrama ER de exames](diagrama-er-exames.svg) e o diagrama de classes em
-  `docs` são referência para as relações persistidas.
+- [Diagrama ER de exames](diagrama-er-exames.svg), o
+  [diagrama ER de exames e modelos](diagrama-er-exames-modelos.svg) e o
+  [PNG correspondente](diagrama-er-exames-modelos.png), além do diagrama de
+  classes em `docs`, são referência para as relações persistidas.
 - O guia canônico de programação Delphi está em
   `C:\Projetos\Documentacoes\Padroes-Gerais\PADROES_PROGRAMACAO_DELPHI.md` e
   define as convenções das units e da camada de persistência.
@@ -99,23 +101,25 @@ por identificador, criação, atualização, inativação e reativação. A unit
 serialização das respostas.
 
 No frontend, o menu **Exames** reúne as páginas de categorias, exames, grupos
-de animais, analitos e modelos. A rota de modelos será `/exames/modelos`; a
-rota anterior `/cadastros/modelos-exames` deve apenas redirecionar para ela.
-A página de modelos consome os recursos de grupos de animais, modelos de
-exames e itens de modelo. A hierarquia visual é montada no cliente com
-`idGrupoPai`, enquanto os analitos são carregados por modelo. Para a composição
-dos três painéis, a página também consulta `Exame`, `ExameAnalito` e
-`Analito`, resolvendo os identificadores no cliente até a disponibilização do
-endpoint agregado de detalhe. A manutenção atual realiza operações individuais
-de cabeçalho e itens, pois não existe uma gravação composta transacional.
+de animais, analitos e modelos. A rota de modelos é `/exames/modelos`; a
+rota anterior `/cadastros/modelos-exames` apenas redireciona para ela. O fluxo
+começa pela árvore de grupos, abre uma lista filtrável em
+`/exames/modelos/grupo/:grupoId` e usa um editor próprio para inclusão e
+alteração. O editor consulta `Exame`, `ExameAnalito` e `Analito` para exibir
+os dados de origem sem alterá-los, e grava separadamente o cabeçalho e os
+itens do modelo, pois não existe uma operação transacional do agregado.
 
 As páginas administrativas do grupo compartilham os componentes
 `CadastroPesquisaSelecao` e `CadastroEdicao`. O primeiro centraliza título,
 ações, filtros, grade ordenável, seleção e paginação local de 25 registros;
 mantém título, filtros e rodapé fixos, restringindo a rolagem à grade. O segundo compõe
 o painel rolável de campos e o rodapé de cancelar/salvar. A implementação de
-`AnalitosPage` é a referência inicial e consome `examesApi`, que centraliza os
-erros HTTP e os contratos do recurso `analitos`.
+`AnalitosPage`, `CategoriasExamePage`, `AnimalGruposPage` e `ExamesPage`
+compartilham esse padrão e consomem `examesApi`, que centraliza os erros HTTP e os contratos do
+catálogo. `ExamesPage` grava o cabeçalho primeiro e então mantém os vínculos
+`ExameAnalito` em um painel próprio. As listagens do catálogo aceitam
+`?incluirInativos=true`, o que permite filtros de situação e a reativação de
+vínculos sem duplicidade.
 
 As units seguem o padrão `LabVet.<Camada>.<Entidade>`, por exemplo
 `LabVet.Repositories.Exame`, `LabVet.Services.Exame` e

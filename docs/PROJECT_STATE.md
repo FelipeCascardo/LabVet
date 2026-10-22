@@ -38,9 +38,11 @@ por camadas adotada no Itriax.
   conforme o service, inativação, reativação e respostas de erro padronizadas;
 - contratos JSON registrados nos models do catálogo e rotas registradas no
   `LabVet.dpr` e no `LabVet.dproj`;
-- página de Modelo de Exames no frontend, organizada em três painéis: árvore
-  de grupos de animais, modelos do grupo selecionado e analitos do modelo
-  selecionado agrupados por seção;
+- fluxo de Modelo de Exames no frontend, iniciado pela árvore de grupos de
+  animais, seguido pela lista filtrável de modelos do grupo e pelo editor;
+- editor de Modelo de Exame com manutenção do cabeçalho e dos analitos do
+  modelo; dados do Exame e do Analito de origem são exibidos somente para
+  consulta;
 - especificação funcional e técnica das páginas de cadastro do catálogo,
   incluindo a reorganização da navegação no novo menu Exames;
 - padrão reutilizável de página de pesquisa/seleção e de edição para os
@@ -48,8 +50,23 @@ por camadas adotada no Itriax.
 - cadastro de Analitos implementado com listagem, filtros, ordenação,
   seleção, inclusão, edição, inativação e reativação pelos endpoints
   autenticados já existentes;
+- cadastro de Categorias de Exame implementado com pesquisa, seleção,
+  ordenação, paginação, inclusão, edição, inativação e reativação pelos
+  endpoints autenticados já existentes;
+- cadastro de Exames implementado com pesquisa, filtros de categoria e
+  situação, ordenação, paginação, inclusão, edição, inativação e reativação;
+- cadastro de Grupos de Animais implementado com árvore hierárquica,
+  filtros, seleção, paginação, inclusão, edição, inativação e reativação;
+- seleção de um nó da árvore restringe a manutenção ao grupo e aos seus
+  subgrupos, e o formulário impede que um grupo seja atribuído como pai de si
+  mesmo ou de um descendente;
+- manutenção de analitos vinculados a um exame, liberada após salvar o
+  cabeçalho, com inclusão, inativação e reativação de vínculos;
 - novo menu **Exames** com Categorias, Exames, Grupos de Animais, Analitos e
   Modelo de Exames; a rota anterior de modelos redireciona para o novo menu;
+- listagem de Analitos otimizada para celular: código ampliado e disposto na
+  primeira linha, nome na segunda, com unidade e tipo de valor alinhados à
+  direita nas respectivas linhas;
 - diagramas de entidade-relacionamento e de classes atualizados;
 - regra de importação explícita de `Data.DB` quando units acessam `TDataSet`.
 - ambiente de produção local preparado com Nginx em Docker em
@@ -60,9 +77,34 @@ por camadas adotada no Itriax.
 - concluir o CRUD consistente de cada repository;
 - criar services individuais, com validações e transações;
 - validar as rotas autenticadas contra a base Labvet V1 no ambiente Docker.
-- implementar as páginas de Categorias, Exames, Grupos de Animais, Analitos e
-  Modelo de Exames conforme `spec-frontend-cadastros-exames.md`; Analitos foi
-  concluído como referência inicial do padrão compartilhado.
+- validar as rotas autenticadas de Modelo de Exames contra a base oficial;
+  Categorias, Exames, Grupos de Animais, Analitos e Modelos de Exames estão
+  disponíveis como referências do padrão compartilhado.
+
+### Validação da página de Grupos de Animais — 21/10/2026
+
+- `npm run build` em `frontend` concluiu sem erros de TypeScript ou Vite;
+- a interface foi publicada no ambiente local de produção;
+- o healthcheck em `http://127.0.0.1:8081/api/v1/health` respondeu
+  `{"status":"ok"}`.
+- a leitura de inativos no endpoint depende de recompilar o backend Delphi na
+  IDE, pois o executável em execução não é recompilável por linha de comando
+  nesta instalação Community.
+
+### Validação do fluxo de Modelo de Exames — 21/10/2026
+
+- `npm run build` em `frontend` concluiu sem erros de TypeScript ou Vite;
+- o fluxo foi publicado no ambiente local de produção;
+- o healthcheck em `http://127.0.0.1:8081/api/v1/health` respondeu
+  `{"status":"ok"}`.
+
+### Correção da lista de modelos por grupo — 21/10/2026
+
+- a lista aberta a partir de um grupo de animais agora usa o componente
+  padrão de pesquisa e seleção;
+- título, filtros e rodapé com paginação permanecem fixos; apenas a grade de
+  modelos aceita rolagem;
+- `npm run build` em `frontend` concluiu sem erros de TypeScript ou Vite.
 
 ## Próximas atividades priorizadas
 
@@ -163,6 +205,81 @@ no ambiente local de produção. O healthcheck pelo proxy em `127.0.0.1:8081`
 respondeu HTTP 200 com `{"status":"ok"}`. A validação de lint não encontrou
 novos avisos nas páginas de cadastro; permanecem somente dois avisos já
 existentes em `ModeloExamesPage` sobre atualização de estado em effects.
+
+Em 21/10/2026, a apresentação móvel dos registros de Analitos foi reorganizada
+em duas linhas: código com largura ampliada e nome à esquerda, unidade e tipo
+de valor à direita. A compilação TypeScript/Vite foi concluída sem erros; a
+versão foi publicada no ambiente local de produção e o healthcheck pelo proxy
+em `127.0.0.1:8081` respondeu HTTP 200 com `{"status":"ok"}`.
+
+Na revisão seguinte, os cartões móveis de Analitos foram compactados em cerca
+de 17%, removendo o espaço vertical entre suas linhas. A página passou a abrir
+com o painel de filtros recolhido. A compilação TypeScript/Vite foi concluída
+sem erros; a versão foi publicada no ambiente local de produção e validada
+pelo healthcheck do proxy.
+
+Na página de edição móvel, o cabeçalho e o rodapé passaram a permanecer nos
+limites da viewport; somente o painel de campos aceita rolagem. A compilação
+TypeScript/Vite foi concluída sem erros; a versão foi publicada no ambiente
+local de produção e validada pelo healthcheck do proxy.
+
+Na página móvel de pesquisa e seleção, o cabeçalho, os filtros e o rodapé
+passaram a permanecer nos limites da viewport; somente a grade de cartões
+aceita rolagem. Um toque contínuo de 0,3 segundo em um cartão alterna sua
+seleção, sem interferir na rolagem. A compilação TypeScript/Vite foi concluída
+sem erros; a versão foi publicada no ambiente local de produção e validada
+pelo healthcheck do proxy.
+
+O menu lateral passou a destacar somente a rota exata de cada item, eliminando
+o destaque permanente de **Exames** ao navegar pelos demais submenus. A
+paginação móvel voltou a apresentar o botão de primeira página. Foi criado o
+diagrama ER de exames e modelos em `docs/diagrama-er-exames-modelos.svg`. A
+compilação TypeScript/Vite foi concluída sem erros; a versão foi publicada no
+ambiente local de produção e o healthcheck pelo proxy respondeu HTTP 200 com
+`{"status":"ok"}`.
+
+O diagrama ER de exames e modelos também foi convertido para
+`docs/diagrama-er-exames-modelos.png` e conferido visualmente, preservando os
+relacionamentos e campos apresentados na versão vetorial.
+
+Em 21/10/2026, a rota `/exames/categorias` recebeu páginas de pesquisa e
+edição conectadas ao recurso autenticado `exame-categorias`. A manutenção
+permite buscar, filtrar por situação, ordenar, paginar, selecionar, incluir,
+editar, inativar e reativar categorias; o nome é normalizado antes do envio.
+A compilação TypeScript/Vite foi concluída sem erros; a versão foi publicada
+no ambiente local de produção e o healthcheck pelo proxy respondeu HTTP 200
+com `{"status":"ok"}`.
+
+Em 21/10/2026, a rota `/exames` recebeu páginas de pesquisa e edição
+conectadas a `exames`, `exame-categorias`, `analitos` e `exame-analitos`. O
+editor organiza identificação e composição/valor no cabeçalho e, após a
+primeira gravação, libera o painel de analitos vinculados. A listagem e o
+editor preservam o padrão móvel de áreas fixas e conteúdo rolável. As rotas de
+categorias, exames, analitos e vínculos passaram a aceitar
+`?incluirInativos=true`, permitindo filtros de inativos e a reativação de
+vínculos históricos sem tentar criá-los novamente. A
+compilação TypeScript/Vite foi concluída sem erros; a versão foi publicada no
+ambiente local de produção e o healthcheck pelo proxy respondeu HTTP 200 com
+`{"status":"ok"}`. A validação visual autenticada permanece pendente. A
+compilação da alteração no controller Delphi deve ser confirmada pela IDE, pois
+o compilador Community não oferece validação em linha de comando neste ambiente.
+
+Na revisão móvel seguinte do editor de Exames, os painéis e cartões de
+analitos passaram a respeitar a largura útil, inclusive para campos e ações.
+O comando de remoção ficou reduzido a um botão de ícone à direita de cada
+cartão.
+
+Na revisão posterior, a edição de Exames foi reorganizada nas linhas
+Código/Categoria, Nome e Quantidade/Valor. O valor usa o mesmo formato
+interativo de moeda do Itriax, com separadores brasileiros. A área rolável de
+edição recebeu contenção horizontal explícita para que a presença de analitos
+não altere a largura dos painéis no celular.
+
+Na revisão seguinte, o campo de valor passou a exibir sempre duas casas e a
+camada HTTP passou a decodificar corretamente erros textuais retornados no
+campo JSON `error`. O model Delphi de Exames também passou a interpretar o
+número JSON do valor com formato invariante; a atualização do executável exige
+compilação pela IDE Delphi.
 
 A estrutura de produção local separa o frontend compilado em Nginx no
 container `labvet-frontend-producao`, em `127.0.0.1:8081`, da API Delphi em

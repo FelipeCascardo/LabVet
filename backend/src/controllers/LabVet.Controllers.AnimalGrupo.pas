@@ -29,6 +29,14 @@ begin
     .Error('Não foi possível processar a solicitação.');
 end;
 
+function IncluirInativos(ARequest: THorseRequest): Boolean;
+var
+  LValor: string;
+begin
+  LValor := ARequest.Query['incluirInativos'];
+  Result := SameText(LValor, 'true') or (LValor = '1');
+end;
+
 procedure List(ARequest: THorseRequest; AResponse: THorseResponse; ANext: TProc);
 var
   LGrupo: TAnimalGrupo;
@@ -39,7 +47,7 @@ begin
   try
     LService := TAnimalGrupoService.Create;
     try
-      LGrupos := LService.Listar;
+      LGrupos := LService.Listar(not IncluirInativos(ARequest));
       try
         LResponse := TJSONArray.Create;
         for LGrupo in LGrupos do

@@ -35,7 +35,7 @@ function Brand() {
 
 function MenuLink({ item, onNavigate }: { item: NavigationItem; onNavigate: () => void }) {
   const Icon = item.icon
-  return <NavLink end={item.path === '/'} to={item.path} className={({ isActive }) => `menu-link ${isActive ? 'active' : ''}`} onClick={onNavigate}><Icon size={18} /><span>{item.label}</span>{item.label === 'Notificações' && <small className="notification-count">0</small>}</NavLink>
+  return <NavLink end to={item.path} className={({ isActive }) => `menu-link ${isActive ? 'active' : ''}`} onClick={onNavigate}><Icon size={18} /><span>{item.label}</span>{item.label === 'Notificações' && <small className="notification-count">0</small>}</NavLink>
 }
 
 function MenuGroup({ group, onNavigate }: { group: NavigationGroup; onNavigate: () => void }) {

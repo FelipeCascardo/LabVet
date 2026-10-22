@@ -29,6 +29,14 @@ begin
     .Error('Não foi possível processar a solicitação.');
 end;
 
+function IncluirInativos(ARequest: THorseRequest): Boolean;
+var
+  LValor: string;
+begin
+  LValor := ARequest.Query['incluirInativos'];
+  Result := SameText(LValor, 'true') or (LValor = '1');
+end;
+
 procedure List(ARequest: THorseRequest; AResponse: THorseResponse; ANext: TProc);
 var
   LExameAnalito: TExameAnalito;
@@ -39,7 +47,7 @@ begin
   try
     LService := TExameAnalitoService.Create;
     try
-      LExameAnalitos := LService.Listar;
+      LExameAnalitos := LService.Listar(not IncluirInativos(ARequest));
       try
         LResponse := TJSONArray.Create;
         for LExameAnalito in LExameAnalitos do

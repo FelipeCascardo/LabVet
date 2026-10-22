@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1050" viewBox="0 0 1800 1050" role="img" aria-labelledby="titulo descricao">
+  <title id="titulo">LabVet — modelo ER de exames e modelos de exames</title>
+  <desc id="descricao">Relacionamentos entre categorias, exames, analitos, grupos de animais, modelos de exames e seus itens.</desc>
+  <style>
+    .fundo{fill:#f5f7fb}.linha{fill:none;stroke:#71849d;stroke-width:3}.auto{fill:none;stroke:#c49238;stroke-width:3;stroke-dasharray:9 7}.tabela{fill:#fff;stroke:#b8c8d8;stroke-width:2}.cabecalho{fill:#173954}.titulo{fill:#fff;font:700 21px Arial,sans-serif}.pk{fill:#087d60;font:700 16px Arial,sans-serif}.fk{fill:#216a9b;font:700 16px Arial,sans-serif}.campo{fill:#31435b;font:16px Arial,sans-serif}.nota{fill:#64758b;font:14px Arial,sans-serif}.rotulo{fill:#435a74;font:700 14px Arial,sans-serif}.cabecalho-principal{fill:#173954;font:700 32px Arial,sans-serif}.subtitulo{fill:#60738d;font:17px Arial,sans-serif}.card{fill:#fff;stroke:#7b90a8;stroke-width:1}.cardtexto{fill:#344b64;font:700 13px Arial,sans-serif}
+  </style>
+  <rect class="fundo" width="1800" height="1050"/>
+  <text class="cabecalho-principal" x="60" y="62">LabVet — modelo ER de Exames e Modelos de Exames</text>
+  <text class="subtitulo" x="60" y="92">PK = chave primária · FK = chave estrangeira · campos de auditoria foram omitidos para evidenciar o domínio</text>
+
+  <!-- Relacionamentos, posicionados atrás das tabelas. -->
+  <path class="linha" d="M360 284H410"/>
+  <path class="auto" d="M650 214H735V144H650"/>
+  <path class="linha" d="M590 400V590"/>
+  <path class="linha" d="M360 716H410"/>
+  <path class="linha" d="M770 300H990V570"/>
+  <path class="auto" d="M1240 220H1325V150H1240"/>
+  <path class="linha" d="M1240 360V450"/>
+  <path class="linha" d="M770 700H1390"/>
+  <path class="linha" d="M1270 670H1390"/>
+
+  <text class="rotulo" x="362" y="270">classifica</text>
+  <text class="rotulo" x="664" y="133">pacote-pai</text>
+  <text class="rotulo" x="608" y="500">possui</text>
+  <text class="rotulo" x="362" y="702">mede</text>
+  <text class="rotulo" x="820" y="350">pode originar</text>
+  <text class="rotulo" x="1252" y="140">grupo-pai</text>
+  <text class="rotulo" x="1252" y="416">aplica-se a</text>
+  <text class="rotulo" x="1000" y="687">vínculo do exame</text>
+  <text class="rotulo" x="1295" y="657">configura</text>
+
+  <!-- EXAMECATEGORIAS -->
+  <g transform="translate(60 180)">
+    <rect class="tabela" width="300" height="175" rx="13"/>
+    <rect class="cabecalho" width="300" height="46" rx="13"/>
+    <text class="titulo" x="18" y="30">EXAMECATEGORIAS</text>
+    <text class="pk" x="18" y="80">PK  idexamecategoria</text>
+    <text class="campo" x="18" y="111">nmcategoria</text>
+    <text class="nota" x="18" y="143">stativo · auditoria</text>
+  </g>
+
+  <!-- EXAMES -->
+  <g transform="translate(410 145)">
+    <rect class="tabela" width="360" height="280" rx="13"/>
+    <rect class="cabecalho" width="360" height="46" rx="13"/>
+    <text class="titulo" x="18" y="30">EXAMES</text>
+    <text class="pk" x="18" y="80">PK  idexame</text>
+    <text class="fk" x="18" y="111">FK  idexamecategoria</text>
+    <text class="fk" x="18" y="142">FK  idexamepai → exames</text>
+    <text class="campo" x="18" y="176">cdexame · nmexame</text>
+    <text class="campo" x="18" y="207">qttotalexames · vlexame</text>
+    <text class="campo" x="18" y="238">stprimario · stativo</text>
+    <text class="nota" x="18" y="264">exame unitário ou pacote</text>
+  </g>
+
+  <!-- ANIMALGRUPOS -->
+  <g transform="translate(990 145)">
+    <rect class="tabela" width="335" height="215" rx="13"/>
+    <rect class="cabecalho" width="335" height="46" rx="13"/>
+    <text class="titulo" x="18" y="30">ANIMALGRUPOS</text>
+    <text class="pk" x="18" y="80">PK  idanimalgrupo</text>
+    <text class="fk" x="18" y="111">FK  idanimalgrupopai → animalgrupos</text>
+    <text class="campo" x="18" y="143">nmtipoanimal · dsdescricao</text>
+    <text class="nota" x="18" y="175">stativo · auditoria</text>
+  </g>
+
+  <!-- ANALITOS -->
+  <g transform="translate(60 600)">
+    <rect class="tabela" width="300" height="220" rx="13"/>
+    <rect class="cabecalho" width="300" height="46" rx="13"/>
+    <text class="titulo" x="18" y="30">ANALITOS</text>
+    <text class="pk" x="18" y="80">PK  idanalito</text>
+    <text class="campo" x="18" y="111">cdanalito · nmanalito</text>
+    <text class="campo" x="18" y="142">dstecnica · dsunidademedida</text>
+    <text class="campo" x="18" y="173">tpvalor · fgpercentual</text>
+    <text class="nota" x="18" y="201">stativo · auditoria</text>
+  </g>
+
+  <!-- EXAMEANALITOS -->
+  <g transform="translate(410 590)">
+    <rect class="tabela" width="360" height="210" rx="13"/>
+    <rect class="cabecalho" width="360" height="46" rx="13"/>
+    <text class="titulo" x="18" y="30">EXAMEANALITOS</text>
+    <text class="pk" x="18" y="80">PK  idexameanalito</text>
+    <text class="fk" x="18" y="111">FK  idexame → exames</text>
+    <text class="fk" x="18" y="142">FK  idanalito → analitos</text>
+    <text class="nota" x="18" y="174">único: idexame + idanalito</text>
+  </g>
+
+  <!-- MODELOEXAMES -->
+  <g transform="translate(990 450)">
+    <rect class="tabela" width="360" height="260" rx="13"/>
+    <rect class="cabecalho" width="360" height="46" rx="13"/>
+    <text class="titulo" x="18" y="30">MODELOEXAMES</text>
+    <text class="pk" x="18" y="80">PK  idmodeloexame</text>
+    <text class="fk" x="18" y="111">FK  idexame → exames (opcional)</text>
+    <text class="fk" x="18" y="142">FK  idanimalgrupo → animalgrupos</text>
+    <text class="campo" x="18" y="174">cdmodelolaudo · nmmodelolaudo</text>
+    <text class="campo" x="18" y="205">dsfaixaidade · nmarquivoorigem</text>
+    <text class="nota" x="18" y="235">stativo · auditoria</text>
+  </g>
+
+  <!-- MODELOEXAMEANALITOS -->
+  <g transform="translate(1390 670)">
+    <rect class="tabela" width="350" height="290" rx="13"/>
+    <rect class="cabecalho" width="350" height="46" rx="13"/>
+    <text class="titulo" x="18" y="30">MODELOEXAMEANALITOS</text>
+    <text class="pk" x="18" y="80">PK  idmodeloexameanalito</text>
+    <text class="fk" x="18" y="111">FK  idmodeloexame → modeloexames</text>
+    <text class="fk" x="18" y="142">FK  idexameanalito → exameanalitos</text>
+    <text class="campo" x="18" y="174">dssecao · nrexibicao · dsrotulo</text>
+    <text class="campo" x="18" y="205">unidade · técnica · referências</text>
+    <text class="campo" x="18" y="236">vrrefmin/max · vrrefpermin/max</text>
+    <text class="nota" x="18" y="266">único: idmodeloexame + nrexibicao</text>
+  </g>
+
+  <!-- Cardinalidades principais. -->
+  <g>
+    <rect class="card" x="367" y="273" width="22" height="22" rx="4"/><text class="cardtexto" x="374" y="289">1</text>
+    <rect class="card" x="390" y="273" width="22" height="22" rx="4"/><text class="cardtexto" x="396" y="289">N</text>
+    <rect class="card" x="570" y="554" width="22" height="22" rx="4"/><text class="cardtexto" x="577" y="570">1</text>
+    <rect class="card" x="570" y="580" width="22" height="22" rx="4"/><text class="cardtexto" x="576" y="596">N</text>
+    <rect class="card" x="367" y="705" width="22" height="22" rx="4"/><text class="cardtexto" x="374" y="721">1</text>
+    <rect class="card" x="390" y="705" width="22" height="22" rx="4"/><text class="cardtexto" x="396" y="721">N</text>
+  </g>
+
+  <text class="subtitulo" x="60" y="1000">Fluxo: Categoria → Exame ↔ Analito; Modelo de Exame aplica o exame a um grupo de animais e define como cada analito é apresentado e referenciado.</text>
+</svg>
