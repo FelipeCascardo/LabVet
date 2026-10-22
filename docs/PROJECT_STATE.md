@@ -108,13 +108,16 @@ por camadas adotada no Itriax.
 
 ## Próximas atividades priorizadas
 
-Prioridade para 16/10/2026:
+Prioridade para 22/10/2026:
 
-1. Revisar e concluir as tabelas `atendimentos`, `laudos`, `laudoanalitos` e
-   `laudonotas`, antes de aplicá-las na base oficial.
-2. Implementar o processo de importação, com mapeamento dos dados importados
+1. Melhorar o layout da página de edição de Modelo de Exame e de seus
+   analitos, preservando a apresentação móvel de cabeçalho e rodapé fixos.
+2. Retomar a modelagem de dados de atendimentos e laudos, começando pela
+   revisão das tabelas `atendimentos`, `laudos`, `laudoanalitos` e
+   `laudonotas` antes de qualquer aplicação na base oficial.
+3. Implementar o processo de importação, com mapeamento dos dados importados
    para os modelos de exame e seus analitos.
-3. Implementar as consultas de atendimentos e laudos.
+4. Implementar as consultas de atendimentos e laudos.
 
 Pendências subsequentes:
 

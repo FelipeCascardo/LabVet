@@ -1,5 +1,11 @@
 # LabVet — Histórico de Trabalho
 
+## Próximas prioridades — 22/10/2026
+
+- Melhorar o layout do editor de Modelo de Exame e dos analitos configurados
+  nele.
+- Retomar a modelagem de dados de atendimentos e laudos.
+
 ## 21/10/2026 — Rodapé e rolagem da lista de modelos por grupo
 
 - A página de modelos aberta a partir do grupo de animal foi migrada para o
