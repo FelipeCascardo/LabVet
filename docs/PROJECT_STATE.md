@@ -1,6 +1,6 @@
 # LabVet — Estado do Projeto
 
-Atualizado: 21/10/2026
+Atualizado: 22/10/2026
 
 ## Marco atual
 
@@ -43,6 +43,11 @@ por camadas adotada no Itriax.
 - editor de Modelo de Exame com manutenção do cabeçalho e dos analitos do
   modelo; dados do Exame e do Analito de origem são exibidos somente para
   consulta;
+- editor de analitos do modelo apresenta o tipo de valor e aplica a validação
+  e a formatação adequadas para inteiro, decimal e caractere;
+- analitos de um modelo organizados em painéis de seção, com suporte à
+  convenção silenciosa `SN <número>` e referências percentuais e
+  convencionais alinhadas à direita nos cartões;
 - especificação funcional e técnica das páginas de cadastro do catálogo,
   incluindo a reorganização da navegação no novo menu Exames;
 - padrão reutilizável de página de pesquisa/seleção e de edição para os
@@ -106,18 +111,93 @@ por camadas adotada no Itriax.
   modelos aceita rolagem;
 - `npm run build` em `frontend` concluiu sem erros de TypeScript ou Vite.
 
+### Edição de analitos do Modelo de Exame — 22/10/2026
+
+- o editor passou a apresentar o tipo de valor do analito e a orientar a
+  edição das referências como inteiro, decimal ou caractere;
+- referências numéricas são validadas no cliente, incluindo a ordem dos
+  limites convencionais e percentuais; decimais são formatados com duas casas
+  após a edição;
+- a listagem foi reorganizada em painéis por seção. `SN 1`, `SN 2` e assim por
+  diante agrupam itens sem título de painel na ordem numérica, enquanto itens
+  sem seção ficam no painel final **Sem seção**;
+- os cartões apresentam, à direita, a faixa percentual antes da convencional.
+- `npm run build` em `frontend` concluiu sem erros de TypeScript ou Vite.
+- o container `labvet-frontend-producao` foi reconstruído e reiniciado; o
+  bundle publicado em `127.0.0.1:8081` contém os painéis de seção e o editor
+  de referências, e o healthcheck da API respondeu `{"status":"ok"}`.
+- o cartão de analito apresenta a técnica abaixo do nome, a referência sem o
+  prefixo `Vr` e a unidade de medida ao lado da faixa convencional; o tipo de
+  valor permanece somente no painel de edição e decimais são normalizados para
+  duas casas com vírgula ao abrir ou concluir a edição.
+- essa revisão visual foi reconstruída e confirmada no bundle servido pelo
+  container de produção local; o healthcheck da API continuou respondendo
+  `{"status":"ok"}`.
+- a auditoria somente leitura da base oficial confirmou que os 74 analitos
+  ativos possuem tipo válido: 19 inteiros, 30 decimais e 25 de caractere. Não
+  há vínculo ativo de analito de modelo com cadastro ou vínculo de exame
+  inativo/inconsistente.
+- o cartão usa agora colunas estáveis para mínimo, separador, máximo e
+  unidade; técnica ausente é mostrada como `—`. A revisão foi compilada,
+  publicada no container local e validada pelo healthcheck da API.
+- a revisão do leucograma confirmou que Bastões, Leucócitos e Mielócitos devem
+  ser inteiros; os demais analitos da seção já possuem esse tipo. Basófilos
+  permanece caractere, pois a origem também usa o valor textual `raros`.
+- a migration 017 foi aplicada com sucesso na base oficial `Labvet V1` e
+  versiona essa correção no catálogo. A tela preserva números inteiros sem
+  agrupamento ao salvar, impedindo que a formatação visual altere o valor
+  enviado à API. O catálogo passou a ter 22 inteiros, 30 decimais e 22
+  analitos de caractere ativos.
+- a grade compacta, com o par percentual à esquerda da faixa convencional,
+  foi publicada no container local; o healthcheck da API confirmou
+  `{"status":"ok"}` após a atualização.
+- os traços separadores das referências foram removidos. Os painéis de seção
+  passaram a alinhar cabeçalhos e valores nas colunas `Vr Min`, `Vr Max` e
+  `Und`, incluindo `Per Min` e `Per Max` apenas nas seções que os utilizam;
+  as colunas numéricas foram ampliadas. A revisão foi compilada e publicada
+  no container local, com healthcheck da API confirmado.
+- a coluna `Und` foi ampliada para acomodar unidades extensas. A migration 018
+  foi aplicada na base oficial para classificar `ANA-PROTEINAS` (Proteínas)
+  como decimal. A interface foi compilada e publicada no container local com
+  healthcheck da API confirmado.
+- o logo do LabVet no cabeçalho lateral passou a ocupar toda a largura útil do
+  menu, mantendo a proporção da imagem e ajustando a altura automaticamente.
+  A interface foi compilada e publicada no container local com healthcheck da
+  API confirmado.
+- a página de login passou a exibir somente o formulário centralizado; o painel
+  institucional à direita foi removido e o logo foi ampliado para alinhar-se à
+  largura dos campos de e-mail e senha. A interface foi compilada e publicada
+  no container local com healthcheck da API confirmado.
+- a área branca do logo na página de login foi reduzida por recorte visual sem
+  deformar a imagem, e o formulário foi deslocado para mais próximo do topo.
+  A interface foi compilada e publicada no container local com healthcheck da
+  API confirmado.
+- o cabeçalho do menu principal recebeu o mesmo recorte proporcional do logo,
+  reduzindo sua altura e o espaço branco sem reduzir a largura útil. A
+  interface foi compilada e publicada no container local com healthcheck da
+  API confirmado.
+- os cartões de analitos passaram a exibir somente o nome na identificação;
+  unidades presentes em rótulos históricos são removidas visualmente e ficam
+  exclusivamente na coluna `Und`, após os valores de referência. A interface
+  foi compilada e publicada no container local com healthcheck da API
+  confirmado.
+- o editor de Modelo de Exame passou a disponibilizar **Gerar PDF**, que abre
+  uma impressão A4 vertical com os dados do grupo de animal, do modelo, do exame
+  vinculado e dos analitos por seção na mesma organização visual da edição,
+  pronta para salvar como PDF. A impressão também é disponibilizada antes da
+  inclusão de analitos. A interface foi compilada e publicada no container
+  local, com healthcheck da API confirmado.
+
 ## Próximas atividades priorizadas
 
 Prioridade para 22/10/2026:
 
-1. Melhorar o layout da página de edição de Modelo de Exame e de seus
-   analitos, preservando a apresentação móvel de cabeçalho e rodapé fixos.
-2. Retomar a modelagem de dados de atendimentos e laudos, começando pela
+1. Retomar a modelagem de dados de atendimentos e laudos, começando pela
    revisão das tabelas `atendimentos`, `laudos`, `laudoanalitos` e
    `laudonotas` antes de qualquer aplicação na base oficial.
-3. Implementar o processo de importação, com mapeamento dos dados importados
+2. Implementar o processo de importação, com mapeamento dos dados importados
    para os modelos de exame e seus analitos.
-4. Implementar as consultas de atendimentos e laudos.
+3. Implementar as consultas de atendimentos e laudos.
 
 Pendências subsequentes:
 

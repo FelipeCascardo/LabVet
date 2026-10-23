@@ -42,6 +42,5 @@ export function LoginPage() {
       </form>
       <p className="login-help">Precisa de ajuda? Fale com o suporte do LabVet.</p>
     </section>
-    <aside className="login-aside"><div><span className="eyebrow">LabVet</span><h2>A gestão do laboratório, mais próxima do cuidado.</h2><p>Cadastros, atendimentos e laudos em uma experiência simples e confiável.</p></div></aside>
   </main>
 }

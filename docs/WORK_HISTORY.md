@@ -2,9 +2,84 @@
 
 ## Próximas prioridades — 22/10/2026
 
-- Melhorar o layout do editor de Modelo de Exame e dos analitos configurados
-  nele.
 - Retomar a modelagem de dados de atendimentos e laudos.
+
+## 22/10/2026 — Seções e referências dos analitos do Modelo de Exame
+
+- O editor passou a identificar o tipo de valor do analito e a tratar as
+  referências de inteiro, decimal e caractere conforme esse tipo.
+- Limites convencionais e percentuais são validados antes do envio; decimais
+  recebem formatação brasileira de duas casas ao concluir a edição do campo.
+- Os itens agora são agrupados em painéis por seção. A convenção `SN <número>`
+  organiza painéis silenciosos em ordem numérica e itens sem seção aparecem no
+  painel final **Sem seção**.
+- Os cartões exibem as referências à direita, com percentual antes da faixa
+  convencional.
+- Validação: `npm run build` do frontend concluiu sem erros de TypeScript ou
+  Vite. O lint não reportou erros; os avisos existentes permanecem em outras
+  telas e no carregamento da lista de modelos.
+- Publicação: o container de produção local foi reconstruído e reiniciado. A
+  confirmação do bundle servido em `127.0.0.1:8081` encontrou os agrupamentos
+  por seção e o editor de valores de referência; o healthcheck da API retornou
+  `{"status":"ok"}`.
+- Ajuste visual posterior: os cartões passaram a exibir a técnica abaixo do
+  nome, os valores convencionais sem o prefixo `Vr` e a unidade à direita da
+  faixa. O tipo de valor saiu do cartão e permanece no painel de edição; os
+  valores decimais existentes são apresentados com duas casas e vírgula ao
+  abrir a edição.
+- A revisão visual foi compilada e publicada no container local; o bundle
+  ativo e o healthcheck da API foram conferidos após a reinicialização.
+- Auditoria de tipos: a base oficial não contém analitos sem tipo válido. Antes
+  da correção do leucograma, eram 19 inteiros, 30 decimais e 25 de caractere;
+  também não há vínculos ativos de analitos de modelo que apontem para cadastro
+  ou vínculo de exame inativo/incompatível.
+- Os valores convencionais do cartão foram organizados em colunas estáveis de
+  mínimo, separador, máximo e unidade; ausência de técnica passou a usar
+  `—`. A revisão foi compilada e publicada no frontend local com healthcheck
+  da API confirmado.
+- A revisão do leucograma confirmou Bastões, Leucócitos e Mielócitos como
+  inteiros; Metamielócitos, Segmentados, Linfócitos, Monócitos e Eosinófilos
+  já estavam corretamente classificados. Basófilos permanece caractere pela
+  referência textual `raros`.
+- A migration 017 foi aplicada com sucesso na base oficial e registra a
+  correção dos três tipos no catálogo. A tela passou a salvar valores inteiros
+  sem agrupador de milhar, mantendo o valor numérico íntegro entre edição e
+  API. O total atual é de 22 inteiros, 30 decimais e 22 de caractere.
+- A faixa percentual passou a ocupar o par de colunas à esquerda da faixa
+  convencional, em uma grade mais compacta. A atualização foi publicada no
+  frontend local e o healthcheck da API foi confirmado.
+- Os traços separadores foram removidos dos cartões. Cada painel passou a ter
+  os cabeçalhos `Vr Min`, `Vr Max` e `Und` alinhados às referências, com `Per
+  Min` e `Per Max` quando a seção possui percentual; as colunas de valores e
+  percentuais foram ampliadas. A compilação e a publicação local foram
+  confirmadas pelo healthcheck da API.
+- A coluna de unidade foi ampliada para acomodar unidades extensas. A migration
+  018 foi aplicada na base oficial e alterou somente `ANA-PROTEINAS`
+  (Proteínas) para o tipo decimal. A publicação local e o healthcheck da API
+  foram confirmados.
+- O logo do LabVet no menu lateral passou a ocupar toda a largura útil do
+  cabeçalho, com altura proporcional à imagem. A publicação local e o
+  healthcheck da API foram confirmados.
+- A página de login foi simplificada para um formulário centralizado. O painel
+  institucional lateral foi removido e o logo passou a ter a largura dos
+  campos de e-mail e senha. A publicação local e o healthcheck da API foram
+  confirmados.
+- O logo da página de login passou a recortar o excesso de área branca sem
+  deformar a marca, e o formulário foi deslocado para mais próximo do topo. A
+  publicação local e o healthcheck da API foram confirmados.
+- O logo do cabeçalho lateral também passou a usar recorte proporcional, com
+  altura reduzida e a largura útil preservada. A publicação local e o
+  healthcheck da API foram confirmados.
+- Os cartões de analitos do modelo passaram a exibir o nome sem unidade na
+  identificação. A unidade fica exclusivamente após os valores, na coluna
+  `Und`, inclusive para rótulos históricos que a traziam entre parênteses. A
+  publicação local e o healthcheck da API foram confirmados.
+- O editor de Modelo de Exame recebeu o comando **Gerar PDF**. Ele abre uma
+  impressão A4 vertical pronta para salvar como PDF, que reúne os dados do grupo de
+  animal, do modelo, do exame vinculado e dos analitos nas mesmas seções e
+  colunas da edição, sem comandos de manutenção. A impressão também pode ser
+  gerada antes da inclusão de analitos. A publicação local e o healthcheck da
+  API foram confirmados após esta atualização.
 
 ## 21/10/2026 — Rodapé e rolagem da lista de modelos por grupo
 

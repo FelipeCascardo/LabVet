@@ -57,6 +57,7 @@ export type ExameAnalito = {
 export type Analito = {
   id: number
   nome: string
+  tecnica: string
   unidadeMedida: string
   tipoValor: number
   percentual: boolean

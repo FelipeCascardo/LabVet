@@ -205,11 +205,36 @@ página **Exames**.
 | Referência mínima/máxima | `referenciaMinima`, `referenciaMaxima` | Não | Validadas no cliente conforme o tipo do analito. |
 | Percentual mínimo/máximo | `referenciaPercentualMinima`, `referenciaPercentualMaxima` | Não | Visíveis somente quando `percentual` do analito estiver ativo; de 0 a 100, até quatro casas. |
 
-Para inteiro, as referências convencionais aceitam somente inteiros; para
-decimal, aceitam número com vírgula ou ponto e são enviados no formato
-numérico aceito pela API; para caractere, permanecem texto. O mínimo não pode
-ser maior que o máximo quando ambos forem numéricos. Os limites percentuais
-também obedecem a essa ordenação.
+O editor mostra o tipo de valor do analito de origem. Para inteiro, as
+referências convencionais aceitam somente inteiros; para decimal, aceitam
+número com vírgula ou ponto e são formatadas com duas casas na saída do campo;
+para caractere, permanecem texto. O mínimo não pode ser maior que o máximo
+quando ambos forem numéricos. Os limites percentuais também obedecem a essa
+ordenação.
+
+Os analitos são exibidos em painéis de seção. As seções nomeadas apresentam
+seu título; a convenção `SN <número>` cria painéis sem título, ordenados pelo
+número da convenção; e itens sem seção são reunidos no painel **Sem seção** ao
+final. A barra de cada painel apresenta as colunas `Vr Min`, `Vr Max` e `Und`;
+quando ao menos um analito da seção possuir percentual, também apresenta `Per
+Min` e `Per Max` antes delas. No cartão, os valores ficam alinhados a essas
+colunas, sem traço separador: a faixa percentual, quando houver, precede a
+faixa convencional, que apresenta a unidade de medida ao lado. A técnica fica
+abaixo do nome do analito; o tipo de valor é
+exibido apenas no painel de edição.
+
+O comando **Gerar PDF** abre uma página de impressão em formato A4 vertical, pronta
+para **Salvar como PDF**, que representa o Modelo de Exame completo. O
+documento inicia com os blocos **Animal** (grupo e descrição), **Modelo de
+Exame** (código, faixa etária e arquivo de origem) e **Exame** (identificação,
+quantidade e valor) e, em seguida, apresenta os analitos organizados nas
+mesmas seções, colunas e referências exibidas na edição. A impressão pode ser
+gerada mesmo quando o modelo ainda não possui analitos. O documento não inclui
+os campos ou comandos de manutenção.
+
+Quando não houver técnica, o cartão apresenta `—`. A faixa convencional usa
+três colunas fixas: mínimo e máximo alinhados à direita e unidade centralizada
+na última coluna.
 
 Os itens usam `POST /modelos-exames-analitos`, `PUT /:id`, `DELETE /:id` e
 `POST /:id/reativar`. O backend atual não possui gravação transacional do
